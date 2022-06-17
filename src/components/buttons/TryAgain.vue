@@ -1,0 +1,24 @@
+<template>
+  <Button
+    class="activity-button-try-again"
+    cursor-pointer
+    text-white
+    text-base
+    md:text-lg
+    font-bold
+    bg="#5F8FC1"
+    p-2
+    md:p-4
+    hover:opacity-70
+  >
+    <i
+      class="activity-button-try-again-icon"
+      i-mdi-refresh
+      w-6
+      h-6
+    />
+    <span class="activity-button-try-again-text">
+      Reiniciar
+    </span>
+  </Button>
+</template>

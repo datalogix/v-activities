@@ -1,0 +1,358 @@
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import shuffle from 'lodash.shuffle'
+import { replace, generateChar, generateOptionsFromString } from '@/utils/string'
+
+export interface WordSearchGridProps {
+  size: number
+  words: string[]
+  diagonal?: boolean
+  invert?: boolean
+  shuffle?: boolean
+}
+
+export interface WordSearchGridPosition {
+  x: number
+  y: number
+}
+
+const props = withDefaults(defineProps<WordSearchGridProps>(), {
+  size: 10,
+  diagonal: false,
+  invert: false,
+  shuffle: true
+})
+
+// eslint-disable-next-line func-call-spacing
+const emits = defineEmits<{
+  (e: 'right', word: string): void
+  (e: 'wrong', word: string, invertedWord: string): void
+  (e: 'complete'): void
+}>()
+
+const words = props.words.map(word => replace(word, '', { space: false }).toLocaleUpperCase())
+const size = Math.max(props.size, ...words.map(word => word.length), words.length)
+const usedWords = ref<string[]>([])
+const foundWords = ref<string[]>([])
+const letterGrid = ref<string[][]>([])
+const gridWord = ref<string[][]>([])
+const foundTiles = ref<WordSearchGridPosition[]>([])
+const guess = ref<WordSearchGridPosition[]>([])
+const selectedRange = ref<{start: WordSearchGridPosition|null, end: WordSearchGridPosition|null}>({ start: null, end: null })
+const guessedWord = computed(() => guess.value.map(l => gridVal(l)).join(''))
+
+const isTileHighlighted = ({ x, y }: WordSearchGridPosition) => {
+  const r = selectedRange.value
+
+  if (r.start === null || r.end === null) {
+    return false
+  }
+
+  const minX = Math.min(r.start.x, r.end.x)
+  const maxX = Math.max(r.start.x, r.end.x)
+  const minY = Math.min(r.start.y, r.end.y)
+  const maxY = Math.max(r.start.y, r.end.y)
+
+  if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
+    return (
+      r.start.x === r.end.x || r.start.y === r.end.y ||
+        (Math.abs(r.start.x - x) === Math.abs(r.start.y - y))
+    )
+  }
+}
+
+const isTileAFoundWordTile = ({ x, y }: WordSearchGridPosition) => {
+  for (let i = 0; i < foundTiles.value.length; i++) {
+    if (foundTiles.value[i].x === x && foundTiles.value[i].y === y) {
+      return true
+    }
+  }
+
+  return false
+}
+
+const gridVal = ({ x, y }: WordSearchGridPosition) => {
+  if (typeof letterGrid.value[y] !== 'undefined') {
+    if (typeof letterGrid.value[y][x] !== 'undefined') {
+      return letterGrid.value[y][x]
+    }
+  }
+
+  return ''
+}
+
+const wordSelectStart = ({ x, y }: WordSearchGridPosition) => {
+  selectedRange.value.start = { x, y }
+}
+
+const wordSelectUpdate = (event: Event, { x, y }: WordSearchGridPosition) => {
+  if (selectedRange.value.start === null) {
+    return
+  }
+
+  const resetSelectedRange = () => {
+    guess.value = []
+    selectedRange.value = { start: null, end: null }
+  }
+
+  const right = (word:string) => {
+    foundWords.value.push(word)
+    foundTiles.value.push(...guess.value)
+
+    resetSelectedRange()
+    emits('right', word)
+
+    if (usedWords.value.length === foundWords.value.length) {
+      emits('complete')
+    }
+  }
+
+  const dx = Math.abs(x - selectedRange.value.start.x)
+  const dy = Math.abs(y - selectedRange.value.start.y)
+
+  if ((dy === 0 && dx > 0) || (dx === 0 && dy > 0) || (dx === dy)) {
+    selectedRange.value.end = { x, y }
+
+    if (event.type === 'mouseup' || event.type === 'touchend') {
+      guess.value = []
+
+      const sx = selectedRange.value.start.x
+      const sy = selectedRange.value.start.y
+      const ex = selectedRange.value.end.x
+      const ey = selectedRange.value.end.y
+
+      // vertical
+      if (dx === 0) {
+        const step = ey > sy ? 1 : -1
+
+        for (let i = sy; step > 0 ? (i <= ey) : (i >= ey); i += step) {
+          guess.value.push({ x: sx, y: i })
+        }
+      }
+
+      // horizontal
+      if (dy === 0) {
+        const step = ex > sx ? 1 : -1
+
+        for (let i = sx; step > 0 ? (i <= ex) : (i >= ex); i += step) {
+          guess.value.push({ x: i, y: sy })
+        }
+      }
+
+      // diagonal
+      if (dx !== 0 && dy !== 0) {
+        const stepX = ex > sx ? 1 : -1
+        const stepY = ey > sy ? 1 : -1
+
+        for (
+          let iX = sx, iY = sy;
+          (stepY > 0 ? iY <= ey : iY >= ey) || (stepX > 0 ? iX <= ex : iX >= ex);
+          iY += stepY, iX += stepX
+        ) {
+          guess.value.push({ x: iX, y: iY })
+        }
+      }
+
+      const corretWord = gridWord.value[guess.value[0].y][guess.value[0].x]
+
+      if (foundWords.value.indexOf(guessedWord.value) === -1 &&
+        usedWords.value.indexOf(guessedWord.value) !== -1 &&
+        guessedWord.value === corretWord
+      ) {
+        return right(corretWord)
+      }
+
+      const invertWord = guessedWord.value.split('').reverse().join('')
+
+      if (
+        foundWords.value.indexOf(invertWord) === -1 &&
+        usedWords.value.indexOf(invertWord) !== -1 &&
+        invertWord === corretWord
+      ) {
+        return right(invertWord)
+      }
+
+      emits('wrong', guessedWord.value, invertWord)
+      resetSelectedRange()
+    }
+  } else if (event.type === 'mouseup' || event.type === 'touchend') {
+    resetSelectedRange()
+  } else {
+    selectedRange.value.end = null
+  }
+}
+
+const build = () => {
+  letterGrid.value = [...Array(size)].map(() => Array(size))
+  gridWord.value = [...Array(size)].map(() => Array(size))
+  usedWords.value = []
+  foundWords.value = []
+  foundTiles.value = []
+  guess.value = []
+
+  Array.from(props.shuffle ? shuffle(words) : words).forEach(word => {
+    if (word.length > size) {
+      return
+    }
+
+    let isValid = false
+    let x = 0
+    let y = 0
+    let dx = 0
+    let dy = 0
+    let itterationCount = 0
+
+    do {
+      itterationCount += 1
+
+      if (itterationCount > 100) {
+        return
+      }
+
+      x = Math.floor(Math.random() * size)
+      y = Math.floor(Math.random() * size)
+      dx = 0
+      dy = 0
+      isValid = false
+
+      const direction = Math.floor(Math.random() * 8)
+
+      if (direction > 0 && direction < 4) {
+        dx = 1
+      } else if (direction > 4 && direction < 8) {
+        dx = -1
+      }
+
+      if (direction < 2 || direction > 6) {
+        dy = -1
+      } else if (direction > 2 && direction < 6) {
+        dy = 1
+      }
+
+      // Disable invert word
+      if (!props.invert) {
+        dx = Math.abs(dx)
+        dy = Math.abs(dy)
+      }
+
+      if (!props.diagonal) {
+        if (dx === 1) {
+          dy = 0
+        }
+
+        if (dy === 1) {
+          dx = 0
+        }
+      }
+
+      try {
+        const endX = x + (dx * word.length)
+
+        if (endX < 0 || endX > size) {
+          throw new Error('Word exceeds width')
+        }
+
+        const endY = y + (dy * word.length)
+
+        if (endY < 0 || endY > size) {
+          throw new Error('Word exceeds height')
+        }
+
+        for (let cIndex = 0; cIndex < word.length; cIndex += 1) {
+          const xCord = x + (cIndex * dx)
+          const yCord = y + (cIndex * dy)
+
+          if (letterGrid.value[yCord][xCord] !== undefined) {
+            if (letterGrid.value[yCord][xCord] !== word[cIndex]) {
+              throw new Error('Letter Overlap')
+            }
+          }
+        }
+
+        isValid = true
+      } catch (err) {
+        isValid = false
+      }
+    } while (!isValid)
+
+    usedWords.value.push(word)
+
+    for (let cIndex = 0; cIndex < word.length; cIndex += 1) {
+      const xCord = x + (cIndex * dx)
+      const yCord = y + (cIndex * dy)
+
+      letterGrid.value[yCord][xCord] = word[cIndex]
+      gridWord.value[yCord][xCord] = word
+    }
+  })
+
+  const generateCharOptions = generateOptionsFromString(words.join(''))
+
+  for (let y = 0; y < size; y += 1) {
+    for (let x = 0; x < size; x += 1) {
+      if (letterGrid.value[y][x] === undefined) {
+        letterGrid.value[y][x] = generateChar(generateCharOptions)
+      }
+    }
+  }
+
+  if (usedWords.value.length !== words.length) {
+    build()
+  }
+}
+
+defineExpose({
+  build,
+  usedWords,
+  foundWords
+})
+</script>
+
+<template>
+  <div
+    v-for="(r, y) in size"
+    :key="`row_${y}`"
+    flex
+    flex-wrap
+    justify-center
+    class="activity-word-search-row"
+  >
+    <div
+      v-for="(c, x) in size"
+      :key="`row_${y}_col_${x}`"
+      tag="div"
+      class="activity-word-search-col"
+    >
+      <div
+        class="activity-word-search-letter"
+        :class="{
+          'bg-blue-300 activity-word-search-letter-highlighted': isTileHighlighted({ x, y }),
+          'bg-green-300 activity-word-search-letter-selected': isTileAFoundWordTile({ x, y }),
+        }"
+        uppercase
+        w-8
+        h-8
+        text-sm
+        md:w-10
+        md:h-10
+        md:text-base
+        lg:w-16
+        lg:h-16
+        lg:text-lg
+        flex
+        items-center
+        justify-center
+        cursor-pointer
+        border
+        border-gray-300
+        @mousedown.prevent="wordSelectStart({ x, y })"
+        @mouseup="(e) => wordSelectUpdate(e, { x, y })"
+        @mousemove="(e) => wordSelectUpdate(e, { x, y })"
+        @touchstart.prevent="wordSelectStart({ x, y })"
+        @touchend="(e) => wordSelectUpdate(e, { x, y })"
+        @touchmove="(e) => wordSelectUpdate(e, { x, y })"
+        v-text="gridVal({ x, y })"
+      />
+    </div>
+  </div>
+</template>

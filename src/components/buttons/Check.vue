@@ -1,0 +1,24 @@
+<template>
+  <Button
+    class="activity-button-check"
+    cursor-pointer
+    text-white
+    text-base
+    md:text-lg
+    font-bold
+    bg="#40C9A2"
+    p-2
+    md:p-4
+    hover:opacity-70
+  >
+    <i
+      class="activity-button-check-icon"
+      i-mdi-check
+      w-6
+      h-6
+    />
+    <span class="activity-button-check-text">
+      Verificar
+    </span>
+  </Button>
+</template>

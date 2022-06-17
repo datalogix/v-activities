@@ -1,0 +1,24 @@
+<template>
+  <Button
+    class="activity-button-exit"
+    cursor-pointer
+    text-white
+    text-base
+    md:text-lg
+    font-bold
+    bg="#31393D"
+    p-2
+    md:p-4
+    hover:opacity-70
+  >
+    <i
+      class="activity-button-exit-icon"
+      i-mdi-exit-to-app
+      w-6
+      h-6
+    />
+    <span class="activity-button-exit-text">
+      Sair
+    </span>
+  </Button>
+</template>

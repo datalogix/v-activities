@@ -1,0 +1,24 @@
+<template>
+  <Button
+    class="activity-button-save"
+    cursor-pointer
+    text-white
+    text-base
+    md:text-lg
+    font-bold
+    bg="#40C9A2"
+    p-2
+    md:p-4
+    hover:opacity-70
+  >
+    <i
+      class="activity-button-save-icon"
+      i-mdi-content-save
+      w-6
+      h-6
+    />
+    <span class="activity-button-save-text">
+      Salvar
+    </span>
+  </Button>
+</template>

@@ -1,0 +1,24 @@
+<template>
+  <Button
+    class="activity-button-confirm"
+    cursor-pointer
+    text-white
+    text-base
+    md:text-lg
+    font-bold
+    bg-green-500
+    p-2
+    md:p-4
+    hover:opacity-70
+  >
+    <i
+      class="activity-button-confirm-icon"
+      i-mdi-check
+      w-6
+      h-6
+    />
+    <span class="activity-button-confirm-text">
+      Confirmar
+    </span>
+  </Button>
+</template>

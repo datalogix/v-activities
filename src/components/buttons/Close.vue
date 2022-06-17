@@ -1,0 +1,19 @@
+<template>
+  <Button
+    type="button"
+    class="activity-button-close"
+    cursor-pointer
+    rounded-full
+    text-white
+    bg="#31393D"
+    p-1
+    hover:opacity-70
+  >
+    <i
+      class="activity-button-close-icon"
+      i-mdi-close
+      w-4
+      h-4
+    />
+  </Button>
+</template>

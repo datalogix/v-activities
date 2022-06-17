@@ -1,0 +1,24 @@
+<template>
+  <Button
+    class="activity-button-cancel"
+    cursor-pointer
+    text-white
+    text-base
+    md:text-lg
+    font-bold
+    bg-red-500
+    p-2
+    md:p-4
+    hover:opacity-70
+  >
+    <i
+      class="activity-button-cancel-icon"
+      i-mdi-close
+      w-6
+      h-6
+    />
+    <span class="activity-button-cancel-text">
+      Cancelar
+    </span>
+  </Button>
+</template>
