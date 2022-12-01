@@ -1,6 +1,6 @@
 <template>
   <Button
-    class="activity-button-exit"
+    class="activity-button-finish"
     cursor-pointer
     text-white
     text-base
@@ -12,13 +12,13 @@
     hover:opacity-70
   >
     <i
-      class="activity-button-exit-icon"
+      class="activity-button-finish-icon"
       i-mdi-exit-to-app
       w-6
       h-6
     />
-    <span class="activity-button-exit-text">
-      Sair
+    <span class="activity-button-finish-text">
+      Finalizar
     </span>
   </Button>
 </template>

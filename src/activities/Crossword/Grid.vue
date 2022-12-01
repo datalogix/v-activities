@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-
 export interface CrosswordItem {
   x: number
   y: number
@@ -237,15 +235,20 @@ defineExpose({
           class="activity-crossword-area"
           w-6
           h-6
+          sm:w-8
+          sm:h-8
           md:w-10
           md:h-10
-          lg:w-16
-          lg:h-16
+          lg:w-14
+          lg:h-14
+          m-px
         >
           <div
             v-if="grid[x][y]"
             class="activity-crossword-item"
             relative
+            w-full
+            h-full
             @click="select(x, y)"
           >
             <span
@@ -255,7 +258,8 @@ defineExpose({
               top-1
               hidden
               md:block
-              text-sm
+              text-xs
+              lg:text-sm
               v-text="grid[x][y].position"
             />
             <input
@@ -264,16 +268,12 @@ defineExpose({
               :disabled="grid[x][y].fixed"
               class="activity-crossword-input"
               :class="{
-                'bg-blue-50': isActive(x, y)
+                'bg-blue-50 border-blue-300': isActive(x, y)
               }"
-              w-4
-              h-4
-              md:w-8
-              md:h-8
-              lg:w-14
-              lg:h-14
-              text-xs
-              md:text-base
+              w-full
+              h-full
+              text-base
+              md:text-lg
               lg:text-xl
               uppercase
               text-center

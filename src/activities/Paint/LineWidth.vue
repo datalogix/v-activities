@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-
 export interface PaintLineWidthProps {
   color?: string
   alpha?: number
   options?: number[]
 }
 
-const props = withDefaults(defineProps<PaintLineWidthProps>(), {
+withDefaults(defineProps<PaintLineWidthProps>(), {
   color: '#000000',
   alpha: 1,
   options: () => [
@@ -91,7 +89,7 @@ defineExpose({
     >
       <div
         class="activity-paint-line-width-selector-line"
-        :style="`background-color: ${props.color}; width: ${selected}px; opacity: ${props.alpha};`"
+        :style="`background-color: ${color}; width: ${selected}px; opacity: ${alpha};`"
         border
         border-gray-300
         h-6
@@ -102,7 +100,7 @@ defineExpose({
       class="activity-paint-line-width-container"
       right--2
       mt-2
-      w-10
+      w-14
       absolute
       grid
       grid-cols-1
@@ -113,7 +111,7 @@ defineExpose({
       p-2
     >
       <button
-        v-for="option in props.options"
+        v-for="option in options"
         :key="option"
         class="activity-paint-line-width-option"
         type="button"
@@ -132,7 +130,7 @@ defineExpose({
       >
         <div
           class="activity-paint-line-width-option-line"
-          :style="`background-color: ${props.color}; width: ${option}px; opacity: ${props.alpha};`"
+          :style="`background-color: ${color}; width: ${option}px; opacity: ${alpha};`"
           border
           border-gray-300
           h-6

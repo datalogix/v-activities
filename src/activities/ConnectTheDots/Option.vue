@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import type { ConnectTheDotsOption } from './Index.vue'
 
 export interface ConnectTheDotsOptionProps {
@@ -35,6 +34,7 @@ defineExpose({
       'border-gray-300': !selected,
       'border-black activity-connect-the-dots-option-selected': selected
     }"
+    bg-white
     relative
     border
     cursor-pointer
@@ -50,19 +50,19 @@ defineExpose({
     items-center
     transition-all
     z-1
-    @click="emits('select', props.option)"
+    @click="emits('select', option)"
   >
     <div
       class="activity-connect-the-dots-selector"
       absolute
       :class="{
-        'left-0 activity-connect-the-dots-selector-right': props.type === 'right',
-        'right-0 activity-connect-the-dots-selector-left': props.type === 'left',
+        'left-0 activity-connect-the-dots-selector-right': type === 'right',
+        'right-0 activity-connect-the-dots-selector-left': type === 'left',
         'border-gray-300 bg-white': !selected,
         'border-black bg-black activity-connect-the-dots-selector-selected': selected
       }"
-      :ml="props.type === 'right' ? -3 : 0"
-      :mr="props.type === 'left' ? -3 : 0"
+      :ml="type === 'right' ? -3 : 0"
+      :mr="type === 'left' ? -3 : 0"
       border
       w-4
       h-4
@@ -73,33 +73,33 @@ defineExpose({
     />
 
     <img
-      v-if="props.option.value.endsWith('.jpeg') || props.option.value.endsWith('.jpg') || props.option.value.endsWith('.png') || props.option.value.endsWith('.gif')"
+      v-if="option.value.endsWith('.jpeg') || option.value.endsWith('.jpg') || option.value.endsWith('.png') || option.value.endsWith('.gif')"
       class="activity-connect-the-dots-option-image"
-      :src="props.option.value"
+      :src="option.value"
     >
 
     <audio
-      v-else-if="props.option.value.endsWith('.mp3')"
+      v-else-if="option.value.endsWith('.mp3')"
       class="activity-connect-the-dots-option-audio"
       controls
       w-full
       m-2
     >
       <source
-        :src="props.option.value"
+        :src="option.value"
         type="audio/mpeg"
       >
     </audio>
 
     <video
-      v-else-if="props.option.value.endsWith('.mp4')"
+      v-else-if="option.value.endsWith('.mp4')"
       class="activity-connect-the-dots-option-video"
       controls
       w-full
       m-2
     >
       <source
-        :src="props.option.value"
+        :src="option.value"
         type="video/mp4"
       >
     </video>
@@ -107,7 +107,8 @@ defineExpose({
     <div
       v-else
       class="activity-connect-the-dots-option-html"
-      v-html="props.option.value"
+      overflow-hidden
+      v-html="option.value"
     />
   </div>
 </template>

@@ -1,5 +1,3 @@
-import { nextTick } from 'vue'
-
 export function useMedia () {
   const elements: HTMLMediaElement[] = []
 

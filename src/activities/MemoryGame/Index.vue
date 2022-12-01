@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import shuffle from 'lodash.shuffle'
 import Activity from '../Activity.vue'
 import Option from './Option.vue'
 
@@ -87,7 +85,7 @@ const prepare = () => {
   <Activity
     ref="activity"
     class="activity-memory-game"
-    :display-check="false"
+    :can-check="false"
     @prepare="prepare"
   >
     <template
@@ -100,24 +98,30 @@ const prepare = () => {
       />
     </template>
 
-    <transition-group
-      tag="div"
-      class="activity-memory-game-options"
-      flex
-      justify-center
-      items-center
-      flex-wrap
-      gap-4
-    >
-      <Option
-        v-for="option in options"
-        ref="optionsRef"
-        :key="option.value"
-        :option="option"
-        :timeout="props.timeout"
-        :duration="props.duration"
-        @select="select(option)"
-      />
-    </transition-group>
+    <div flex>
+      <transition-group
+        tag="div"
+        class="activity-memory-game-options"
+        :class="{
+          flex: options.length % 3 !== 0 && options.length % 4 !== 0,
+          grid: options.length % 3 === 0 || options.length % 4 === 0,
+          'flex-wrap': options.length % 3 !== 0 && options.length % 4 !== 0,
+          'grid-cols-3': options.length % 3 === 0,
+          'grid-cols-4': options.length % 4 === 0
+        }"
+        mx-auto
+        gap-2
+      >
+        <Option
+          v-for="option in options"
+          ref="optionsRef"
+          :key="option.value"
+          :option="option"
+          :timeout="timeout"
+          :duration="duration"
+          @select="select(option)"
+        />
+      </transition-group>
+    </div>
   </Activity>
 </template>

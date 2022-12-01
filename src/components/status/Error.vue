@@ -11,6 +11,7 @@
       <h2
         class="activity-status-error-title"
         text-red-500
+        text-xl
       >
         Tente novamente!
       </h2>

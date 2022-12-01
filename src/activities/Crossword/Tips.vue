@@ -3,7 +3,7 @@ export interface CrosswordTipsProps {
   tips: (string | undefined)[]
 }
 
-const props = defineProps<CrosswordTipsProps>()
+defineProps<CrosswordTipsProps>()
 const emits = defineEmits<{(e: 'select', index: number): void}>()
 </script>
 
@@ -20,7 +20,7 @@ const emits = defineEmits<{(e: 'select', index: number): void}>()
       m-0
     >
       <li
-        v-for="(tip, index) in props.tips"
+        v-for="(tip, index) in tips"
         :key="tip"
         class="activity-crossword-tips-item"
         cursor-pointer

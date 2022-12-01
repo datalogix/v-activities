@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
 import Activity from '../Activity.vue'
 import Eraser from './Eraser.vue'
 import Color from './Color.vue'
@@ -41,6 +40,13 @@ const init = () => {
   painter.value?.init(activity.value?.loader.get(props.image))
 }
 
+const closeAll = (el: unknown = null) => {
+  if (el !== eraser.value) eraser.value?.close()
+  if (el !== color.value) color.value?.close()
+  if (el !== alpha.value) alpha.value?.close()
+  if (el !== lineWidth.value) lineWidth.value?.close()
+}
+
 const prepare = () => {
   painter.value?.prepare()
   eraser.value?.prepare()
@@ -54,8 +60,8 @@ const prepare = () => {
   <Activity
     ref="activity"
     class="activity-paint"
-    :display-check="false"
-    :load="[props.image]"
+    :can-check="false"
+    :load="[image]"
     @init="init"
     @prepare="prepare"
   >
@@ -87,7 +93,7 @@ const prepare = () => {
       :alpha="alpha?.selected"
     >
       <div
-        mb-6
+        mb-4
         flex
         space-x-4
         items-center
@@ -96,50 +102,50 @@ const prepare = () => {
         <Eraser
           v-show="!isSVG"
           ref="eraser"
-          :options="props.erasers"
-          @toggle="eraser?.enable();"
-          @select="eraser?.close();color?.close();alpha?.close();lineWidth?.close();"
+          :options="erasers"
+          @toggle="closeAll(eraser);eraser?.enable();"
+          @select="closeAll()"
         />
 
         <Color
           ref="color"
-          :options="props.colors"
+          :options="colors"
           :alpha="alpha?.selected"
-          @toggle="eraser?.disable();"
-          @select="eraser?.close();color?.close();alpha?.close();lineWidth?.close();"
+          @toggle="closeAll(color);eraser?.disable();"
+          @select="closeAll()"
         />
 
         <LineWidth
           v-show="!isSVG"
           ref="lineWidth"
-          :options="props.lineWidths"
+          :options="lineWidths"
           :color="color?.selected"
           :alpha="alpha?.selected"
-          @toggle="eraser?.disable();"
-          @select="eraser?.close();color?.close();alpha?.close();lineWidth?.close();"
+          @toggle="closeAll(lineWidth);eraser?.disable();"
+          @select="closeAll()"
         />
 
         <Alpha
           v-show="!isSVG"
           ref="alpha"
-          :options="props.alphas"
+          :options="alphas"
           :color="color?.selected"
-          @toggle="eraser?.disable();"
-          @select="eraser?.close();color?.close();alpha?.close();lineWidth?.close();"
+          @toggle="closeAll(alpha);eraser?.disable();"
+          @select="closeAll()"
         />
       </div>
 
       <SVG
         v-show="isSVG"
         ref="svg"
-        :image="props.image"
+        :image="image"
         :color="color?.selected"
       />
 
       <Image
         v-show="!isSVG"
         ref="image"
-        :image="props.image"
+        :image="image"
         :eraser="eraser?.active ? eraser?.selected : undefined"
         :color="color?.selected"
         :line-width="lineWidth?.selected"

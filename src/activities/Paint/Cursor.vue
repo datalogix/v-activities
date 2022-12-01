@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-
 export interface PaintCursorProps {
   eraser?: boolean
   color?: string
@@ -30,7 +28,7 @@ const brushCursor = computed(() => {
 
 <template>
   <div
-    :style="{ cursor: props.eraser ? eraserCursor : brushCursor }"
+    :style="{ cursor: eraser ? eraserCursor : brushCursor }"
     text-center
     mx-auto
   >

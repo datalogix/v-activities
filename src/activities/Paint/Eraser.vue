@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-
 export interface PaintEraserProps {
   options?: number[]
 }
 
-const props = withDefaults(defineProps<PaintEraserProps>(), {
+withDefaults(defineProps<PaintEraserProps>(), {
   options: () => [
     4,
     6,
@@ -114,7 +112,7 @@ defineExpose({
       class="activity-paint-eraser-container"
       right--2
       mt-2
-      w-10
+      w-14
       absolute
       grid
       grid-cols-1
@@ -125,7 +123,7 @@ defineExpose({
       p-2
     >
       <button
-        v-for="option in props.options"
+        v-for="option in options"
         :key="option"
         class="activity-paint-eraser-option"
         type="button"

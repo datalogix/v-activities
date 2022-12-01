@@ -1,4 +1,6 @@
-export class Loader extends Map {
+import type { Fragment } from 'snapsvg'
+
+class Loader extends Map {
   constructor (items: string[] = []) {
     super()
 
@@ -28,7 +30,7 @@ export class Loader extends Map {
     return result
   }
 
-  private prepare (item: string): Promise<HTMLImageElement|HTMLAudioElement|HTMLVideoElement|Snap.Fragment|string> {
+  prepare (item: string): Promise<HTMLImageElement|HTMLAudioElement|HTMLVideoElement|Fragment|string> {
     const ext = item.split('.').pop() || ''
 
     return new Promise((resolve, reject) => {

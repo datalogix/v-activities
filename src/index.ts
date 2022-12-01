@@ -1,6 +1,6 @@
+import '@unocss/reset/tailwind.css'
 import 'uno.css'
-import './style.scss'
+import './assets/style.css'
 
-export * from './activities/Activity.vue'
-export * from './activities/Hangman/Index.vue'
-export * from './activities/WordSearch/Index.vue'
+export { default as Activity } from './activities/Activity.vue'
+export { default as MultipleChoice } from './activities/MultipleChoice/Index.vue'

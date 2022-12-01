@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import shuffle from 'lodash.shuffle'
 import type { ConnectTheDotsOption } from './Index.vue'
 import Option from './Option.vue'
 
@@ -45,14 +43,14 @@ defineExpose({
     flex-col
     justify-center
     items-center
-    gap-4
+    gap-2
   >
     <Option
       v-for="option in options"
       ref="optionsRef"
       :key="option.value"
       :option="option"
-      :type="props.type"
+      :type="type"
       @select="select(option)"
     />
   </transition-group>

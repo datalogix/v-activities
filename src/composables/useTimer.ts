@@ -1,9 +1,10 @@
-import { computed, getCurrentInstance, ref, watch, type ComponentInternalInstance } from 'vue'
-
-export function useTimer (max = 0, countdown = false) {
-  const { emit } = getCurrentInstance() as ComponentInternalInstance
+export function useTimer (startTime: number|string = 0, maxTime: number|string = 0, countdown = false) {
   let i: NodeJS.Timer|null = null
-  const time = ref(countdown ? max : 0)
+
+  const emit = useEmit()
+  const start = hmsToSeconds(startTime)
+  const max = hmsToSeconds(maxTime)
+  const time = ref(countdown ? max - start : start)
 
   watch(time, async (value) => {
     if (max && ((value >= max && !countdown) || (value < 1 && countdown))) {
@@ -45,7 +46,7 @@ export function useTimer (max = 0, countdown = false) {
   })
 
   const format = (value: number|null = null) => {
-    return new Date((value === null ? time.value : value) * 1000).toISOString().substring(14, 19)
+    return formatSeconds(value === null ? time.value : value)
   }
 
   return {

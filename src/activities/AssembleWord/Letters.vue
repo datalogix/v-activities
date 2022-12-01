@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { replace } from '@/utils/string'
-
 export interface AssembleWordLettersProps {
   word: string
   used: string[]
@@ -17,7 +15,7 @@ const isSpace = (index: number) => props.used[index] === letters[index] && lette
     flex
     space-x-2
     justify-center
-    my-6
+    my-4
   >
     <div
       v-for="(letter, index) in letters"
@@ -37,7 +35,7 @@ const isSpace = (index: number) => props.used[index] === letters[index] && lette
       md:h-8
       lg:w-10
       lg:h-10
-      v-text="props.used[index] === letter ? letter : ''"
+      v-text="used[index] === letter ? letter : ''"
     />
   </div>
 </template>

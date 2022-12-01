@@ -3,7 +3,7 @@ export interface FillInTheBlanksInputProps {
   modelValue: string
 }
 
-const props = defineProps<FillInTheBlanksInputProps>()
+defineProps<FillInTheBlanksInputProps>()
 const emits = defineEmits<{(e: 'update:modelValue', value: string): void}>()
 const update = (e: Event) => emits('update:modelValue', (e.target as HTMLInputElement).value)
 </script>
@@ -16,7 +16,8 @@ const update = (e: Event) => emits('update:modelValue', (e.target as HTMLInputEl
     m-1
     border
     rounded
-    :value="props.modelValue"
+    text-center
+    :value="modelValue"
     @input="update"
   >
 </template>

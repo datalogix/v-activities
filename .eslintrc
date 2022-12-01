@@ -2,8 +2,10 @@
   "root": true,
   "extends": [
     "plugin:vue/vue3-recommended",
+    "eslint:recommended",
     "standard",
-    "@vue/eslint-config-typescript/recommended"
+    "@vue/eslint-config-typescript/recommended",
+    "./.eslintrc-auto-import.json"
   ],
   "env": {
     "vue/setup-compiler-macros": true

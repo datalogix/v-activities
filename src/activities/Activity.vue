@@ -1,21 +1,20 @@
 <script setup lang="ts">
-import { onMounted, watchEffect } from 'vue'
-import { useLoader, useMedia, useResets, useStatus, useTimer } from '@/composables'
-
 export interface ActivityProps {
   statement?: string
   background?: string
   load?: string[]
   countdown?: boolean
-  maxTimer?: number
+  startTime?: number|string
+  maxTime?: number|string
   maxResets?: number
-  displayMessage?: boolean
-  displayTimer?: boolean
-  displayResets?: boolean
-  displayClose?:boolean
-  displayTryAgain?: boolean
-  displayCheck?: boolean
-  displayExit?: boolean
+  showResultMessage?: boolean
+  showTimer?: boolean
+  showResets?: boolean
+  canBeEmpty?: boolean
+  canClose?:boolean
+  canTryAgain?: boolean
+  canCheck?: boolean
+  canFinish?: boolean
 }
 
 export interface ActivityStoreParams extends ActivityProps {
@@ -31,15 +30,17 @@ const props = withDefaults(defineProps<ActivityProps>(), {
   background: undefined,
   load: () => [],
   countdown: false,
-  maxTimer: 0,
-  maxResets: 3,
-  displayMessage: true,
-  displayTimer: true,
-  displayResets: true,
-  displayClose: true,
-  displayTryAgain: true,
-  displayCheck: true,
-  displayExit: true
+  startTime: 0,
+  maxTime: 0,
+  maxResets: undefined,
+  showResultMessage: true,
+  showTimer: true,
+  showResets: false,
+  canBeEmpty: true,
+  canClose: true,
+  canTryAgain: true,
+  canCheck: true,
+  canFinish: true
 })
 
 // eslint-disable-next-line func-call-spacing
@@ -50,10 +51,11 @@ const emits = defineEmits<{
   (e: 'close', time: number): Promise<void>
   (e: 'tryAgain', resets: number): Promise<void>
   (e: 'check', time: number): Promise<void>
+  (e: 'fill', value: unknown): Promise<void>
   (e: 'confirm'): Promise<void>
   (e: 'cancel'): Promise<void>
   (e: 'store', params: ActivityStoreParams): Promise<void>
-  (e: 'exit', time: number): Promise<void>
+  (e: 'finish', time: number): Promise<void>
 
   // status
   (e: 'loading'): Promise<void>
@@ -75,7 +77,8 @@ const loader = useLoader((props.background ? [props.background] : []).concat(...
 const media = useMedia()
 const resets = useResets(props.maxResets)
 const status = useStatus()
-const timer = useTimer(props.maxTimer, props.countdown)
+const timer = useTimer(props.startTime, props.maxTime, props.countdown)
+const isEmpty = ref(true)
 
 status.loading()
 
@@ -100,12 +103,24 @@ watchEffect(async () => {
   }
 })
 
+const fill = async (value: unknown = null) => {
+  isEmpty.value = Array.isArray(value) ? value.length === 0 : value === null
+
+  await emits('fill', value)
+}
+
 const close = async () => {
   media.stop()
 
-  await timer.pause()
-
-  await emits('close', timer.time.value)
+  return await status.confirm(
+    'Confirmação',
+    'Deseja realmente sair?',
+    async () => {
+      await timer.pause()
+      await emits('close', timer.time.value)
+    },
+    status.alive
+  )
 }
 
 const tryAgain = async () => {
@@ -129,11 +144,22 @@ const check = async () => {
   await emits('check', timer.time.value)
 }
 
+const calculateAndStore = (items: unknown[] = [], rights: unknown[] = [], isEmpty = false) => {
+  const percentage = rights.length * 100 / items.length
+
+  store(isEmpty ? null : percentage, { items, rights })
+}
+
 const store = async (percentage: number|null = null, selecteds: unknown = {}) => {
   media.stop()
 
   if (percentage === null) {
-    return await status.confirm()
+    return await status.confirm(
+      'Confirmação',
+      'Deseja realmente deixar a resposta em branco?',
+      execute,
+      status.alive
+    )
   }
 
   await execute(percentage, selecteds)
@@ -142,7 +168,7 @@ const store = async (percentage: number|null = null, selecteds: unknown = {}) =>
 const execute = async (percentage: number|null = null, selecteds: unknown = {}) => {
   await timer.pause()
 
-  if (props.displayMessage && percentage !== null) {
+  if (props.showResultMessage && percentage !== null) {
     percentage === 0 ? await status.error() : await status.success()
   } else {
     await status.loading()
@@ -158,11 +184,18 @@ const execute = async (percentage: number|null = null, selecteds: unknown = {}) 
   })
 }
 
-const exit = async () => {
+const finish = async () => {
   media.stop()
 
-  await timer.pause()
-  await emits('exit', timer.time.value)
+  return await status.confirm(
+    'Confirmação',
+    'Deseja realmente finalizar?',
+    async () => {
+      await timer.pause()
+      await emits('finish', timer.time.value)
+    },
+    status.alive
+  )
 }
 
 defineExpose({
@@ -170,12 +203,15 @@ defineExpose({
   loader,
   media,
   timer,
+  isEmpty,
+  fill,
   resets,
   close,
   tryAgain,
   check,
+  calculateAndStore,
   store,
-  exit
+  finish
 })
 </script>
 
@@ -221,8 +257,10 @@ defineExpose({
       name="activity-status-confirm"
     >
       <StatusConfirm
-        @confirm="execute"
-        @cancel="status.alive()"
+        :title="status.content.title"
+        :message="status.content.message"
+        @confirm="status.content.confirm"
+        @cancel="status.content.cancel"
       />
     </slot>
     <slot name="activity-header">
@@ -249,22 +287,20 @@ defineExpose({
           items-center
           justify-center
         >
-          <div class="activity-logo">
-            <slot name="activity-logo" />
-          </div>
+          <slot name="activity-logo" />
+
           <slot
-            v-if="props.displayTimer"
+            v-if="showTimer"
             name="activity-timer"
           >
             <div
               class="activity-timer"
               font-semibold
-              text-xl
               v-text="timer.format()"
             />
           </slot>
           <slot
-            v-if="props.displayResets && props.maxResets"
+            v-if="showResets && maxResets"
             name="activity-resets"
           >
             <div
@@ -293,7 +329,7 @@ defineExpose({
             </div>
           </slot>
           <slot
-            v-if="props.displayClose"
+            v-if="props.canClose"
             name="activity-button-close"
           >
             <ButtonsClose @click="close" />
@@ -302,43 +338,49 @@ defineExpose({
       </header>
     </slot>
 
-    <main
-      class="activity-main"
-      mt--2
-      bg-white
-      rounded-xl
-      shadow-xl
+    <div
+      mx-4
       h-full
       flex-1
-      container
-      max-w-5xl
-      w-full
-      mx-auto
-      overflow-y-auto
     >
-      <h2
-        v-if="statement || $slots['activity-statement']"
-        class="activity-statement"
-        text-center
-        text-2xl
-        font-black
-        mx-4
-        mt-10
-      >
-        <slot name="activity-statement">
-          <div v-html="statement" />
-        </slot>
-      </h2>
-
-      <div
-        class="activity-container"
+      <main
+        class="activity-main"
+        mt--2
+        bg-white
+        rounded-xl
+        shadow-xl
+        h-full
+        container
+        max-w-5xl
         w-full
+        mx-auto
+        overflow-y-auto
+        flex
+        flex-col
+        xl:p-10
+        lg:p-8
+        md:p-6
+        p-4
       >
-        <div m-4>
+        <h2
+          v-if="statement || $slots['activity-statement']"
+          class="activity-statement"
+          mb-4
+        >
+          <slot name="activity-statement">
+            <div v-html="statement" />
+          </slot>
+        </h2>
+
+        <div
+          class="activity-container"
+          mt-4
+          flex-1
+        >
           <slot />
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
 
     <slot name="activity-footer">
       <footer
@@ -357,7 +399,7 @@ defineExpose({
       >
         <slot name="activity-actions" />
         <slot
-          v-if="props.displayTryAgain && !(status.isDeath() || status.isConfirm())"
+          v-if="props.canTryAgain && !(status.isDeath() || status.isConfirm())"
           name="activity-button-try-again"
         >
           <ButtonsTryAgain
@@ -366,21 +408,22 @@ defineExpose({
           />
         </slot>
         <slot
-          v-if="props.displayCheck && status.isAlive()"
+          v-if="canCheck && status.isAlive()"
           name="activity-button-check"
         >
           <ButtonsCheck
+            :disabled="!canBeEmpty && isEmpty"
             w-full
             @click="check"
           />
         </slot>
         <slot
-          v-if="props.displayExit"
-          name="activity-button-exit"
+          v-if="canFinish"
+          name="activity-button-finish"
         >
-          <ButtonsExit
+          <ButtonsFinish
             w-full
-            @click="exit"
+            @click="finish"
           />
         </slot>
       </footer>

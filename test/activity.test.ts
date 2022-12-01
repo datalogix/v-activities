@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
-import Activity from '@/activities/Activity.vue'
+import Activity from '../src/activities/Activity.vue'
 
 describe('activity', () => {
   it('should be render', () => {

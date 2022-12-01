@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import Activity from '../Activity.vue'
 import LineContainer from './LineContainer.vue'
 import type { ConnectTheDotsLine } from './LineContainer.vue'
@@ -54,14 +53,11 @@ const prepare = () => {
 const check = () => {
   if (!lineContainer.value) return
 
-  const isEmpty = lineContainer.value.lines.length === 0
-
-  const totalRight = lineContainer.value.lines
-    .filter((line: ConnectTheDotsLine) => line.left.option.value === line.right.option.related)
-    .length
-
-  const percentage = (totalRight || 0) * 100 / left.value.length
-  activity.value?.store(isEmpty ? null : percentage, lineContainer.value.lines)
+  activity.value?.calculateAndStore(
+    lineContainer.value.lines,
+    lineContainer.value.lines.filter((line: ConnectTheDotsLine) => compare(line.left.option.value, line.right.option.related)),
+    lineContainer.value.lines.length === 0
+  )
 }
 </script>
 
@@ -88,6 +84,8 @@ const check = () => {
         relative
         flex
         justify-center
+        mx-0
+        md:mx-4
       >
         <Options
           ref="optionsLeft"
@@ -98,9 +96,7 @@ const check = () => {
 
         <div
           class="activity-connect-the-dots-space"
-          w-40
-          md:w-80
-          lg:w-120
+          flex-1
         />
 
         <Options

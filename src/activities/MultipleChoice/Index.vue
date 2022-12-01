@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import shuffle from 'lodash.shuffle'
 import Activity from '../Activity.vue'
+import Option from './Option.vue'
 
 export interface MultipleChoiceOption {
   label: string
@@ -13,20 +12,24 @@ export interface MultipleChoiceProps {
   type?: 'checkbox' | 'radio'
   cols?: number
   shuffle?: boolean
+  markerType?: boolean | 'number' | 'letter' | 'letter_uppercase'
 }
 
 const props = withDefaults(defineProps<MultipleChoiceProps>(), {
   type: 'radio',
   cols: 1,
-  shuffle: true
+  shuffle: true,
+  markerType: false
 })
 
 const activity = ref<InstanceType<typeof Activity>>()
-const awnsers = ref<number[]|null>([])
+const awnsers = ref<number[]|number|null>(null)
 const options = ref<MultipleChoiceOption[]>([])
 
+watch(awnsers, value => activity.value?.fill(value))
+
 const prepare = () => {
-  awnsers.value = []
+  awnsers.value = null
   options.value = props.shuffle ? shuffle(props.options) : props.options
 }
 
@@ -64,9 +67,22 @@ const check = () => {
       />
     </template>
 
-    <ul
+    <div
       class="activity-multiple-choice-options"
-      :class="`activity-multiple-choice-options-cols-${props.cols}`"
+      :class="{
+        'md:grid-cols-1': cols === 1,
+        'md:grid-cols-2': cols === 2,
+        'md:grid-cols-3': cols === 3,
+        'md:grid-cols-4': cols === 4,
+        'md:grid-cols-5': cols === 5,
+        'md:grid-cols-6': cols === 6,
+        'md:grid-cols-7': cols === 7,
+        'md:grid-cols-8': cols === 8,
+        'md:grid-cols-9': cols === 9,
+        'md:grid-cols-10': cols === 10,
+        'md:grid-cols-11': cols === 11,
+        'md:grid-cols-12': cols === 12
+      }"
       m-0
       p-0
       list-none
@@ -74,47 +90,16 @@ const check = () => {
       grid-cols-1
       gap-4
     >
-      <li
+      <Option
         v-for="(option, index) in options"
         :key="index"
-        class="activity-multiple-choice-option"
-        flex
-        items-center
-        gap-2
-        mx-auto
-      >
-        <input
-          :id="`awnser${index}`"
-          v-model="awnsers"
-          class="activity-multiple-choice-option-input"
-          :type="props.type"
-          :value="index"
-        >
-        <label
-          class="activity-multiple-choice-option-label"
-          flex-1
-          text-xl
-          :for="`awnser${index}`"
-          v-html="option.label"
-        />
-      </li>
-    </ul>
+        v-model="awnsers"
+        :marker-type="markerType"
+        :position="index"
+        :type="type"
+        :label="option.label"
+        :percentage="option.percentage"
+      />
+    </div>
   </Activity>
 </template>
-
-<style scoped>
-@media (min-width: 1024px) {
-  .activity-multiple-choice-options-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
-  .activity-multiple-choice-options-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .activity-multiple-choice-options-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .activity-multiple-choice-options-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .activity-multiple-choice-options-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-  .activity-multiple-choice-options-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-  .activity-multiple-choice-options-cols-7 { grid-template-columns: repeat(7, minmax(0, 1fr)); }
-  .activity-multiple-choice-options-cols-8 { grid-template-columns: repeat(8, minmax(0, 1fr)); }
-  .activity-multiple-choice-options-cols-9 { grid-template-columns: repeat(9, minmax(0, 1fr)); }
-  .activity-multiple-choice-options-cols-10 { grid-template-columns: repeat(10, minmax(0, 1fr)); }
-  .activity-multiple-choice-options-cols-11 { grid-template-columns: repeat(11, minmax(0, 1fr)); }
-  .activity-multiple-choice-options-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
-}
-</style>

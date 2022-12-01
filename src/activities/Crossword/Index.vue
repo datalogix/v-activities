@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import Activity from '../Activity.vue'
 import Grid from './Grid.vue'
 import type { CrosswordItem } from './Grid.vue'
@@ -26,14 +25,11 @@ const prepare = () => {
 }
 
 const check = () => {
-  const items = props.items.filter(item => !item.fixed)
-  const isEmpty = items.every(item => grid.value?.isEmptyWord(item))
-  const rights = items.filter(item => {
-    return item.word.toLocaleUpperCase() === grid.value?.getFilledWord(item).toLocaleUpperCase()
-  })
-
-  const percentage = rights.length * 100 / items.length
-  activity.value?.store(isEmpty ? null : percentage, { items, rights })
+  activity.value?.calculateAndStore(
+    props.items.filter(item => !item.fixed),
+    props.items.filter(item => !item.fixed).filter(item => compare(item.word, grid.value?.getFilledWord(item))),
+    props.items.filter(item => !item.fixed).every(item => grid.value?.isEmptyWord(item))
+  )
 }
 </script>
 
@@ -55,21 +51,21 @@ const check = () => {
     </template>
 
     <Tips
-      v-if="props.position === 'top' || props.position === 'both'"
-      :tips="props.items.map(item => item.tip)"
+      v-if="position === 'top' || position === 'both'"
+      :tips="items.map(item => item.tip)"
       @select="selectByIndex"
     />
 
     <Grid
       ref="grid"
-      my-10
-      :items="props.items"
+      my-4
+      :items="items"
     />
 
     <Tips
-      v-if="props.position === 'bottom' || props.position === 'both'"
+      v-if="position === 'bottom' || position === 'both'"
 
-      :tips="props.items.map(item => item.tip)"
+      :tips="items.map(item => item.tip)"
       @select="selectByIndex"
     />
   </Activity>

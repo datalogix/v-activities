@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
 import printJS from 'print-js'
 
 export interface PaintImagePosition {
@@ -199,6 +198,7 @@ defineExpose({
 <template>
   <canvas
     ref="canvas"
+    mx-auto
     @mouseup="mouseup"
     @mousedown="mousedown"
     @mousemove="mousemove"

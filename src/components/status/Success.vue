@@ -11,6 +11,7 @@
       <h2
         class="activity-status-success-title"
         text-green-500
+        text-xl
       >
         Parabéns!
       </h2>

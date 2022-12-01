@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import shuffle from 'lodash.shuffle'
-import { replace, generateChar, generateOptionsFromString } from '@/utils/string'
-
 export interface WordSearchGridProps {
   size: number
   words: string[]

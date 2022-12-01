@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import Activity from '../Activity.vue'
 import Options from './Options.vue'
 import Letters from './Letters.vue'
@@ -9,7 +8,7 @@ export interface AssembleWordProps {
   word: string
 }
 
-const props = defineProps<AssembleWordProps>()
+defineProps<AssembleWordProps>()
 const activity = ref<InstanceType<typeof Activity>>()
 const options = ref<InstanceType<typeof Options>>()
 
@@ -33,7 +32,7 @@ const prepare = () => {
   <Activity
     ref="activity"
     class="activity-assemble-word"
-    :display-check="false"
+    :can-check="false"
     @prepare="prepare"
   >
     <template
@@ -47,13 +46,13 @@ const prepare = () => {
     </template>
 
     <Letters
-      :word="props.word"
+      :word="word"
       :used="options?.used || []"
     />
 
     <Options
       ref="options"
-      :word="props.word"
+      :word="word"
       @right="right"
       @wrong="wrong"
     />

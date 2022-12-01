@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import arrowCreate from 'arrows-svg'
 import type Option from './Option.vue'
 
@@ -32,8 +31,14 @@ const create = (left: InstanceType<typeof Option>, right: InstanceType<typeof Op
 
   const line = {
     element: arrowCreate({
-      from: left.$el,
-      to: right.$el
+      from: {
+        node: left.$el,
+        translation: [0.5, 0, 0.5]
+      },
+      to: {
+        node: right.$el,
+        translation: [-0.5, 0, -0.5]
+      }
     }),
     left,
     right

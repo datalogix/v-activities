@@ -1,28 +1,51 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import Activity from '../Activity.vue'
-import Content from './Content.vue'
+import Item from './Item.vue'
+import Parser from './Parser.vue'
+import type { FillInTheBlanksParser } from './Parser.vue'
 
-export interface FillInTheBlanksProps {
-  text: string
+export interface FillInTheBlanksItem {
+  html: string
+  file?: string
 }
 
-const props = defineProps<FillInTheBlanksProps>()
+export interface FillInTheBlanksProps {
+  items: FillInTheBlanksItem[]
+  enumerate?: boolean
+  random?: boolean
+}
+
+export interface FillInTheBlanksOption extends FillInTheBlanksParser {
+  value: string
+  correct: string
+  options: string[]
+}
+
+const props = withDefaults(defineProps<FillInTheBlanksProps>(), {
+  enumerate: true,
+  random: true
+})
+
 const activity = ref<InstanceType<typeof Activity>>()
-const content = ref<InstanceType<typeof Content>>()
+const items = ref<FillInTheBlanksItem[]>([])
+const parsers = ref<InstanceType<typeof Parser>[]>([])
+const options = ref<FillInTheBlanksOption[]>([])
 
 const prepare = () => {
-  content.value?.clear()
+  items.value = props.random ? shuffle(props.items) : props.items
+  options.value = []
+
+  nextTick(() => {
+    parsers.value.forEach(parser => parser.clear())
+  })
 }
 
 const check = () => {
-  if (!content.value) return
-
-  const isEmpty = content.value.options.every(option => option.value?.trim() === '')
-  const totalRight = content.value.options.filter(option => option.value === option.correct).length
-  const percentage = totalRight * 100 / content.value.options.length
-
-  activity.value?.store(isEmpty ? null : percentage, content.value.options)
+  activity.value?.calculateAndStore(
+    options.value,
+    options.value.filter(option => compare(option.value, option.correct)),
+    options.value.every(option => option.value.trim() === '')
+  )
 }
 </script>
 
@@ -43,10 +66,24 @@ const check = () => {
       />
     </template>
 
-    <Content
-      ref="content"
-      :text="props.text"
+    <div
+      class="activity-fill-in-the-blanks-items"
       mx-auto
-    />
+      max-w-2xl
+    >
+      <Item
+        v-for="(item, index) in items"
+        v-slot="{ html }"
+        :key="index"
+        :item="item"
+        :position="enumerate ? index + 1 : undefined"
+      >
+        <Parser
+          ref="parsers"
+          :html="html"
+          @option="(option) => options.push(option)"
+        />
+      </Item>
+    </div>
   </Activity>
 </template>

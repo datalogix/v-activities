@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-
 export interface PaintColorProps {
   alpha?: number
   options?: string[]
 }
 
-const props = withDefaults(defineProps<PaintColorProps>(), {
+withDefaults(defineProps<PaintColorProps>(), {
   alpha: 1,
   options: () => [
     '#000000', // black
@@ -76,7 +74,7 @@ defineExpose({
     class="activity-paint-color"
   >
     <button
-      :style="`background-color: ${selected}; opacity: ${props.alpha};`"
+      :style="`background-color: ${selected}; opacity: ${alpha};`"
       class="activity-paint-color-selector"
       type="button"
       cursor-pointer
@@ -119,7 +117,7 @@ defineExpose({
       p-2
     >
       <button
-        v-for="option in props.options"
+        v-for="option in options"
         :key="option"
         :style="`background-color: ${option}`"
         class="activity-paint-color-option"

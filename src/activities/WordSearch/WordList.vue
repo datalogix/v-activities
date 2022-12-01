@@ -4,7 +4,7 @@ export interface WordSearchWordListProps {
   selected: string[]
 }
 
-const props = defineProps<WordSearchWordListProps>()
+defineProps<WordSearchWordListProps>()
 </script>
 
 <template>
@@ -20,11 +20,11 @@ const props = defineProps<WordSearchWordListProps>()
     p-0
   >
     <li
-      v-for="word in props.words"
+      v-for="word in words"
       :key="word"
       class="activity-word-search-word"
       :class="{
-        'bg-green-300 activity-word-search-word-selected': props.selected.indexOf(word) !== -1
+        'bg-green-300 activity-word-search-word-selected': selected.indexOf(word) !== -1
       }"
       uppercase
       p-2

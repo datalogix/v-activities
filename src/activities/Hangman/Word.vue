@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { replace } from '@/utils/string'
-
 export interface HangmanWordProps {
   word: string
   rights: string[]
@@ -16,7 +14,7 @@ const letters = replace(props.word).toLocaleUpperCase().split('')
     flex
     space-x-2
     justify-center
-    my-6
+    my-4
   >
     <div
       v-for="letter in letters"
@@ -35,7 +33,7 @@ const letters = replace(props.word).toLocaleUpperCase().split('')
       md:h-8
       lg:w-10
       lg:h-10
-      v-text="props.rights.includes(letter) ? letter : ''"
+      v-text="rights.includes(letter) ? letter : ''"
     />
   </div>
 </template>

@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import shuffle from 'lodash.shuffle'
-import { replace, generateUniqueFromString } from '@/utils/string'
-
 export interface HangmanOptionsActions {
   unique: string[]
   used: string[]
@@ -61,7 +57,7 @@ const select = (option: string) => {
 }
 
 const prepare = () => {
-  options.value = shuffle(generateUniqueFromString(unique.value.join(''), MAX_OPTIONS).split(''))
+  options.value = shuffle(generateUniqueStringFromString(unique.value.join(''), MAX_OPTIONS).split(''))
   used.value = []
   right.value = []
   wrong.value = []

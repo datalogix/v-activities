@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import Draggable from './Draggable.vue'
-import type { DragAndDropContentOption } from './Content.vue'
+import type { DragAndDropOption } from './Index.vue'
 
 export interface DragAndDropOptionsProps {
-  options: DragAndDropContentOption[]
+  options: DragAndDropOption[]
 }
 
-const props = defineProps<DragAndDropOptionsProps>()
+defineProps<DragAndDropOptionsProps>()
 </script>
 
 <template>
@@ -14,7 +14,6 @@ const props = defineProps<DragAndDropOptionsProps>()
     tag="div"
     class="activity-drag-and-drop-options"
     border-gray-300
-    py-10
     flex
     flex-wrap
     items-center
@@ -23,7 +22,7 @@ const props = defineProps<DragAndDropOptionsProps>()
     mx-auto
   >
     <Draggable
-      v-for="(option, index) in props.options"
+      v-for="(option, index) in options"
       :id="option.id"
       :key="index"
       :content="option.value"

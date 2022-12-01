@@ -13,24 +13,26 @@
     <div
       class="activity-modal-container"
       bg-white
-      py-6
+      py-4
       px-10
       rounded-xl
       shadow-xl
       max-w-lg
+      m-4
     >
       <header
         class="activity-modal-header"
         flex
         items-center
-        justify-center
         space-x-4
       >
         <slot name="header" />
       </header>
+
       <main class="activity-modal-main">
         <slot />
       </main>
+
       <footer class="activity-modal-footer">
         <slot name="footer" />
       </footer>

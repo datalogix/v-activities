@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import 'eve'
 import Snap from 'snapsvg'
 import printJS from 'print-js'
@@ -77,5 +76,6 @@ defineExpose({
     h-60
     md:h-80
     lg:h-120
+    mx-auto
   />
 </template>

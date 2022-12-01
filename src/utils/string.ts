@@ -1,5 +1,3 @@
-import shuffle from 'lodash.shuffle'
-
 export interface StringOptions {
   alpha?: boolean
   numeric?: boolean
@@ -10,6 +8,8 @@ export interface StringOptions {
   uppercase?: boolean
   exclude?: string|string[]
 }
+
+export const LETTERS = 'abcdefghijklmnopqrstuvwxyz'
 
 export function replace (str: string, replaceValue = '', options: StringOptions = {}) {
   const opts: StringOptions = {
@@ -36,7 +36,7 @@ export function replace (str: string, replaceValue = '', options: StringOptions 
   return str.replace(new RegExp(`[^${patterns.join('')}]+`, 'ugi'), replaceValue)
 }
 
-export function generate (num = 20, options: StringOptions = {}) {
+export function generateString (num = 20, options: StringOptions = {}) {
   const opts: StringOptions = {
     alpha: true,
     numeric: true,
@@ -51,8 +51,8 @@ export function generate (num = 20, options: StringOptions = {}) {
 
   const patterns: string[] = []
 
-  if (opts.alpha && opts.lowercase) patterns.push('abcdefghijklmnopqrstuvwxyz'.toLocaleLowerCase())
-  if (opts.alpha && opts.uppercase) patterns.push('abcdefghijklmnopqrstuvwxyz'.toLocaleUpperCase())
+  if (opts.alpha && opts.lowercase) patterns.push(LETTERS.toLocaleLowerCase())
+  if (opts.alpha && opts.uppercase) patterns.push(LETTERS.toLocaleUpperCase())
   if (opts.numeric) patterns.push('0123456789')
   if (opts.space) patterns.push(' ')
   if (opts.hyphen) patterns.push('-')
@@ -73,10 +73,10 @@ export function generate (num = 20, options: StringOptions = {}) {
 }
 
 export function generateChar (options: StringOptions = {}) {
-  return generate(1, options)
+  return generateString(1, options)
 }
 
-export function generateUnique (max = 20, options: StringOptions = {}): string {
+export function generateUniqueString (max = 20, options: StringOptions = {}): string {
   let result = ''
 
   while (result.length < max) {
@@ -90,7 +90,7 @@ export function generateUnique (max = 20, options: StringOptions = {}): string {
   return result
 }
 
-export function generateUniqueFromString (str: string, max = 20): string {
+export function generateUniqueStringFromString (str: string, max = 20): string {
   const qtd = max - str.length
 
   if (qtd < 1) {
@@ -100,7 +100,7 @@ export function generateUniqueFromString (str: string, max = 20): string {
   const options = generateOptionsFromString(str)
   options.exclude = str
 
-  return str + generateUnique(qtd, options)
+  return str + generateUniqueString(qtd, options)
 }
 
 export function generateOptionsFromString (str: string): StringOptions {
@@ -114,12 +114,12 @@ export function generateOptionsFromString (str: string): StringOptions {
     uppercase: false
   }
 
-  if (new RegExp(`[${'abcdefghijklmnopqrstuvwxyz'.toLocaleLowerCase()}]`).test(str)) {
+  if (new RegExp(`[${LETTERS.toLocaleLowerCase()}]`).test(str)) {
     opts.alpha = true
     opts.lowercase = true
   }
 
-  if (new RegExp(`[${'abcdefghijklmnopqrstuvwxyz'.toLocaleUpperCase()}]`).test(str)) {
+  if (new RegExp(`[${LETTERS.toLocaleUpperCase()}]`).test(str)) {
     opts.alpha = true
     opts.uppercase = true
   }

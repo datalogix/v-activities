@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import type { MemoryGameOption } from './Index.vue'
 
 export interface MemoryGameOptionProps {
@@ -87,10 +86,10 @@ defineExpose({
     class="activity-memory-game-option"
     :class="{
       'rotate-y-180 activity-memory-game-option-opened': opened,
-      'transition-duration-250ms': props.duration === 'faster',
-      'transition-duration-500ms': props.duration === 'fast',
-      'transition-duration-1s': props.duration === 'slow',
-      'transition-duration-2s': props.duration === 'slower'
+      'transition-duration-250ms': duration === 'faster',
+      'transition-duration-500ms': duration === 'fast',
+      'transition-duration-1s': duration === 'slow',
+      'transition-duration-2s': duration === 'slower'
     }"
     mx-auto
     relative
@@ -138,8 +137,8 @@ defineExpose({
     <div
       class="activity-memory-game-option-back"
       :class="{
-        'bg-blue-100 border-blue-400 activity-memory-game-option-opened': opened,
-        'bg-green-100 border-green-400 activity-memory-game-option-right': locked,
+        'bg-blue-50 border-blue-300 activity-memory-game-option-opened': opened,
+        'bg-green-50 border-green-300 activity-memory-game-option-right': locked,
       }"
       border-2
       rounded
@@ -161,12 +160,13 @@ defineExpose({
       rotate-y-180
     >
       <img
-        v-if="props.option.value.endsWith('.jpeg') || props.option.value.endsWith('.jpg') || props.option.value.endsWith('.png') || props.option.value.endsWith('.gif')"
+        v-if="option.value.endsWith('.jpeg') || option.value.endsWith('.jpg') || option.value.endsWith('.png') || option.value.endsWith('.gif')"
         class="activity-memory-game-option-image"
-        :src="props.option.value"
+        :src="option.value"
       >
+
       <audio
-        v-else-if="props.option.value.endsWith('.mp3')"
+        v-else-if="option.value.endsWith('.mp3')"
         ref="media"
         class="activity-memory-game-option-audio"
         controls
@@ -175,12 +175,13 @@ defineExpose({
         @loadedmetadata="onLoadedMetadata"
       >
         <source
-          :src="props.option.value"
+          :src="option.value"
           type="audio/mpeg"
         >
       </audio>
+
       <video
-        v-else-if="props.option.value.endsWith('.mp4')"
+        v-else-if="option.value.endsWith('.mp4')"
         ref="media"
         class="activity-memory-game-option-video"
         controls
@@ -189,14 +190,15 @@ defineExpose({
         @loadedmetadata="onLoadedMetadata"
       >
         <source
-          :src="props.option.value"
+          :src="option.value"
           type="video/mp4"
         >
       </video>
+
       <div
         v-else
         class="activity-memory-game-option-html"
-        v-html="props.option.value"
+        v-html="option.value"
       />
     </div>
   </div>

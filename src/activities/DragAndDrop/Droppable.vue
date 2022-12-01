@@ -30,20 +30,22 @@ const onDrop = (event: DragEvent) => {
 <template>
   <div
     class="activity-drag-and-drop-droppable"
-    :class="{ 'cursor-move activity-drag-and-drop-droppable-enabled': props.enabled }"
+    :class="{
+      'cursor-move activity-drag-and-drop-droppable-enabled': enabled,
+      'px-14': !enabled
+    }"
     inline-block
     border
     border-gray-300
-    bg-gray-100
+    bg-gray-50
     rounded
     m-1
-    py-2
-    px-10
-    :draggable="props.enabled"
+    p-2
+    :draggable="enabled"
     @dragstart="startDrag"
     @drop="onDrop"
     @dragenter.prevent
     @dragover.prevent
-    v-html="props.content"
+    v-html="content"
   />
 </template>

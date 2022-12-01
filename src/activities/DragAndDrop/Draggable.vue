@@ -21,7 +21,7 @@ const startDrag = (event: DragEvent) => {
     cursor-move
     border
     border-gray-300
-    bg-gray-100
+    bg-gray-50
     rounded
     m-2
     p-2

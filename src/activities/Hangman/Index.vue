@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import Activity from '../Activity.vue'
 import Level from './Level.vue'
 import Word from './Word.vue'
@@ -11,9 +10,7 @@ export interface HangmanProps {
   levels?: string[]
 }
 
-const props = withDefaults(defineProps<HangmanProps>(), {
-  levels: undefined
-})
+defineProps<HangmanProps>()
 
 const activity = ref<InstanceType<typeof Activity>>()
 const level = ref<InstanceType<typeof Level>>()
@@ -40,7 +37,7 @@ const prepare = () => {
   <Activity
     ref="activity"
     class="activity-hangman"
-    :display-check="false"
+    :can-check="false"
     @prepare="prepare"
   >
     <template
@@ -55,12 +52,12 @@ const prepare = () => {
 
     <Level
       ref="level"
-      :levels="props.levels"
+      :levels="levels"
       :current="options ? options.wrong.length : 0"
     />
 
     <Word
-      :word="props.word"
+      :word="word"
       :rights="options ? options.right : []"
     />
 

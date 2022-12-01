@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { replace, shuffleStringUnique } from '@/utils/string'
-
 export interface AssembleWordOptionsActions {
   word: string
   used: string[]

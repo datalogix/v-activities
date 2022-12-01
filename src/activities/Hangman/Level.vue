@@ -37,7 +37,7 @@ defineExpose({
   >
     <img
       class="activity-hangman-level"
-      :src="props.levels[props.current]"
+      :src="levels[current]"
       mx-auto
       max-h-40
       md:max-h-full

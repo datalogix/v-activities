@@ -1,15 +1,18 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    }
+    "types": [
+      "node",
+      "vite/client"
+    ],
+    "declaration": true,
+    "declarationDir": "dist/types"
   },
   "exclude": [
+    "cypress",
     "dist",
     "docs",
     "node_modules",
-    "cypress"
+    "public"
   ]
 }

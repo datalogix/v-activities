@@ -4,7 +4,7 @@ export interface FillInTheBlanksSelectProps {
   options: string[]
 }
 
-const props = defineProps<FillInTheBlanksSelectProps>()
+defineProps<FillInTheBlanksSelectProps>()
 const emits = defineEmits<{(e: 'update:modelValue', value: string): void}>()
 const update = (e: Event) => emits('update:modelValue', (e.target as HTMLSelectElement).value)
 </script>
@@ -16,7 +16,7 @@ const update = (e: Event) => emits('update:modelValue', (e.target as HTMLSelectE
     m-1
     border
     rounded
-    :value="props.modelValue"
+    :value="modelValue"
     @input="update"
   >
     <option
@@ -24,7 +24,7 @@ const update = (e: Event) => emits('update:modelValue', (e.target as HTMLSelectE
       v-text="'---'"
     />
     <option
-      v-for="option in props.options"
+      v-for="option in options"
       :key="option"
       :value="option"
       v-text="option"

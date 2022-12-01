@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-
 export interface PaintAlphaProps {
   color?: string
   options?: number[]
 }
 
-const props = withDefaults(defineProps<PaintAlphaProps>(), {
+withDefaults(defineProps<PaintAlphaProps>(), {
   color: '#000000',
   options: () => [
     0.2,
@@ -69,7 +67,7 @@ defineExpose({
     relative
   >
     <button
-      :style="`background-color: ${props.color}; opacity: ${selected};`"
+      :style="`background-color: ${color}; opacity: ${selected};`"
       class="activity-paint-alpha-selector"
       type="button"
       cursor-pointer
@@ -88,7 +86,7 @@ defineExpose({
     >
       <i
         :class="{
-          'text-white': !['#ffffff', '#fff'].includes(props.color.toLocaleLowerCase())
+          'text-white': !['#ffffff', '#fff'].includes(color.toLocaleLowerCase())
         }"
         class="activity-paint-alpha-selector-icon"
         w-6
@@ -101,7 +99,7 @@ defineExpose({
       class="activity-paint-alpha-container"
       right--2
       mt-2
-      w-10
+      w-14
       absolute
       grid
       grid-cols-1
@@ -112,10 +110,10 @@ defineExpose({
       p-2
     >
       <button
-        v-for="option in props.options"
+        v-for="option in options"
         :key="option"
         class="activity-paint-alpha-option"
-        :style="`background-color: ${props.color}; opacity: ${option};`"
+        :style="`background-color: ${color}; opacity: ${option};`"
         type="button"
         cursor-pointer
         mx-auto

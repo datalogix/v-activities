@@ -29,9 +29,9 @@
 ## Installation
 
 ```bash
-yarn add v-activities
-# or
 npm install v-activities
+# or
+yarn add v-activities
 # or
 pnpm install v-activities
 ```

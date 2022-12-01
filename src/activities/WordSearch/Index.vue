@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import Activity from '../Activity.vue'
 import Grid from './Grid.vue'
 import WordList from './WordList.vue'
@@ -13,8 +12,8 @@ export interface WordSearchProps {
   shuffle?: boolean
 }
 
-const props = withDefaults(defineProps<WordSearchProps>(), {
-  size: 10,
+withDefaults(defineProps<WordSearchProps>(), {
+  size: 8,
   position: 'top',
   diagonal: false,
   invert: false,
@@ -33,7 +32,7 @@ const prepare = () => {
   <Activity
     ref="activity"
     class="activity-word-search"
-    :display-check="false"
+    :can-check="false"
     @prepare="prepare"
   >
     <template
@@ -47,25 +46,27 @@ const prepare = () => {
     </template>
 
     <WordList
-      v-if="props.position === 'top' || props.position === 'both'"
+      v-if="position === 'top' || position === 'both'"
       :words="grid?.usedWords || []"
       :selected="grid?.foundWords || []"
+      mb-4
     />
 
     <Grid
       ref="grid"
-      :size="props.size"
-      :words="props.words"
-      :diagonal="props.diagonal"
-      :invert="props.invert"
-      :shuffle="props.shuffle"
+      :size="size"
+      :words="words"
+      :diagonal="diagonal"
+      :invert="invert"
+      :shuffle="shuffle"
       @complete="activity?.store(100, grid?.foundWords)"
     />
 
     <WordList
-      v-if="props.position === 'bottom' || props.position === 'both'"
+      v-if="position === 'bottom' || position === 'both'"
       :words="grid?.usedWords || []"
       :selected="grid?.foundWords || []"
+      mt-4
     />
   </Activity>
 </template>
