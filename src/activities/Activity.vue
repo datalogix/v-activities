@@ -295,9 +295,22 @@ defineExpose({
           >
             <div
               class="activity-timer"
-              font-semibold
-              v-text="timer.format()"
-            />
+              flex
+              items-center
+              justify-center
+              space-x-2
+            >
+              <i
+                i-mdi-clock-outline
+                w-6
+                h-6
+              />
+              <span
+                class="activity-timer-text"
+                font-semibold
+                v-text="timer.format()"
+              />
+            </div>
           </slot>
           <slot
             v-if="showResets && maxResets"
