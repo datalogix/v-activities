@@ -8,11 +8,7 @@
     "declaration": true,
     "declarationDir": "dist/types"
   },
-  "exclude": [
-    "cypress",
-    "dist",
-    "docs",
-    "node_modules",
-    "public"
+  "include": [
+    "src"
   ]
 }

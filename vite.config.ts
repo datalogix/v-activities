@@ -26,6 +26,7 @@ export default defineConfig({
       ]
     }),
     autoImport({
+      dts: 'src/@types/auto-imports.d.ts',
       imports: ['vue'],
       dirs: [
         'src/composables',
@@ -36,6 +37,7 @@ export default defineConfig({
       }
     }),
     components({
+      dts: 'src/@types/components.d.ts',
       directoryAsNamespace: true
     }),
     icons()
@@ -52,7 +54,8 @@ export default defineConfig({
       output: {
         globals: {
           vue: 'Vue'
-        }
+        },
+        assetFileNames: `${name}.[ext]`
       }
     }
   },
