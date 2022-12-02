@@ -48,14 +48,14 @@ const emits = defineEmits<{
   // actions
   (e: 'init'): Promise<void>
   (e: 'prepare'): Promise<void>
-  (e: 'close', time: number): Promise<void>
+  (e: 'close'): Promise<void>
   (e: 'tryAgain', resets: number): Promise<void>
-  (e: 'check', time: number): Promise<void>
+  (e: 'check'): Promise<void>
   (e: 'fill', value: unknown): Promise<void>
   (e: 'confirm'): Promise<void>
   (e: 'cancel'): Promise<void>
   (e: 'store', params: ActivityStoreParams): Promise<void>
-  (e: 'finish', time: number): Promise<void>
+  (e: 'finish'): Promise<void>
 
   // status
   (e: 'loading'): Promise<void>
@@ -88,10 +88,7 @@ onMounted(async () => {
   media.load()
 
   await emits('init')
-  await emits('prepare')
-
-  await status.alive()
-  await timer.play()
+  await update()
 })
 
 watchEffect(async () => {
@@ -102,6 +99,13 @@ watchEffect(async () => {
     await status.death()
   }
 })
+
+const update = async () => {
+  await emits('prepare')
+
+  await status.alive()
+  await timer.play()
+}
 
 const fill = async (value: unknown = null) => {
   isEmpty.value = Array.isArray(value) ? value.length === 0 : value === null
@@ -116,8 +120,7 @@ const close = async () => {
     'Confirmação',
     'Deseja realmente sair?',
     async () => {
-      await timer.pause()
-      await emits('close', timer.time.value)
+      await emits('close')
     },
     status.alive
   )
@@ -141,7 +144,7 @@ const check = async () => {
 
   media.stop()
 
-  await emits('check', timer.time.value)
+  await emits('check')
 }
 
 const calculateAndStore = (items: unknown[] = [], rights: unknown[] = [], isEmpty = false) => {
@@ -166,8 +169,6 @@ const store = async (percentage: number|null = null, selecteds: unknown = {}) =>
 }
 
 const execute = async (percentage: number|null = null, selecteds: unknown = {}) => {
-  await timer.pause()
-
   if (props.showResultMessage && percentage !== null) {
     percentage === 0 ? await status.error() : await status.success()
   } else {
@@ -191,8 +192,7 @@ const finish = async () => {
     'Confirmação',
     'Deseja realmente finalizar?',
     async () => {
-      await timer.pause()
-      await emits('finish', timer.time.value)
+      await emits('finish')
     },
     status.alive
   )
@@ -204,6 +204,7 @@ defineExpose({
   media,
   timer,
   isEmpty,
+  update,
   fill,
   resets,
   close,

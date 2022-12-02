@@ -14,6 +14,8 @@ export function useTimer (startTime: number|string = 0, maxTime: number|string =
   })
 
   const play = async () => {
+    i && clearInterval(i)
+
     await emit('play', time.value)
 
     i = setInterval(async () => {
