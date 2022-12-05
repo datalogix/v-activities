@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v0.0.4
+
+
+### 🩹 Fixes
+
+  - Button colors (34e356a)
+
+### ❤️  Contributors
+
+- Ricardo Gobbo De Souza <ricardogobbosouza@yahoo.com.br>
+
 ## v0.0.3
 
 
