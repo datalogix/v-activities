@@ -47,7 +47,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
       name,
-      fileName: (format) => `${name}.${format}.js`
+      fileName: (format) => `index.${format}.js`
     },
     rollupOptions: {
       external: ['vue'],
@@ -55,7 +55,7 @@ export default defineConfig({
         globals: {
           vue: 'Vue'
         },
-        assetFileNames: `${name}.[ext]`
+        assetFileNames: 'style.[ext]'
       }
     }
   },
