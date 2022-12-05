@@ -1,6 +1,25 @@
 # Changelog
 
 
+## v0.0.3
+
+
+### 🚀 Enhancements
+
+  - Update activity core (d52c13f)
+
+### 📦 Build
+
+  - Update (1a04361)
+
+### 🏡 Chore
+
+  - Add changelog (a8ea02a)
+
+### ❤️  Contributors
+
+- Ricardo Gobbo De Souza <ricardogobbosouza@yahoo.com.br>
+
 ## v0.0.2
 
 
