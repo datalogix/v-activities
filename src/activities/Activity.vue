@@ -120,6 +120,7 @@ const close = async () => {
     'Confirmação',
     'Deseja realmente sair?',
     async () => {
+      await status.loading()
       await emits('close')
     },
     status.alive
@@ -192,6 +193,7 @@ const finish = async () => {
     'Confirmação',
     'Deseja realmente finalizar?',
     async () => {
+      await status.loading()
       await emits('finish')
     },
     status.alive
@@ -432,7 +434,7 @@ defineExpose({
           />
         </slot>
         <slot
-          v-if="canFinish"
+          v-if="canFinish && !(status.isLoading() || status.isConfirm())"
           name="activity-button-finish"
         >
           <ButtonsFinish

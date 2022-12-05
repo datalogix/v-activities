@@ -16,7 +16,7 @@ const emits = defineEmits<{
 <template>
   <Modal
     class="activity-status-confirm"
-    z-50
+    z-40
   >
     <template #header>
       <i
