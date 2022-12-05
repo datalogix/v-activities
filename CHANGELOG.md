@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v0.0.5
+
+
+### 🩹 Fixes
+
+  - Show loading when confirm modal (ac4bbff)
+
+### ❤️  Contributors
+
+- Ricardo Gobbo De Souza <ricardogobbosouza@yahoo.com.br>
+
 ## v0.0.4
 
 
