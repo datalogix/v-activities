@@ -5,7 +5,7 @@
     cursor-pointer
     rounded-full
     text-white
-    bg="#31393D"
+    bg-black
     p-1
     hover:opacity-70
   >

@@ -6,7 +6,7 @@
     text-base
     md:text-lg
     font-bold
-    bg="#31393D"
+    bg-gray-500
     p-2
     md:p-4
     hover:opacity-70
