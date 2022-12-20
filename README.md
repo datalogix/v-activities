@@ -41,7 +41,7 @@ pnpm install v-activities
 ```js
 import Vue from 'vue'
 import VueActivities from 'v-activities'
-import 'v-activities/dist/style.css'
+import 'v-activities/style.css'
 
 Vue.use(VueActivities)
 ```
