@@ -6,7 +6,7 @@
       "vite/client"
     ],
     "declaration": true,
-    "declarationDir": "dist/types"
+    "declarationDir": "dist"
   },
   "include": [
     "src"
