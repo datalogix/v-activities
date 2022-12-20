@@ -1,10 +1,13 @@
 export function useTimer (startTime: number|string = 0, maxTime: number|string = 0, countdown = false) {
-  let i: NodeJS.Timer|null = null
-
   const emit = useEmit()
   const start = hmsToSeconds(startTime)
   const max = hmsToSeconds(maxTime)
   const time = ref(countdown ? max - start : start)
+  const interval = useIntervalFn(async () => {
+    time.value = countdown ? time.value - 1 : time.value + 1
+
+    await emit('time', time.value)
+  }, 1000, { immediate: false })
 
   watch(time, async (value) => {
     if (max && ((value >= max && !countdown) || (value < 1 && countdown))) {
@@ -14,21 +17,13 @@ export function useTimer (startTime: number|string = 0, maxTime: number|string =
   })
 
   const play = async () => {
-    i && clearInterval(i)
-
     await emit('play', time.value)
-
-    i = setInterval(async () => {
-      time.value = countdown ? time.value - 1 : time.value + 1
-
-      await emit('time', time.value)
-    }, 1000)
+    interval.resume()
   }
 
   const pause = async () => {
     await emit('pause', time.value)
-
-    i && clearInterval(i)
+    interval.pause()
   }
 
   const stop = async () => {
