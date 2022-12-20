@@ -79,8 +79,7 @@ const resets = useResets(props.maxResets)
 const status = useStatus()
 const timer = useTimer(props.startTime, props.maxTime, props.countdown)
 const isEmpty = ref(true)
-
-status.loading()
+const { height } = useWindowSize()
 
 onMounted(async () => {
   await loader.start()
@@ -225,10 +224,9 @@ defineExpose({
     bg-no-repeat
     bg-cover
     w-full
-    h-screen
-    flex
-    flex-col
+    min-h-screen
     relative
+    p-4
     :style="props.background && { 'background-image': `url(${props.background})` }"
   >
     <slot
@@ -276,7 +274,6 @@ defineExpose({
         justify-center
         items-center
         mx-auto
-        mt-8
         z-10
       >
         <div
@@ -354,49 +351,43 @@ defineExpose({
       </header>
     </slot>
 
-    <div
-      mx-4
-      h-full
-      flex-1
+    <main
+      class="activity-main"
+      :style="`height: ${height - 140}px;`"
+      mt--2
+      bg-white
+      rounded-xl
+      shadow-xl
+      container
+      max-w-5xl
+      w-full
+      mx-auto
+      overflow-y-auto
+      flex
+      flex-col
+      xl:p-10
+      lg:p-8
+      md:p-6
+      p-4
     >
-      <main
-        class="activity-main"
-        mt--2
-        bg-white
-        rounded-xl
-        shadow-xl
-        h-full
-        container
-        max-w-5xl
-        w-full
-        mx-auto
-        overflow-y-auto
-        flex
-        flex-col
-        xl:p-10
-        lg:p-8
-        md:p-6
-        p-4
+      <h2
+        v-if="statement || $slots['activity-statement']"
+        class="activity-statement"
+        mb-4
       >
-        <h2
-          v-if="statement || $slots['activity-statement']"
-          class="activity-statement"
-          mb-4
-        >
-          <slot name="activity-statement">
-            <div v-html="statement" />
-          </slot>
-        </h2>
+        <slot name="activity-statement">
+          <div v-html="statement" />
+        </slot>
+      </h2>
 
-        <div
-          class="activity-container"
-          mt-4
-          flex-1
-        >
-          <slot />
-        </div>
-      </main>
-    </div>
+      <div
+        class="activity-container"
+        mt-4
+        flex-1
+      >
+        <slot />
+      </div>
+    </main>
 
     <slot name="activity-footer">
       <footer
@@ -411,7 +402,7 @@ defineExpose({
         justify-center
         gap-2
         md:gap-4
-        my-4
+        pt-4
       >
         <slot name="activity-actions" />
         <slot
