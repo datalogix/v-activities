@@ -61,7 +61,7 @@ const prepare = () => {
     ref="activity"
     class="activity-paint"
     :can-check="false"
-    :load="[image]"
+    :load="[props.image]"
     @init="init"
     @prepare="prepare"
   >
