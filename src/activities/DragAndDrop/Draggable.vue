@@ -20,6 +20,7 @@ const startDrag = (event: DragEvent) => {
     class="activity-drag-and-drop-draggable"
     cursor-move
     border
+    border-solid
     border-gray-300
     bg-gray-50
     rounded

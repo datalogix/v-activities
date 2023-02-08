@@ -278,6 +278,7 @@ defineExpose({
               uppercase
               text-center
               border
+              border-solid
               maxlength="1"
               @focus="select(x, y)"
               @keyup="keyup($event, x, y)"

@@ -32,6 +32,7 @@ defineProps<WordSearchWordListProps>()
       m-2
       rounded
       border-2
+      border-solid
       border-gray-300
       transition-all
       v-text="word"

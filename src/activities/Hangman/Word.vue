@@ -23,6 +23,8 @@ const letters = replace(props.word).toLocaleUpperCase().split('')
         'activity-hangman-word-space': letter.trim() === '',
         'border-b-2 activity-hangman-word-letter': letter.trim() !== ''
       }"
+      border-solid
+      border-gray-300
       text-lg
       md:text-lg
       lg:text-2xl

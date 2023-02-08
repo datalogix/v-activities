@@ -80,6 +80,7 @@ defineExpose({
       ring-gray-200
       items-center
       border
+      border-solid
       border-gray-300
       bg-white
       rounded
@@ -91,6 +92,7 @@ defineExpose({
         class="activity-paint-line-width-selector-line"
         :style="`background-color: ${color}; width: ${selected}px; opacity: ${alpha};`"
         border
+        border-solid
         border-gray-300
         h-6
       />
@@ -121,6 +123,7 @@ defineExpose({
         justify-center
         items-center
         border
+        border-solid
         border-gray-300
         bg-white
         rounded
@@ -132,6 +135,7 @@ defineExpose({
           class="activity-paint-line-width-option-line"
           :style="`background-color: ${color}; width: ${option}px; opacity: ${alpha};`"
           border
+          border-solid
           border-gray-300
           h-6
         />

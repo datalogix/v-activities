@@ -267,6 +267,7 @@ defineExpose({
     <slot name="activity-header">
       <header
         class="activity-header"
+        relative
         w-full
         container
         max-w-5xl
@@ -384,6 +385,8 @@ defineExpose({
         class="activity-container"
         mt-4
         flex-1
+        grid
+        content-center
       >
         <slot />
       </div>
@@ -392,6 +395,7 @@ defineExpose({
     <slot name="activity-footer">
       <footer
         class="activity-footer"
+        relative
         container
         max-w-5xl
         w-full

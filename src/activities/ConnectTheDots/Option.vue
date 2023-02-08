@@ -37,6 +37,7 @@ defineExpose({
     bg-white
     relative
     border
+    border-solid
     cursor-pointer
     rounded
     w-20
@@ -64,6 +65,7 @@ defineExpose({
       :ml="type === 'right' ? -3 : 0"
       :mr="type === 'left' ? -3 : 0"
       border
+      border-solid
       w-4
       h-4
       rounded-full

@@ -25,6 +25,8 @@ const isSpace = (index: number) => props.used[index] === letters[index] && lette
         'border-b-2': !isSpace(index),
         'border-b-0': isSpace(index)
       }"
+      border-solid
+      border-gray-300
       text-lg
       md:text-lg
       lg:text-2xl

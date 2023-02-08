@@ -36,6 +36,7 @@ const onDrop = (event: DragEvent) => {
     }"
     inline-block
     border
+    border-solid
     border-gray-300
     bg-gray-50
     rounded

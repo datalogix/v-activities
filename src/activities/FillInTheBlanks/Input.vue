@@ -15,6 +15,8 @@ const update = (e: Event) => emits('update:modelValue', (e.target as HTMLInputEl
     p-2
     m-1
     border
+    border-solid
+    border-gray-300
     rounded
     text-center
     :value="modelValue"

@@ -141,6 +141,7 @@ defineExpose({
         'bg-green-50 border-green-300 activity-memory-game-option-right': locked,
       }"
       border-2
+      border-solid
       rounded
       backface-hidden
       absolute

@@ -92,6 +92,7 @@ defineExpose({
       ring-gray-200
       items-center
       border
+      border-solid
       border-gray-300
       bg-white
       rounded
@@ -133,6 +134,7 @@ defineExpose({
         justify-center
         items-center
         border
+        border-solid
         border-gray-300
         bg-white
         rounded

@@ -86,6 +86,7 @@ defineExpose({
       items-center
       bg-white
       border
+      border-solid
       border-gray-300
       rounded
       w-10
@@ -128,6 +129,7 @@ defineExpose({
         justify-center
         items-center
         border
+        border-solid
         border-gray-300
         rounded
         w-10

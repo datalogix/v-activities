@@ -340,6 +340,7 @@ defineExpose({
         justify-center
         cursor-pointer
         border
+        border-solid
         border-gray-300
         @mousedown.prevent="wordSelectStart({ x, y })"
         @mouseup="(e) => wordSelectUpdate(e, { x, y })"

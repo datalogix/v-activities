@@ -13,7 +13,6 @@ defineProps<DragAndDropOptionsProps>()
   <transition-group
     tag="div"
     class="activity-drag-and-drop-options"
-    border-gray-300
     flex
     flex-wrap
     items-center
