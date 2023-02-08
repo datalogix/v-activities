@@ -1,8 +1,0 @@
----
-aside: false
----
-
-
-# Examples
-
-tete

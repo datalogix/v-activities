@@ -1,74 +1,61 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-  title: 'Activities',
-  description: 'Activities for Vue 3',
-  lang: 'en-US',
+  lang: 'pt-BR',
+  title: 'Atividades',
+  description: 'Atividades para Vue 3',
+
+  lastUpdated: true,
+  cleanUrls: true,
+
   scrollOffset: 'header',
-	srcDir: 'src',
+  appearance: false,
+
   themeConfig: {
-
-    /*socialLinks: [
-			{ icon: 'github', link: 'https://github.com/datalogix/v-activities' },
-			{ icon: 'twitter', link: 'https://twitter.com/datalogixbrasil' },
-		],*/
-
-		footer: {
-			license: {
-				text: 'MIT License',
-				link: 'https://opensource.org/licenses/MIT',
-			},
-			copyright: 'Made with ❤️ by Datalogix',
-		},
+    logo: 'assets/logo.svg',
 
     nav: [
-      { text: 'Home', link: '/' },
-      { text: 'Guide', link: '/guide/' },
-      { text: 'Config Reference', link: '/config/' },
-      { text: 'Examples', link: '/examples/' },
-      { text: 'Release Notes', link: 'https://github.com/datalogix/v-activities/releases' }
+      { text: 'Guia', link: '/guide/getting-started', activeMatch: '/guide/' },
+      { text: 'Exemplos', link: '/examples/' },
+      { text: 'Lançamentos', link: 'https://github.com/datalogix/v-activities/releases' },
     ],
 
     sidebar: {
       '/guide/': [
         {
-          text: 'Getting Started',
+          text: 'Introdução',
+          collapsed: false,
           items: [
-            { text: 'Introduction', link: '' },
-            { text: 'Setup', link: '/guide/teste' }
-          ]
+            { text: 'Iniciar', link: '/guide/getting-started' },
+            { text: 'Configuração', link: '/guide/configuration' },
+          ],
+        },
+
+        {
+          text: 'Atividades',
+          collapsed: false,
+          items: [
+            { text: 'Múltipla escolha', link: '/guide/activities/multiple-choice' },
+            { text: 'Preencha os espaços em branco', link: '/guide/activities/fill-in-the-blanks' },
+            { text: 'Jogo da memória', link: '/guide/activities/memory-game' },
+            { text: 'Caça palavra', link: '/guide/activities/crossword' },
+            { text: 'Forca', link: '/guide/activities/hangman' },
+            { text: 'Ligue os pontos', link: '/guide/activities/connect-the-dots' },
+            { text: 'Arraste e solte', link: '/guide/activities/drag-and-drop' },
+            { text: 'Colorir', link: '/guide/activities/paint' },
+            { text: 'Montar palavra', link: '/guide/activities/assemble-word' },
+            { text: 'Palavra Cruzada', link: '/guide/activities/crossword' },
+          ],
         },
       ],
-      '/config/': [
-        {
-          text: 'Introduction',
-          children: [
-            { text: 'Our Story', link: '/config/' }
-          ]
-        },
-        {
-          text: 'Activities',
-          children: [
-            { text: 'Multiple Choice', link: '/config/multiple-choice' },
-            { text: 'Memory Game', link: '/config/memory-game' },
-            { text: 'Fill in the blanks', link: '/config/fill-in-the-blanks' },
-            { text: 'Hangman', link: '/config/hangman' },
-            { text: 'Word Search', link: '/config/word-search' },
-          ]
-        }
-      ],
-      '/examples/': [
-        {
-          text: 'Activities',
-          children: [
-            { text: 'Multiple Choice', link: '/examples/multiple-choice' },
-            { text: 'Memory Game', link: '/examples/memory-game' },
-            { text: 'Fill in the blanks', link: '/examples/fill-in-the-blanks' },
-            { text: 'Hangman', link: '/examples/hangman' },
-            { text: 'Word Search', link: '/examples/word-search' },
-          ]
-        }
-      ],
-    }
+    },
+
+    socialLinks: [
+			{ icon: 'github', link: 'https://github.com/datalogix/v-activities' },
+		],
+
+    footer: {
+      copyright: '© Copyright 2022-presente <a href="https://www.datalogix.com.br" target="_blank">Datalogix</a>',
+    },
   }
 })
