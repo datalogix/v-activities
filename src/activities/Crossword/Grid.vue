@@ -25,7 +25,7 @@ export interface CrosswordGridProps {
 const props = defineProps<CrosswordGridProps>()
 const rows = Math.max(...props.items.filter(item => item.type === 'vertical').map(item => item.word.length + item.y))
 const cols = Math.max(...props.items.filter(item => item.type === 'horizontal').map(item => item.word.length + item.x))
-const grid = ref<CrosswordGrid[][]>([...Array(cols)].map(() => Array(rows)))
+const grid = ref([...Array(cols)].map(() => Array(rows)))
 const current = ref<CrosswordItem>()
 
 const getByPoint = (x: number, y: number) => {
@@ -73,13 +73,13 @@ const setCurrent = (x: number, y: number) => {
     return
   }
 
-  let items = gridPoint.items.filter(item => !item.fixed).filter((item) => (
+  let items = gridPoint.items.filter((item: CrosswordItem) => !item.fixed).filter((item: CrosswordItem) => (
     ((item.type === 'vertical' && item.x === x && y >= item.y && y <= item.y + item.word.length - 1) ||
     (item.type === 'horizontal' && item.y === y && x >= item.x && x <= item.x + item.word.length - 1))
   ))
 
   if (current.value) {
-    items = items.filter((item) => {
+    items = items.filter((item: CrosswordItem) => {
       return item === current.value
     })
   }
@@ -103,7 +103,7 @@ const select = (x: number, y: number) => {
 
   current.value = undefined
 
-  const item = gridPoint.items.filter(item => !item.fixed)[0]
+  const item = gridPoint.items.filter((item: CrosswordItem) => !item.fixed)[0]
 
   if (!item) {
     return
@@ -121,14 +121,14 @@ const select = (x: number, y: number) => {
 }
 
 const keyup = (event: KeyboardEvent, x: number, y: number) => {
-  let items = getByPoint(x, y)?.items.filter(item => !item.fixed)
+  let items = getByPoint(x, y)?.items.filter((item: CrosswordItem) => !item.fixed)
 
   if (!items?.length) {
     return
   }
 
   if (current.value) {
-    items = items.filter((item) => {
+    items = items.filter((item: CrosswordItem) => {
       return item === current.value
     })
   }
@@ -156,7 +156,7 @@ const isActive = (x: number, y: number) => {
     return false
   }
 
-  return gridPoint.items.some(item => item === current.value)
+  return gridPoint.items.some((item: CrosswordItem) => item === current.value)
 }
 
 const getFilledWord = (item: CrosswordItem) => {
