@@ -1,7 +1,14 @@
 {
   "globals": {
+    "Component": true,
+    "ComponentPublicInstance": true,
+    "ComputedRef": true,
     "EffectScope": true,
+    "InjectionKey": true,
     "LETTERS": true,
+    "PropType": true,
+    "Ref": true,
+    "VNode": true,
     "asyncComputed": true,
     "autoResetRef": true,
     "compare": true,
@@ -81,7 +88,6 @@
     "refWithControl": true,
     "replace": true,
     "resolveComponent": true,
-    "resolveDirective": true,
     "resolveRef": true,
     "resolveUnref": true,
     "shallowReactive": true,
