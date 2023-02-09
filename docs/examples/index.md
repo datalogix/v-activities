@@ -12,13 +12,13 @@ features:
       Assim como as clássicas questões que tivemos nas provas
       de escola, aqui você cadastra o enunciado, suas
       respectivas alternativas e quais estão corretas.
-  - title: Preencha os espaços em branco
-    link: https://v-activities.netlify.app/examples/fill-in-the-blanks
-    details: Nesta atividade é possível criar frases com textos com
-      lacunas para que o aluno preencha depois. Você pode
-      deixar para que ele mesmo escreva a resposta ou ter um
-      número de respostas predeterminadas em um menu de
-      dropdown.
+  #- title: Preencha os espaços em branco
+  #  link: https://v-activities.netlify.app/examples/fill-in-the-blanks
+  #  details: Nesta atividade é possível criar frases com textos com
+  #    lacunas para que o aluno preencha depois. Você pode
+  #    deixar para que ele mesmo escreva a resposta ou ter um
+  #    número de respostas predeterminadas em um menu de
+  #    dropdown.
   - title: Jogo da memória
     link: https://v-activities.netlify.app/examples/memory-game
     details: 'Mais um clássico da infância da maioria: jogo da memória.
@@ -42,12 +42,12 @@ features:
       aluno precisa ligá-los conforme seus respectivos pares.
       Esses itens podem ser textos com imagens, texto com
       texto, ou imagens com imagens. Escolhe o que preferir.
-  - title: Arraste e solte
-    link: https://v-activities.netlify.app/examples/drag-and-drop
-    details: Assim como em “Preencha os espaços”, no “Arraste e
-      solte” o aluno também precisa preencher lacunas, mas
-      dessa vez ele arrasta a palavra em alguma das lacunas
-      para completar a frase.
+  #- title: Arraste e solte
+  #  link: https://v-activities.netlify.app/examples/drag-and-drop
+  #  details: Assim como em “Preencha os espaços”, no “Arraste e
+  #    solte” o aluno também precisa preencher lacunas, mas
+  #    dessa vez ele arrasta a palavra em alguma das lacunas
+  #    para completar a frase.
   - title: Colorir
     link: https://v-activities.netlify.app/examples/paint
     details: Um desenho tem áreas predefinidas para que os alunos
