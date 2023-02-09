@@ -26,7 +26,7 @@ features:
       parte do jogo e o sistema as embaralha aleatoriamente
       para o aluno jogar.'
   - title: Caça palavra
-    link: https://v-activities.netlify.app/examples/crossword
+    link: https://v-activities.netlify.app/examples/word-search
     details: Para essa atividade, basta cadastrar as palavras que
       deseja que o sistema irá embaralhá-las automaticamente
       e preencher o restante dos espaços com letras aleatórias.
