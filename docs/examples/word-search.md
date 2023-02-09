@@ -12,8 +12,8 @@ const WordSearch = defineAsyncComponent(() => import('../../').then(m => m.WordS
 
 <ClientOnly>
   <WordSearch
-    statement="Foo2s"
-    background="https://t4.ftcdn.net/jpg/03/34/19/13/240_F_334191354_zW1Fj9HPbfJdBPEVe2d6mcuT1w2g8K5y.jpg"
-    :words="['Datalogix']"
+    statement="Encontre as palavras no quadro abaixo:"
+    :background="`/examples/bgs/bg${Math.floor(Math.random() * 4) + 1}.jpg`"
+    :words="['Datalogix', 'Educação', 'Jogos', 'Aprender']"
   />
 </ClientOnly>

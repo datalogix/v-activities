@@ -12,8 +12,8 @@ const Paint = defineAsyncComponent(() => import('../../').then(m => m.Paint))
 
 <ClientOnly>
   <Paint
-    statement="Foo2s"
-    background="https://t4.ftcdn.net/jpg/03/34/19/13/240_F_334191354_zW1Fj9HPbfJdBPEVe2d6mcuT1w2g8K5y.jpg"
-    image="https://macmillanonlineplacementtest.com/images/bg.png"
+    statement="Pinte o robô com suas cores favoritas!"
+    :background="`/examples/bgs/bg${Math.floor(Math.random() * 4) + 1}.jpg`"
+    image="https://i.pinimg.com/736x/78/a8/17/78a817074b4c74d51fbc026196981d4e.jpg"
   />
 </ClientOnly>

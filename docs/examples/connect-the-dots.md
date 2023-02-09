@@ -12,13 +12,13 @@ const ConnectTheDots = defineAsyncComponent(() => import('../../').then(m => m.C
 
 <ClientOnly>
   <ConnectTheDots
-    statement="Foo2s"
-    background="https://t4.ftcdn.net/jpg/03/34/19/13/240_F_334191354_zW1Fj9HPbfJdBPEVe2d6mcuT1w2g8K5y.jpg"
+    statement="Ligue as imagens entre as colunas corretamente!"
+    :background="`/examples/bgs/bg${Math.floor(Math.random() * 4) + 1}.jpg`"
     :options="{
-      teste5: 'teste6',
-      teste55: 'testfgdsfe65',
-      teste655: 'testgfdsgsdgde665',
-      tes1te55: 'testgfdsgdfsgfds35e65'
+      'Video game': '/examples/connect-the-dots/videogame.jpg',
+      'Bandeira': '/examples/connect-the-dots/bandeira.jpg',
+      'Livro': '/examples/connect-the-dots/livro.jpg',
+      'Médico': '/examples/connect-the-dots/medico.jpg',
     }"
   />
 </ClientOnly>

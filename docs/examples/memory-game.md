@@ -12,15 +12,15 @@ const MemoryGame = defineAsyncComponent(() => import('../../').then(m => m.Memor
 
 <ClientOnly>
   <MemoryGame
-    statement="Foo2s"
-    background="https://t4.ftcdn.net/jpg/03/34/19/13/240_F_334191354_zW1Fj9HPbfJdBPEVe2d6mcuT1w2g8K5y.jpg"
+    statement="Encontre os pares."
+    :background="`/examples/bgs/bg${Math.floor(Math.random() * 4) + 1}.jpg`"
     :options="{
-      teste1: 'teste2',
-      teste3: 'teste4',
-      teste5: 'teste6',
-      teste55: 'teste65',
-      teste655: 'teste665',
-      tes1te55: 'test35e65'
+      'Video game': '/examples/memory-game/videogame.jpg',
+      'Bandeira': '/examples/memory-game/bandeira.jpg',
+      'Livro': '/examples/memory-game/livro.jpg',
+      'Médico': '/examples/memory-game/medico.jpg',
+      'Estudante': '/examples/memory-game/estudante.jpg',
+      'Salada': '/examples/memory-game/salada.jpg'
     }"
   />
 </ClientOnly>
