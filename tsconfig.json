@@ -6,9 +6,12 @@
       "vite/client"
     ],
     "declaration": true,
-    "declarationDir": "dist"
+    "declarationDir": "dist",
+    "ignoreDeprecations": "5.0"
   },
   "include": [
-    "src"
+    "src",
+    "./auto-imports.d.ts",
+    "./components.d.ts"
   ]
 }

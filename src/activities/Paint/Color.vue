@@ -4,6 +4,13 @@ export interface PaintColorProps {
   options?: string[]
 }
 
+export type PaintColorEmits = {
+  (e: 'open'): void
+  (e: 'close'): void
+  (e: 'toggle', openned: boolean): void
+  (e: 'select', selected: string): void
+}
+
 withDefaults(defineProps<PaintColorProps>(), {
   alpha: 1,
   options: () => [
@@ -22,13 +29,7 @@ withDefaults(defineProps<PaintColorProps>(), {
   ]
 })
 
-// eslint-disable-next-line func-call-spacing
-const emits = defineEmits<{
-  (e: 'open'): void
-  (e: 'close'): void
-  (e: 'toggle', openned: boolean): void
-  (e: 'select', selected: string): void
-}>()
+const emits = defineEmits<PaintColorEmits>()
 
 const selected = ref<string>('#000000')
 const openned = ref<boolean>(false)
@@ -54,7 +55,7 @@ const select = (option: string) => {
   emits('select', selected.value)
 }
 
-const prepare = () => {
+const start = () => {
   selected.value = '#000000'
 }
 
@@ -64,7 +65,7 @@ defineExpose({
   open,
   close,
   toggle,
-  prepare
+  start
 })
 </script>
 

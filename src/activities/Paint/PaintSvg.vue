@@ -3,24 +3,31 @@ import 'eve'
 import Snap from 'snapsvg'
 import printJS from 'print-js'
 
-export interface PaintSVGProps {
-  image: string
+export interface PaintSvgProps {
   color?: string
 }
 
-const props = defineProps<PaintSVGProps>()
+const props = defineProps<PaintSvgProps>()
 const svg = ref<Snap.Paper>()
 
-const save = () => {
+const generateImage = () => {
   if (!svg.value) return
 
+  const blob = new Blob(
+    [svg.value.select('svg').outerSVG()],
+    { type: 'image/svg+xml' }
+  )
+
+  return URL.createObjectURL(blob)
+}
+
+const save = () => {
   const canvasTemp = document.createElement('canvas')
   const a = document.createElement('a')
   const context = canvasTemp.getContext('2d')
-  const blob = new Blob([svg.value.select('svg').outerSVG()], { type: 'image/svg+xml' })
 
   const image = new Image()
-  image.src = URL.createObjectURL(blob)
+  image.src = String(generateImage())
   image.onload = () => {
     canvasTemp.width = 800
     canvasTemp.height = 400
@@ -55,7 +62,7 @@ const init = (content: string) => {
   })
 }
 
-const prepare = () => {
+const start = () => {
   svg.value?.selectAll('.colorize').forEach((element: Snap.Element) => {
     element.node.setAttribute('fill', '#fff')
   })
@@ -63,9 +70,10 @@ const prepare = () => {
 
 defineExpose({
   init,
-  prepare,
+  start,
   save,
-  print
+  print,
+  generateImage
 })
 </script>
 

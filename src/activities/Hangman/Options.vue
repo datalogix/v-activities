@@ -1,23 +1,18 @@
 <script setup lang="ts">
-export interface HangmanOptionsActions {
-  unique: string[]
-  used: string[]
-  right: string[]
-  wrong: string[]
-}
+import type { HangmanAnswer } from './Index.vue'
 
 export interface HangmanOptionsProps {
   word: string
 }
 
+export type HangmanOptionsEmits = {
+  (e: 'right', params: HangmanAnswer): Promise<void>
+  (e: 'wrong', params: HangmanAnswer): Promise<void>
+}
+
+const activity = useActivity()
 const props = defineProps<HangmanOptionsProps>()
-
-// eslint-disable-next-line func-call-spacing
-const emits = defineEmits<{
-  (e: 'right', params: HangmanOptionsActions): void
-  (e: 'wrong', params: HangmanOptionsActions): void
-}>()
-
+const emits = defineEmits<HangmanOptionsEmits>()
 const MAX_OPTIONS = 20
 const unique = ref<string[]>(Array.from(new Set(replace(props.word, '', { space: false }).toLocaleUpperCase().split(''))))
 const options = ref<string[]>([])
@@ -25,7 +20,15 @@ const used = ref<string[]>([])
 const right = ref<string[]>([])
 const wrong = ref<string[]>([])
 
-const select = (option: string) => {
+const isDisabled = (option: string) => {
+  return used.value.includes(option)
+}
+
+const onSelect = (option: string) => {
+  if (isDisabled(option) || activity.props.mode === 'answered') {
+    return
+  }
+
   if (!used.value.includes(option)) {
     used.value.push(option)
   }
@@ -35,6 +38,7 @@ const select = (option: string) => {
       wrong.value.push(option)
 
       emits('wrong', {
+        options: options.value,
         unique: unique.value,
         used: used.value,
         right: right.value,
@@ -48,6 +52,7 @@ const select = (option: string) => {
     right.value.push(option)
 
     emits('right', {
+      options: options.value,
       unique: unique.value,
       used: used.value,
       right: right.value,
@@ -56,11 +61,18 @@ const select = (option: string) => {
   }
 }
 
-const prepare = () => {
+const run = () => {
   options.value = shuffle(generateUniqueStringFromString(unique.value.join(''), MAX_OPTIONS).split(''))
   used.value = []
   right.value = []
   wrong.value = []
+}
+
+const answered = (answer: HangmanAnswer) => {
+  options.value = answer.options
+  used.value = answer.used
+  right.value = answer.right
+  wrong.value = answer.wrong
 }
 
 defineExpose({
@@ -68,10 +80,11 @@ defineExpose({
   used,
   right,
   wrong,
-  prepare
+  run,
+  answered
 })
 
-prepare()
+run()
 </script>
 
 <template>
@@ -88,11 +101,15 @@ prepare()
     <Button
       v-for="option in options"
       :key="option"
+      :disabled="isDisabled(option)"
       class="activity-hangman-option"
       :class="{
-        'cursor-not-allowed activity-hangman-option-disabled': used.includes(option),
-        'cursor-pointer activity-hangman-option-enabled': !used.includes(option)
+        'activity-hangman-option-disabled': isDisabled(option),
+        'activity-hangman-option-enabled': !isDisabled(option),
+        'activity-hangman-option-answered !cursor-not-allowed': activity.props.mode === 'answered'
       }"
+      border
+      border-solid
       uppercase
       text-base
       md:text-xl
@@ -104,8 +121,7 @@ prepare()
       md:h-12
       lg:w-14
       lg:h-14
-      :disabled="used.includes(option)"
-      @click="select(option)"
+      @click="onSelect(option)"
     >
       {{ option }}
     </Button>

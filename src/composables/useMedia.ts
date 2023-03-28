@@ -1,7 +1,7 @@
 export function useMedia () {
   const elements: HTMLMediaElement[] = []
 
-  const load = () => {
+  const load = async () => {
     nextTick(() => {
       document.querySelectorAll('.activity-main audio, .activity-main video').forEach(element => {
         if (element instanceof HTMLMediaElement) {
@@ -13,7 +13,7 @@ export function useMedia () {
     })
   }
 
-  const stop = () => {
+  const stop = async () => {
     elements.forEach(element => {
       element.pause()
     })

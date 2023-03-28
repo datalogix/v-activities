@@ -6,7 +6,7 @@ import autoImport from 'unplugin-auto-import/vite'
 import components from 'unplugin-vue-components/vite'
 import icons from 'unplugin-icons/vite'
 import unocss from 'unocss/vite'
-import { presetAttributify, presetIcons, presetWind } from 'unocss'
+import { presetAttributify, presetIcons, presetUno } from 'unocss'
 import { name } from './package.json'
 
 export default defineConfig({
@@ -20,9 +20,9 @@ export default defineConfig({
     vue(),
     unocss({
       presets: [
-        presetWind(),
         presetAttributify(),
-        presetIcons()
+        presetIcons(),
+        presetUno()
       ]
     }),
     autoImport({
@@ -41,7 +41,9 @@ export default defineConfig({
     }),
     components({
       dts: 'src/@types/components.d.ts',
-      directoryAsNamespace: true
+      directoryAsNamespace: true,
+      collapseSamePrefixes: true,
+      globalNamespaces: ['Global']
     }),
     icons()
   ],

@@ -1,19 +1,28 @@
 <script setup lang="ts">
+import type { MultipleChoiceValue } from './Index.vue'
+
 export interface MultipleChoiceOptionProps {
   markerType?: boolean | 'number' | 'letter' | 'letter_uppercase'
   position: number
   type?: 'checkbox' | 'radio'
   label: string
-  percentage: number
-  modelValue: number[]|number|null
+  value: number
+  modelValue: MultipleChoiceValue
 }
+
+export type MultipleChoiceOptionEmits = {
+  (e: 'update:modelValue', value: MultipleChoiceValue): void
+}
+
+const activity = useActivity()
 
 const props = withDefaults(defineProps<MultipleChoiceOptionProps>(), {
   markerType: false,
   type: 'radio'
 })
 
-const emits = defineEmits<{(e: 'update:modelValue', value: number[]|number|null): void}>()
+const emits = defineEmits<MultipleChoiceOptionEmits>()
+
 const update = (e: Event) => {
   const input = (e.target as HTMLInputElement)
   const value = parseInt(input.value)
@@ -80,6 +89,7 @@ const markerText = computed(() => {
       :type="type"
       :checked="checked"
       :value="position"
+      :disabled="activity.props.mode === 'answered'"
       @input="update"
     >
     <label
@@ -88,5 +98,16 @@ const markerText = computed(() => {
       :for="`awnser${position}`"
       v-html="label"
     />
+    <span
+      v-if="activity.props.mode === 'preview'"
+      class="activity-multiple-choice-option-value"
+      text-center
+      flex
+      flex-col
+      space-y--1
+    >
+      <span text-xs>Valor</span>
+      <b text-sm>{{ value }}</b>
+    </span>
   </div>
 </template>

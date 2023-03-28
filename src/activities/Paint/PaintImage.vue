@@ -17,7 +17,6 @@ export interface PaintImagePoint {
 }
 
 export interface PaintImageProps {
-  image: string
   eraser?: number
   color?: string
   lineWidth?: number
@@ -141,20 +140,22 @@ const mousemove = (event: MouseEvent) => {
   return draw(point)
 }
 
-const save = () => {
+const generateImage = () => {
   if (!canvas.value) return
 
+  return canvas.value.toDataURL('image/png')
+}
+
+const save = () => {
   const a = document.createElement('a')
   a.setAttribute('download', 'colorize.png')
-  a.setAttribute('href', canvas.value.toDataURL('image/png'))
+  a.setAttribute('href', String(generateImage()))
   a.setAttribute('target', '_blank')
   a.click()
 }
 
 const print = () => {
-  if (!canvas.value) return
-
-  printJS({ printable: canvas.value.toDataURL(), type: 'image' })
+  printJS({ printable: generateImage(), type: 'image' })
 }
 
 const init = (content: HTMLImageElement) => {
@@ -182,16 +183,17 @@ const init = (content: HTMLImageElement) => {
   resizeCanvas()
 }
 
-const prepare = () => {
+const start = () => {
   points.value = []
   clearDraw()
 }
 
 defineExpose({
   init,
-  prepare,
+  start,
   save,
-  print
+  print,
+  generateImage
 })
 </script>
 

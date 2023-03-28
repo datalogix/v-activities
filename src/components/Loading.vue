@@ -1,17 +1,17 @@
 <template>
   <Modal
-    class="activity-status-loading"
+    class="activity-loading"
     z-50
   >
     <template #header>
       <i
-        class="activity-status-loading-icon"
+        class="activity-loading-icon"
         i-eos-icons-bubble-loading
         w-8
         h-8
       />
       <span
-        class="activity-status-loading-title"
+        class="activity-loading-title"
         text-xl
       >
         Carregando...

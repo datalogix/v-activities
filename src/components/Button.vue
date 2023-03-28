@@ -9,11 +9,9 @@ defineProps<ButtonProps>()
 <template>
   <button
     class="activity-button"
-    :class="{
-      'cursor-not-allowed !bg-gray-400': disabled
-    }"
     :disabled="disabled"
     type="button"
+    cursor-pointer
     rounded
     border-none
     outline-none
@@ -24,6 +22,9 @@ defineProps<ButtonProps>()
     justify-center
     transition-all
     gap-2
+    disabled:cursor-not-allowed
+    disabled:bg-gray-300
+    hover:opacity-70
   >
     <slot />
   </button>

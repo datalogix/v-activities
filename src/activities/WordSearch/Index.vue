@@ -2,38 +2,97 @@
 import Activity from '../Activity.vue'
 import Grid from './Grid.vue'
 import WordList from './WordList.vue'
+import type { WordSearchGridPosition } from './Grid.vue'
 
-export interface WordSearchProps {
-  size: number
-  words: string[]
+export type WordSearchWord = {
+  word: string
   diagonal?: boolean
   invert?: boolean
+}
+
+export type WordSearchAnswer = {
+  usedWords: string[]
+  foundWords: string[]
+  letterGrid: string[][]
+  gridWord: string[][]
+  foundTiles: WordSearchGridPosition[]
+}
+
+export interface WordSearchProps {
+  words: (WordSearchWord | string)[]
+  size?: number
   position?: 'top' | 'bottom' | 'both'
   shuffle?: boolean
 }
 
-withDefaults(defineProps<WordSearchProps>(), {
+const props = withDefaults(defineProps<WordSearchProps>(), {
   size: 8,
   position: 'top',
-  diagonal: false,
-  invert: false,
   shuffle: true
 })
 
 const activity = ref<InstanceType<typeof Activity>>()
+const answer = ref<WordSearchAnswer>()
 const grid = ref<InstanceType<typeof Grid>>()
+const words = props.words.map((word) => {
+  if (typeof word === 'string') {
+    return {
+      word,
+      diagonal: false,
+      invert: false
+    } as WordSearchWord
+  }
 
-const prepare = () => {
-  grid.value?.build()
+  return word
+})
+
+const onFill = () => {
+  answer.value = grid.value
+    ? {
+        usedWords: grid.value.usedWords,
+        foundWords: grid.value.foundWords,
+        letterGrid: grid.value.letterGrid,
+        gridWord: grid.value.gridWord,
+        foundTiles: grid.value.foundTiles
+      }
+    : undefined
+}
+
+const start = () => {
+  return grid.value?.build()
+}
+
+const answered = (_answer: unknown) => {
+  return grid.value?.answered(_answer as WordSearchAnswer)
+}
+
+const check = () => {
+  if (!grid.value) {
+    return null
+  }
+
+  const percentage = grid.value.usedWords.length * 100 / grid.value.foundWords.length
+
+  const result = {
+    right: grid.value.foundWords.length,
+    total: grid.value.usedWords.length
+  }
+
+  return activity.value?.store({
+    percentage,
+    result
+  })
 }
 </script>
 
 <template>
   <Activity
     ref="activity"
+    v-model="answer"
     class="activity-word-search"
-    :can-check="false"
-    @prepare="prepare"
+    @start="start"
+    @answered="answered"
+    @check="check"
   >
     <template
       v-for="(_, name) in $slots"
@@ -56,10 +115,10 @@ const prepare = () => {
       ref="grid"
       :size="size"
       :words="words"
-      :diagonal="diagonal"
-      :invert="invert"
       :shuffle="shuffle"
-      @complete="activity?.store(100, grid?.foundWords)"
+      @right="onFill"
+      @wrong="onFill"
+      @complete="check"
     />
 
     <WordList

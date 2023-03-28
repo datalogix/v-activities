@@ -1,33 +1,35 @@
 <script setup lang="ts">
-export interface WordSearchGridProps {
-  size: number
-  words: string[]
-  diagonal?: boolean
-  invert?: boolean
-  shuffle?: boolean
-}
+import type { WordSearchWord, WordSearchAnswer } from './Index.vue'
 
-export interface WordSearchGridPosition {
+export type WordSearchGridPosition = {
   x: number
   y: number
 }
 
-const props = withDefaults(defineProps<WordSearchGridProps>(), {
-  size: 10,
-  diagonal: false,
-  invert: false,
-  shuffle: true
-})
+export interface WordSearchGridProps {
+  size: number
+  words: WordSearchWord[]
+  shuffle?: boolean
+}
 
-// eslint-disable-next-line func-call-spacing
-const emits = defineEmits<{
+export interface WordSearchGridEmits {
   (e: 'right', word: string): void
   (e: 'wrong', word: string, invertedWord: string): void
   (e: 'complete'): void
-}>()
+}
 
-const words = props.words.map(word => replace(word, '', { space: false }).toLocaleUpperCase())
-const size = Math.max(props.size, ...words.map(word => word.length), words.length)
+const props = withDefaults(defineProps<WordSearchGridProps>(), {
+  size: 10,
+  shuffle: true
+})
+
+const emits = defineEmits<WordSearchGridEmits>()
+
+const words = props.words.map(item => ({
+  ...item,
+  word: replace(item.word, '', { space: false }).toLocaleUpperCase()
+}))
+const size = Math.max(props.size, ...words.map(item => item.word.length), words.length)
 const usedWords = ref<string[]>([])
 const foundWords = ref<string[]>([])
 const letterGrid = ref<string[][]>([])
@@ -36,6 +38,13 @@ const foundTiles = ref<WordSearchGridPosition[]>([])
 const guess = ref<WordSearchGridPosition[]>([])
 const selectedRange = ref<{start: WordSearchGridPosition|null, end: WordSearchGridPosition|null}>({ start: null, end: null })
 const guessedWord = computed(() => guess.value.map(l => gridVal(l)).join(''))
+const activity = useActivity()
+
+const isAnswer = ({ x, y }: WordSearchGridPosition) => {
+  return activity.props.mode === 'preview' &&
+    typeof gridWord.value[y] !== 'undefined' &&
+    typeof gridWord.value[y][x] !== 'undefined'
+}
 
 const isTileHighlighted = ({ x, y }: WordSearchGridPosition) => {
   const r = selectedRange.value
@@ -77,12 +86,16 @@ const gridVal = ({ x, y }: WordSearchGridPosition) => {
   return ''
 }
 
-const wordSelectStart = ({ x, y }: WordSearchGridPosition) => {
+const onWordSelectStart = ({ x, y }: WordSearchGridPosition) => {
+  if (activity.props.mode === 'answered') {
+    return
+  }
+
   selectedRange.value.start = { x, y }
 }
 
-const wordSelectUpdate = (event: Event, { x, y }: WordSearchGridPosition) => {
-  if (selectedRange.value.start === null) {
+const onWordSelectUpdate = (event: Event, { x, y }: WordSearchGridPosition) => {
+  if (selectedRange.value.start === null || activity.props.mode === 'answered') {
     return
   }
 
@@ -186,7 +199,7 @@ const build = () => {
   foundTiles.value = []
   guess.value = []
 
-  Array.from(props.shuffle ? shuffle(words) : words).forEach(word => {
+  Array.from(props.shuffle ? shuffle(words) : words).forEach(({ word, invert, diagonal }) => {
     if (word.length > size) {
       return
     }
@@ -226,12 +239,12 @@ const build = () => {
       }
 
       // Disable invert word
-      if (!props.invert) {
+      if (!invert) {
         dx = Math.abs(dx)
         dy = Math.abs(dy)
       }
 
-      if (!props.diagonal) {
+      if (!diagonal) {
         if (dx === 1) {
           dy = 0
         }
@@ -282,7 +295,7 @@ const build = () => {
     }
   })
 
-  const generateCharOptions = generateOptionsFromString(words.join(''))
+  const generateCharOptions = generateOptionsFromString(words.map(item => item.word).join(''))
 
   for (let y = 0; y < size; y += 1) {
     for (let x = 0; x < size; x += 1) {
@@ -297,10 +310,22 @@ const build = () => {
   }
 }
 
+const answered = (answer: unknown) => {
+  usedWords.value = (answer as WordSearchAnswer).usedWords
+  foundWords.value = (answer as WordSearchAnswer).foundWords
+  letterGrid.value = (answer as WordSearchAnswer).letterGrid
+  gridWord.value = (answer as WordSearchAnswer).gridWord
+  foundTiles.value = (answer as WordSearchAnswer).foundTiles
+}
+
 defineExpose({
-  build,
   usedWords,
-  foundWords
+  foundWords,
+  letterGrid,
+  gridWord,
+  foundTiles,
+  build,
+  answered
 })
 </script>
 
@@ -322,8 +347,11 @@ defineExpose({
       <div
         class="activity-word-search-letter"
         :class="{
-          'bg-blue-300 activity-word-search-letter-highlighted': isTileHighlighted({ x, y }),
-          'bg-green-300 activity-word-search-letter-selected': isTileAFoundWordTile({ x, y }),
+          'bg-green-100 activity-word-search-letter-answered': isAnswer({ x, y }),
+          '!bg-blue-300 activity-word-search-letter-highlighted': isTileHighlighted({ x, y }),
+          '!bg-green-300 activity-word-search-letter-selected': isTileAFoundWordTile({ x, y }),
+          'cursor-pointer': activity.props.mode !== 'answered',
+          'cursor-not-allowed': activity.props.mode === 'answered'
         }"
         uppercase
         w-8
@@ -338,16 +366,15 @@ defineExpose({
         flex
         items-center
         justify-center
-        cursor-pointer
         border
         border-solid
         border-gray-300
-        @mousedown.prevent="wordSelectStart({ x, y })"
-        @mouseup="(e) => wordSelectUpdate(e, { x, y })"
-        @mousemove="(e) => wordSelectUpdate(e, { x, y })"
-        @touchstart.prevent="wordSelectStart({ x, y })"
-        @touchend="(e) => wordSelectUpdate(e, { x, y })"
-        @touchmove="(e) => wordSelectUpdate(e, { x, y })"
+        @mousedown.prevent="onWordSelectStart({ x, y })"
+        @mouseup="(e) => onWordSelectUpdate(e, { x, y })"
+        @mousemove="(e) => onWordSelectUpdate(e, { x, y })"
+        @touchstart.prevent.passive="onWordSelectStart({ x, y })"
+        @touchend.passive="(e) => onWordSelectUpdate(e, { x, y })"
+        @touchmove.passive="(e) => onWordSelectUpdate(e, { x, y })"
         v-text="gridVal({ x, y })"
       />
     </div>

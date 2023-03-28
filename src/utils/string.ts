@@ -1,3 +1,5 @@
+export { pascalCase } from 'change-case'
+
 export interface StringOptions {
   alpha?: boolean
   numeric?: boolean

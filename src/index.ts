@@ -1,29 +1,38 @@
 import Activity from './activities/Activity.vue'
-import AssembleWord from './activities/AssembleWord/Index.vue'
-import ConnectTheDots from './activities/ConnectTheDots/Index.vue'
-import Crossword from './activities/Crossword/Index.vue'
-import DragAndDrop from './activities/DragAndDrop/Index.vue'
-import FillInTheBlanks from './activities/FillInTheBlanks/Index.vue'
-import Hangman from './activities/Hangman/Index.vue'
-import MemoryGame from './activities/MemoryGame/Index.vue'
-import MultipleChoice from './activities/MultipleChoice/Index.vue'
-import Paint from './activities/Paint/Index.vue'
-import WordSearch from './activities/WordSearch/Index.vue'
+import type { ActivityStatus, ActivityMode, ActivityResult, ActivityProps, ActivityStoreParams } from './activities/Activity.vue'
 
-import '@unocss/reset/tailwind.css'
+import Hangman from './activities/Hangman/Index.vue'
+import type HangmanProps from './activities/Hangman/Index.vue'
+
+import MultipleChoice from './activities/MultipleChoice/Index.vue'
+import type MultipleChoiceProps from './activities/MultipleChoice/Index.vue'
+
+import Paint from './activities/Paint/Index.vue'
+import type PaintProps from './activities/Paint/Index.vue'
+
+import WordSearch from './activities/WordSearch/Index.vue'
+import type WordSearchProps from './activities/WordSearch/Index.vue'
+
 import 'uno.css'
-import './assets/style.css'
+import './assets/style.scss'
 
 export {
   Activity,
-  AssembleWord,
-  ConnectTheDots,
-  Crossword,
-  DragAndDrop,
-  FillInTheBlanks,
+  ActivityStatus,
+  ActivityMode,
+  ActivityResult,
+  ActivityProps,
+  ActivityStoreParams,
+
   Hangman,
-  MemoryGame,
+  HangmanProps,
+
   MultipleChoice,
+  MultipleChoiceProps,
+
   Paint,
-  WordSearch
+  PaintProps,
+
+  WordSearch,
+  WordSearchProps
 }

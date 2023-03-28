@@ -4,6 +4,13 @@ export interface PaintAlphaProps {
   options?: number[]
 }
 
+export type PaintAlphaEmits = {
+  (e: 'open'): void
+  (e: 'close'): void
+  (e: 'toggle', openned: boolean): void
+  (e: 'select', selected: number): void
+}
+
 withDefaults(defineProps<PaintAlphaProps>(), {
   color: '#000000',
   options: () => [
@@ -15,13 +22,7 @@ withDefaults(defineProps<PaintAlphaProps>(), {
   ]
 })
 
-// eslint-disable-next-line func-call-spacing
-const emits = defineEmits<{
-  (e: 'open'): void
-  (e: 'close'): void
-  (e: 'toggle', openned: boolean): void
-  (e: 'select', selected: number): void
-}>()
+const emits = defineEmits<PaintAlphaEmits>()
 
 const selected = ref<number>(1)
 const openned = ref<boolean>(false)
@@ -47,7 +48,7 @@ const select = (option: number) => {
   emits('select', selected.value)
 }
 
-const prepare = () => {
+const start = () => {
   selected.value = 1
 }
 
@@ -57,7 +58,7 @@ defineExpose({
   open,
   close,
   toggle,
-  prepare
+  start
 })
 </script>
 

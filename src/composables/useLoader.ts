@@ -1,14 +1,16 @@
 import type { Fragment } from 'snapsvg'
 
-class Loader extends Map {
-  constructor (items: string[] = []) {
+export type LoaderKey = string | Blob
+export type LoaderValue = HTMLImageElement | HTMLAudioElement | HTMLVideoElement | Fragment | ArrayBuffer | string | null
+
+class Loader extends Map<LoaderKey, LoaderValue> {
+  constructor (items: LoaderKey[] = []) {
     super()
 
     items.forEach(item => this.set(item, null))
   }
 
-  add (item: string) {
-    console.log(item)
+  add (item: LoaderKey) {
     if (!this.has(item)) {
       this.set(item, null)
     }
@@ -18,7 +20,7 @@ class Loader extends Map {
     return Promise.all(Array.from(this.keys()).map(item => this.load(item)))
   }
 
-  async load (item: string): Promise<HTMLImageElement|HTMLAudioElement|HTMLVideoElement> {
+  async load (item: LoaderKey): Promise<LoaderValue> {
     let result = this.get(item)
 
     if (result === null || result === undefined) {
@@ -30,20 +32,29 @@ class Loader extends Map {
     return result
   }
 
-  prepare (item: string): Promise<HTMLImageElement|HTMLAudioElement|HTMLVideoElement|Fragment|string> {
-    const ext = item.split('.').pop() || ''
-
+  prepare (item: LoaderKey): Promise<LoaderValue> {
     return new Promise((resolve, reject) => {
+      if (item instanceof Blob) {
+        const reader = new FileReader()
+        reader.readAsDataURL(item as Blob)
+        reader.onload = () => resolve(reader.result)
+        reader.onerror = error => reject(error)
+        return
+      }
+
+      const url = String(item)
+      const ext = url.split('.').pop() || ''
+
       if (['jpg', 'jpeg', 'gif', 'png'].includes(ext)) {
         const image = new Image()
         image.onload = () => resolve(image)
         image.onerror = reject
-        image.src = item
+        image.src = url
         return
       }
 
       if (['mp3', 'ogg', 'wav'].includes(ext)) {
-        const audio = new Audio(item)
+        const audio = new Audio(url)
         audio.addEventListener('canplaythrough', () => resolve(audio))
         audio.addEventListener('error', reject)
         return
@@ -53,11 +64,11 @@ class Loader extends Map {
         const video = document.createElement('video')
         video.addEventListener('canplaythrough', () => resolve(video))
         video.addEventListener('error', reject)
-        video.src = item
+        video.src = url
         return
       }
 
-      fetch(item, {
+      fetch(url, {
         method: 'GET',
         mode: 'no-cors',
         headers: {
@@ -76,7 +87,7 @@ class Loader extends Map {
   }
 }
 
-export function useLoader (items?: string[]) {
+export function useLoader (items?: LoaderKey[]) {
   const loader = new Loader(items)
 
   return loader

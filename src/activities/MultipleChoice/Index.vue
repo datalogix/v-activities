@@ -2,9 +2,16 @@
 import Activity from '../Activity.vue'
 import Option from './Option.vue'
 
-export interface MultipleChoiceOption {
+export type MultipleChoiceValue = number[] | number | undefined
+
+export type MultipleChoiceOption = {
   label: string
-  percentage: number
+  value: number
+}
+
+export type MultipleChoiceAnswer = {
+  value: MultipleChoiceValue
+  options: MultipleChoiceOption[]
 }
 
 export interface MultipleChoiceProps {
@@ -23,38 +30,64 @@ const props = withDefaults(defineProps<MultipleChoiceProps>(), {
 })
 
 const activity = ref<InstanceType<typeof Activity>>()
-const awnsers = ref<number[]|number|null>(null)
+const answer = ref<MultipleChoiceAnswer>()
+const answers = ref<MultipleChoiceValue>()
 const options = ref<MultipleChoiceOption[]>([])
 
-watch(awnsers, value => activity.value?.fill(value))
+watch(answers, value => {
+  answer.value = (Array.isArray(value) ? value.length > 0 : value !== undefined)
+    ? {
+        value,
+        options: options.value
+      }
+    : undefined
+})
 
-const prepare = () => {
-  awnsers.value = null
+const start = () => {
+  answers.value = undefined
   options.value = props.shuffle ? shuffle(props.options) : props.options
+}
+
+const answered = (_answer: unknown) => {
+  answers.value = (_answer as MultipleChoiceAnswer).value
+  options.value = (_answer as MultipleChoiceAnswer).options
 }
 
 const check = () => {
   const selecteds = options.value.filter((option, index) => {
-    return Array.isArray(awnsers.value)
-      ? awnsers.value.includes(index)
-      : awnsers.value === index
+    return Array.isArray(answers.value)
+      ? answers.value.includes(index)
+      : answers.value === index
   })
 
-  const totalPercentage = selecteds
-    .map((selected) => selected.percentage)
+  const total = selecteds
+    .map((selected) => selected.value)
     .reduce((previousPercentage, currentPercentage) => previousPercentage + currentPercentage, 0)
 
-  const percentage = selecteds.length > 0 ? totalPercentage / selecteds.length : null
+  const percentage = selecteds.length > 0 ? total / selecteds.length : null
 
-  activity.value?.store(percentage, selecteds)
+  const result = Array.isArray(answers.value)
+    ? { right: percentage || 0, total }
+    : (
+        (options.value.filter((option) => option.value !== 100).length === options.value.length - 1)
+          ? percentage
+          : (percentage !== null && percentage !== 0)
+      )
+
+  return activity.value?.store({
+    percentage,
+    result
+  })
 }
 </script>
 
 <template>
   <Activity
     ref="activity"
+    v-model="answer"
     class="activity-multiple-choice"
-    @prepare="prepare"
+    @start="start"
+    @answered="answered"
     @check="check"
   >
     <template
@@ -93,12 +126,12 @@ const check = () => {
       <Option
         v-for="(option, index) in options"
         :key="index"
-        v-model="awnsers"
+        v-model="answers"
         :marker-type="markerType"
         :position="index"
         :type="type"
         :label="option.label"
-        :percentage="option.percentage"
+        :value="option.value"
       />
     </div>
   </Activity>

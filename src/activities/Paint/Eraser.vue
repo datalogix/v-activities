@@ -3,6 +3,15 @@ export interface PaintEraserProps {
   options?: number[]
 }
 
+export type PaintEraserEmits = {
+  (e: 'open'): void
+  (e: 'close'): void
+  (e: 'toggle', openned: boolean): void
+  (e: 'select', selected: number): void
+  (e: 'enable'): void
+  (e: 'disable'): void
+}
+
 withDefaults(defineProps<PaintEraserProps>(), {
   options: () => [
     4,
@@ -13,15 +22,7 @@ withDefaults(defineProps<PaintEraserProps>(), {
   ]
 })
 
-// eslint-disable-next-line func-call-spacing
-const emits = defineEmits<{
-  (e: 'open'): void
-  (e: 'close'): void
-  (e: 'toggle', openned: boolean): void
-  (e: 'select', selected: number): void
-  (e: 'enable'): void
-  (e: 'disable'): void
-}>()
+const emits = defineEmits<PaintEraserEmits>()
 
 const selected = ref<number>(8)
 const openned = ref<boolean>(false)
@@ -58,7 +59,7 @@ const disable = () => {
   emits('disable')
 }
 
-const prepare = () => {
+const start = () => {
   active.value = false
   selected.value = 8
 }
@@ -72,7 +73,7 @@ defineExpose({
   toggle,
   enable,
   disable,
-  prepare
+  start
 })
 </script>
 

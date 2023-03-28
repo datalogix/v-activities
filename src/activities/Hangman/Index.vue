@@ -3,7 +3,14 @@ import Activity from '../Activity.vue'
 import Level from './Level.vue'
 import Word from './Word.vue'
 import Options from './Options.vue'
-import type { HangmanOptionsActions } from './Options.vue'
+
+export type HangmanAnswer = {
+  options: string[]
+  unique: string[]
+  used: string[]
+  right: string[]
+  wrong: string[]
+}
 
 export interface HangmanProps {
   word: string
@@ -13,32 +20,43 @@ export interface HangmanProps {
 defineProps<HangmanProps>()
 
 const activity = ref<InstanceType<typeof Activity>>()
+const answer = ref<HangmanAnswer>()
 const level = ref<InstanceType<typeof Level>>()
 const options = ref<InstanceType<typeof Options>>()
 
-const right = (actions: HangmanOptionsActions) => {
-  if (actions.right.length === actions.unique.length) {
-    activity.value?.store(100, actions)
+const onRight = (_answer: HangmanAnswer) => {
+  answer.value = _answer
+
+  if (answer.value.right.length === answer.value.unique.length) {
+    return activity.value?.store({ percentage: 100, result: true })
   }
 }
 
-const wrong = (actions: HangmanOptionsActions) => {
-  if (level.value && actions.wrong.length >= level.value.max) {
-    activity.value?.store(0, actions)
+const onWrong = (_answer: HangmanAnswer) => {
+  answer.value = _answer
+
+  if (level.value && answer.value.wrong.length >= level.value.max) {
+    return activity.value?.store({ percentage: 0, result: false })
   }
 }
 
-const prepare = () => {
-  options.value?.prepare()
+const start = () => {
+  return options.value?.run()
+}
+
+const answered = (answer: unknown) => {
+  return options.value?.answered(answer as HangmanAnswer)
 }
 </script>
 
 <template>
   <Activity
     ref="activity"
+    v-model="answer"
     class="activity-hangman"
     :can-check="false"
-    @prepare="prepare"
+    @start="start"
+    @answered="answered"
   >
     <template
       v-for="(_, name) in $slots"
@@ -64,8 +82,8 @@ const prepare = () => {
     <Options
       ref="options"
       :word="word"
-      @right="right"
-      @wrong="wrong"
+      @right="onRight"
+      @wrong="onWrong"
     />
   </Activity>
 </template>

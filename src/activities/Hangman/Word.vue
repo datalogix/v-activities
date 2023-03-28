@@ -4,6 +4,7 @@ export interface HangmanWordProps {
   rights: string[]
 }
 
+const activity = useActivity()
 const props = defineProps<HangmanWordProps>()
 const letters = replace(props.word).toLocaleUpperCase().split('')
 </script>
@@ -21,7 +22,9 @@ const letters = replace(props.word).toLocaleUpperCase().split('')
       :key="letter"
       :class="{
         'activity-hangman-word-space': letter.trim() === '',
-        'border-b-2 activity-hangman-word-letter': letter.trim() !== ''
+        'border-b-2 activity-hangman-word-letter': letter.trim() !== '',
+        'opacity-30': activity.props.mode === 'preview',
+        '!opacity-100': rights.includes(letter)
       }"
       border-solid
       border-gray-300
@@ -35,7 +38,7 @@ const letters = replace(props.word).toLocaleUpperCase().split('')
       md:h-8
       lg:w-10
       lg:h-10
-      v-text="rights.includes(letter) ? letter : ''"
+      v-text="rights.includes(letter) || activity.props.mode === 'preview' ? letter : ''"
     />
   </div>
 </template>

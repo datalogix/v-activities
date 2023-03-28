@@ -5,40 +5,34 @@ import Color from './Color.vue'
 import LineWidth from './LineWidth.vue'
 import Alpha from './Alpha.vue'
 import Cursor from './Cursor.vue'
-import SVG from './SVG.vue'
-import Image from './Image.vue'
+import PaintSvg from './PaintSvg.vue'
+import PaintImage from './PaintImage.vue'
 
 export interface PaintProps {
   image: string,
+  imageToCompare?: string
   colors?: string[]
   erasers?: number[]
   lineWidths?: number[]
   alphas?: number[]
 }
 
+export interface PaintAnswer {
+  image: string
+}
+
 const props = defineProps<PaintProps>()
 const activity = ref<InstanceType<typeof Activity>>()
+const answer = ref<PaintAnswer>()
 const eraser = ref<InstanceType<typeof Eraser>>()
 const color = ref<InstanceType<typeof Color>>()
 const lineWidth = ref<InstanceType<typeof LineWidth>>()
 const alpha = ref<InstanceType<typeof Alpha>>()
-const svg = ref<InstanceType<typeof SVG>>()
-const image = ref<InstanceType<typeof Image>>()
-
-const isSVG = computed(() => props.image.split('.').pop() === 'svg')
-const painter = computed(() => isSVG.value ? svg.value : image.value)
-
-const save = () => {
-  painter.value?.save()
-}
-
-const print = () => {
-  painter.value?.print()
-}
-
-const init = () => {
-  painter.value?.init(activity.value?.loader.get(props.image))
-}
+const paintSvg = ref<InstanceType<typeof PaintSvg>>()
+const paintImage = ref<InstanceType<typeof PaintImage>>()
+const isSvg = computed(() => props.image.split('.').pop() === 'svg')
+const painter = computed(() => isSvg.value ? paintSvg.value : paintImage.value)
+const painted = ref<string | null>(null)
 
 const closeAll = (el: unknown = null) => {
   if (el !== eraser.value) eraser.value?.close()
@@ -47,23 +41,64 @@ const closeAll = (el: unknown = null) => {
   if (el !== lineWidth.value) lineWidth.value?.close()
 }
 
-const prepare = () => {
-  painter.value?.prepare()
-  eraser.value?.prepare()
-  color.value?.prepare()
-  lineWidth.value?.prepare()
-  alpha.value?.prepare()
+const init = () => {
+  // @ts-ignore
+  painter.value?.init(activity.value?.loader.get(props.image))
+}
+
+const start = () => {
+  answer.value = { image: '' }
+  painter.value?.start()
+  eraser.value?.start()
+  color.value?.start()
+  lineWidth.value?.start()
+  alpha.value?.start()
+}
+
+const answered = (_answer: unknown) => {
+  painted.value = (_answer as PaintAnswer).image
+}
+
+const check = async () => {
+  if (!props.imageToCompare || !painter.value) {
+    return null
+  }
+
+  try {
+    answer.value = {
+      image: String(painter.value.generateImage())
+    }
+
+    // @ts-ignore
+    await import('jimp/browser/lib/jimp')
+
+    // @ts-ignore
+    const jimp = window.Jimp
+    const image1 = await jimp.read(props.imageToCompare)
+    const image2 = await jimp.read(answer.value.image)
+    const diff = jimp.compareHashes(image1.pHash(), image2.pHash())
+
+    return activity.value?.store({
+      percentage: diff > 0.02 ? 0 : 100,
+      result: !(diff > 0.02)
+    })
+  } catch (e) {
+    return activity.value?.error(e)
+  }
 }
 </script>
 
 <template>
   <Activity
     ref="activity"
+    v-model="answer"
     class="activity-paint"
-    :can-check="false"
     :load="[props.image]"
+    :can-check="!!props.imageToCompare"
     @init="init"
-    @prepare="prepare"
+    @start="start"
+    @answered="answered"
+    @check="check"
   >
     <template
       v-for="(_, name) in $slots"
@@ -75,18 +110,14 @@ const prepare = () => {
       />
     </template>
 
-    <template #activity-actions>
-      <ButtonsSave
-        w-full
-        @click="save"
-      />
-      <ButtonsPrint
-        w-full
-        @click="print"
-      />
-    </template>
+    <img
+      v-if="painted"
+      :src="painted"
+      class="mx-auto"
+    >
 
     <Cursor
+      v-if="!painted"
       :eraser="eraser?.active"
       :color="color?.selected"
       :line-width="lineWidth?.selected"
@@ -100,7 +131,7 @@ const prepare = () => {
         justify-end
       >
         <Eraser
-          v-show="!isSVG"
+          v-show="!isSvg"
           ref="eraser"
           :options="erasers"
           @toggle="closeAll(eraser);eraser?.enable();"
@@ -116,7 +147,7 @@ const prepare = () => {
         />
 
         <LineWidth
-          v-show="!isSVG"
+          v-show="!isSvg"
           ref="lineWidth"
           :options="lineWidths"
           :color="color?.selected"
@@ -126,7 +157,7 @@ const prepare = () => {
         />
 
         <Alpha
-          v-show="!isSVG"
+          v-show="!isSvg"
           ref="alpha"
           :options="alphas"
           :color="color?.selected"
@@ -135,22 +166,43 @@ const prepare = () => {
         />
       </div>
 
-      <SVG
-        v-show="isSVG"
-        ref="svg"
-        :image="image"
+      <PaintSvg
+        v-show="isSvg"
+        ref="paintSvg"
         :color="color?.selected"
       />
 
-      <Image
-        v-show="!isSVG"
-        ref="image"
-        :image="image"
+      <PaintImage
+        v-show="!isSvg"
+        ref="paintImage"
         :eraser="eraser?.active ? eraser?.selected : undefined"
         :color="color?.selected"
         :line-width="lineWidth?.selected"
         :alpha="alpha?.selected"
       />
     </Cursor>
+
+    <template
+      v-if="!painted"
+      #activity-actions
+    >
+      <Action
+        class="activity-action-save"
+        text-white
+        bg-teal-500
+        icon="i-mdi-content-save"
+        text="Salvar"
+        @click="painter?.save()"
+      />
+
+      <Action
+        class="activity-action-print"
+        text-white
+        bg-purple-500
+        icon="i-mdi-printer"
+        text="Imprimir"
+        @click="painter?.print()"
+      />
+    </template>
   </Activity>
 </template>

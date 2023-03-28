@@ -5,6 +5,13 @@ export interface PaintLineWidthProps {
   options?: number[]
 }
 
+export type PaintLineWidthEmits = {
+  (e: 'open'): void
+  (e: 'close'): void
+  (e: 'toggle', openned: boolean): void
+  (e: 'select', selected: number): void
+}
+
 withDefaults(defineProps<PaintLineWidthProps>(), {
   color: '#000000',
   alpha: 1,
@@ -18,13 +25,7 @@ withDefaults(defineProps<PaintLineWidthProps>(), {
   ]
 })
 
-// eslint-disable-next-line func-call-spacing
-const emits = defineEmits<{
-  (e: 'open'): void
-  (e: 'close'): void
-  (e: 'toggle', openned: boolean): void
-  (e: 'select', selected: number): void
-}>()
+const emits = defineEmits<PaintLineWidthEmits>()
 
 const selected = ref<number>(4)
 const openned = ref<boolean>(false)
@@ -50,7 +51,7 @@ const select = (option: number) => {
   emits('select', selected.value)
 }
 
-const prepare = () => {
+const start = () => {
   selected.value = 4
 }
 
@@ -60,7 +61,7 @@ defineExpose({
   open,
   close,
   toggle,
-  prepare
+  start
 })
 </script>
 
