@@ -1,6 +1,42 @@
 # Changelog
 
 
+## v0.1.0
+
+[compare changes](https://undefined/undefined/compare/v0.0.6...v0.1.0)
+
+
+### 🩹 Fixes
+
+  - Border styles (3167b44)
+  - Load image (fc57cac)
+  - Grid type (d7de490)
+
+### 💅 Refactors
+
+  - Many changes (81ffaa8)
+
+### 📖 Documentation
+
+  - Update (246c171)
+  - Update logo (1b86042)
+  - Use defineAsyncComponent (3680e97)
+  - Update examples (a6a75c4)
+
+### 🏡 Chore
+
+  - Update deps (863baf4)
+  - Use presetWind (4450063)
+  - Update auto import (6ba9d58)
+  - Export all activities (06435d1)
+  - Update deps (cda6ce1)
+  - Update deps (50bcc44)
+  - Disable fill-in-the-blanks and drag-and-drop temporally (c3efd85)
+
+### ❤️  Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.0.6
 
 
