@@ -1,3 +1,6 @@
+import Activities from './activities/Activities.vue'
+import type { ActivitiesProps } from './activities/Activities.vue'
+
 import Activity from './activities/Activity.vue'
 import type { ActivityStatus, ActivityMode, ActivityResult, ActivityProps, ActivityStoreParams } from './activities/Activity.vue'
 
@@ -17,6 +20,9 @@ import 'uno.css'
 import './assets/style.scss'
 
 export {
+  Activities,
+  ActivitiesProps,
+
   Activity,
   ActivityStatus,
   ActivityMode,
