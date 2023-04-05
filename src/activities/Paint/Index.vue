@@ -46,11 +46,14 @@ const closeAll = (el: unknown = null) => {
 const init = () => {
   const content = activity.value?.loader.get(props.image)
 
-  if (typeof content === 'string' && (content.startsWith('data:image/svg+xml') || props.image.endsWith('.svg'))) {
+  if (
+    typeof content === 'string' &&
+    (content.startsWith('data:image/svg+xml') || props.image.toString().endsWith('.svg'))
+  ) {
     isSvg.value = true
 
     // @ts-ignore
-    return painter.value?.init(props.image.endsWith('.svg')
+    return painter.value?.init(props.image.toString().endsWith('.svg')
       ? content
       : Buffer.from(content.replace('data:image/svg+xml;base64,', ''), 'base64').toString()
     )
