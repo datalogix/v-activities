@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v0.2.0
+
+[compare changes](https://undefined/undefined/compare/v0.1.1...v0.2.0)
+
+
+### 💅 Refactors
+
+  - Many changes (11f2a1b)
+
+### ❤️  Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.1.1
 
 [compare changes](https://undefined/undefined/compare/v0.1.0...v0.1.1)
