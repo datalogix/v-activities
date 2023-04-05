@@ -2,50 +2,76 @@
 import type Header from '../components/Header.vue'
 import type Footer from '../components/Footer.vue'
 import type Confirmation from '../components/Confirmation.vue'
-import type Result from '../components/Result.vue'
+import type { MessageProps } from '../components/Message.vue'
 import type { ResultProps } from '../components/Result.vue'
+import type { LoaderKey } from '../composables/useLoader'
+import type { TimerParams } from '../components/Timer.vue'
+import type { ResetsParams } from '../components/Resets.vue'
 
-export type ActivityStatus = 'loading' | 'playing' | 'stopped' | 'dead' | 'error'
-
+export type ActivityStatus = 'loading' | 'playing' | 'stopped'
 export type ActivityMode = 'run' | 'preview' | 'answered'
-
+export type ActivityMessage = MessageProps
 export type ActivityResult = ResultProps
 
 export type ActivityProps = {
+  type: string
+  options: unknown
   modelValue: unknown
+  load?: LoaderKey[]
   mode?: ActivityMode
-  options?: unknown
-  statement?: string
-  background?: string
-  load?: string[]
   answer?: unknown
 
+  // Informations
+  statement?: string
+  instructions?: string
+  color?: string
+  background?: LoaderKey
+  message?: ActivityMessage
+
+  // Global Timer
+  globalStartTime?: number | string
+  globalMaxTime?: number | string
+  globalShowTimer?: boolean
+  globalCountdown?: boolean
+
   // Timer
-  countdown?: boolean
   startTime?: number | string
   maxTime?: number | string
   showTimer?: boolean
+  countdown?: boolean
 
-  // Lifes
-  usedResets?: number
+  // Resets
+  usedResets?: number | string
   maxResets?: number
   showResets?: boolean
 
   // Result
   showResult?: boolean
+  canShowCorrectAnswer?: boolean
   canBeEmpty?: boolean
 
   // Actions
   canRestart?: boolean
   canCheck?: boolean
+  canFinish?: boolean
   canExit?: boolean
 }
 
 export type ActivityStoreParams = ActivityProps & ActivityResult & {
-  duration: number
-  time: string
-  resets: number
-  answer: unknown
+  // global timer
+  globalDuration?: number
+  globalTime?: number
+  globalIsFinished?: boolean
+
+  // timer
+  duration?: number
+  time?: string
+  isFinished?: boolean
+
+  // resets
+  resets?: number
+  remaining?: number
+  isDead?: boolean
 }
 
 export type ActivityEmits = {
@@ -56,7 +82,6 @@ export type ActivityEmits = {
   (e: 'init'): void | Promise<void>
   (e: 'start'): void | Promise<void>
   (e: 'pause'): void | Promise<void>
-  (e: 'stop'): void | Promise<void>
 
   // modes
   (e: 'run'): void | Promise<void>
@@ -64,63 +89,87 @@ export type ActivityEmits = {
   (e: 'answered', answer: unknown): void | Promise<void>
 
   // actions
+  (e: 'dead'): void | Promise<void>
   (e: 'restart'): void | Promise<void>
   (e: 'check'): void | Promise<void>
   (e: 'store', params: ActivityStoreParams): void | Promise<void>
+  (e: 'finish'): void | Promise<void>
   (e: 'exit'): void | Promise<void>
 
+  // global timer
+  (e: 'global-timer-time', params: TimerParams): void | Promise<void>
+  (e: 'global-timer-play', params: TimerParams): void | Promise<void>
+  (e: 'global-timer-pause', params: TimerParams): void | Promise<void>
+  (e: 'global-timer-stop', params: TimerParams): void | Promise<void>
+  (e: 'global-timer-restart', params: TimerParams): void | Promise<void>
+  (e: 'global-timer-end', params: TimerParams): void | Promise<void>
+
   // timer
-  (e: 'timer-time', time: number): void | Promise<void>
-  (e: 'timer-play', time: number): void | Promise<void>
-  (e: 'timer-pause', time: number): void | Promise<void>
-  (e: 'timer-stop', time: number): void | Promise<void>
-  (e: 'timer-restart', time: number): void | Promise<void>
-  (e: 'timer-end', time: number): void | Promise<void>
+  (e: 'timer-time', params: TimerParams): void | Promise<void>
+  (e: 'timer-play', params: TimerParams): void | Promise<void>
+  (e: 'timer-pause', params: TimerParams): void | Promise<void>
+  (e: 'timer-stop', params: TimerParams): void | Promise<void>
+  (e: 'timer-restart', params: TimerParams): void | Promise<void>
+  (e: 'timer-end', params: TimerParams): void | Promise<void>
 
   // resets
-  (e: 'resets-increase', lifes: number): void | Promise<void>
-  (e: 'resets-decrease', lifes: number): void | Promise<void>
-  (e: 'resets-end', lifes: number): void | Promise<void>
+  (e: 'resets-increase', params: ResetsParams): void | Promise<void>
+  (e: 'resets-decrease', params: ResetsParams): void | Promise<void>
+  (e: 'resets-end', params: ResetsParams): void | Promise<void>
 }
 
 const props = withDefaults(defineProps<ActivityProps>(), {
   mode: 'run',
-  options: undefined,
-  statement: undefined,
-  background: undefined,
   load: () => [],
   answer: undefined,
 
+  // Informations
+  statement: undefined,
+  instructions: undefined,
+  color: undefined,
+  background: undefined,
+  message: undefined,
+
+  // Global Timer
+  globalStartTime: 0,
+  globalMaxTime: 0,
+  globalShowTimer: false,
+  globalCountdown: false,
+
   // Timer
-  countdown: false,
   startTime: 0,
   maxTime: 0,
-  showTimer: true,
+  showTimer: false,
+  countdown: false,
 
-  // Lifes
+  // Resets
   usedResets: 0,
-  maxResets: undefined,
+  maxResets: 0,
   showResets: false,
 
   // Result
   showResult: true,
+  canShowCorrectAnswer: false,
   canBeEmpty: true,
 
   // Actions
   canRestart: true,
   canCheck: true,
+  canFinish: true,
   canExit: true
 })
 
 const emits = defineEmits<ActivityEmits>()
-const loader = useLoader((props.background ? [props.background] : []).concat(...props.load))
+const loader = useLoader(((props.background ? [props.background] : []) as LoaderKey[]).concat(...props.load))
 const media = useMedia()
 const status = ref<ActivityStatus>('loading')
 const header = ref<InstanceType<typeof Header>>()
 const footer = ref<InstanceType<typeof Footer>>()
+const globalTimer = computed(() => header.value?.globalTimer)
 const timer = computed(() => header.value?.timer)
 const resets = computed(() => header.value?.resets)
 const confirmation = ref<InstanceType<typeof Confirmation>>()
+const message = ref<ActivityMessage>()
 const result = ref<ActivityResult>()
 
 onMounted(async () => {
@@ -129,122 +178,192 @@ onMounted(async () => {
   await media.load()
   await emits('init')
 
-  switch (props.mode) {
-    case 'run':
-      await start()
-      await emits('run')
-      break
-    case 'preview':
-      await start()
-      await emits('preview')
-      break
-    case 'answered':
-      await emits('answered', props.answer)
-      status.value = 'stopped'
-      break
+  props.message && openMessage(props.message)
+
+  if (props.mode === 'run') {
+    await start()
+    await emits('run')
+    return
   }
+
+  status.value = 'stopped'
+
+  if (props.mode === 'answered') {
+    await emits('answered', props.answer)
+    return
+  }
+
+  await emits('preview')
+
+  !props.message && openMessage({
+    type: 'warning',
+    content: 'Voce está no modo de pré-visualização!'
+  })
 })
 
-const openResult = (_result: ActivityResult) => {
-  result.value = _result
-  status.value = 'stopped'
+const openMessage = async (options: ActivityMessage) => {
+  message.value = options
 }
 
-const closeResult = () => {
+const closeMessage = async () => {
+  message.value = undefined
+
+  if (props.mode === 'preview' && status.value === 'stopped') {
+    await start()
+  }
+}
+
+const openResult = async (options: ActivityResult) => {
+  status.value = 'stopped'
+  result.value = options
+}
+
+const closeResult = async () => {
   result.value = undefined
 }
 
 const start = async () => {
-  closeResult()
+  await pause()
 
-  await media.stop()
+  if (resets.value?.isDead) {
+    return
+  }
+
+  await globalTimer.value?.play()
   await timer.value?.play()
-  await emits('start')
-
   status.value = 'playing'
+
+  return emits('start')
 }
 
 const pause = async () => {
+  await closeResult()
   await media.stop()
+  await globalTimer.value?.pause()
   await timer.value?.pause()
-  await emits('pause')
-
   status.value = 'loading'
+
+  return emits('pause')
 }
 
-const stop = async () => {
-  await media.stop()
-  await timer.value?.stop()
-  await emits('stop')
+const dead = async () => {
+  await pause()
 
-  status.value = 'dead'
+  if (props.canCheck) {
+    await check()
+  } else if (props.canFinish) {
+    await finish()
+  }
+
+  return emits('dead')
 }
 
 const restart = async () => {
   emits('update:modelValue', undefined)
 
   await resets.value?.increase()
-  await timer.value?.restart()
 
-  await emits('restart')
-  await start()
-}
-
-const check = async () => {
-  if (status.value !== 'playing') {
+  if (resets.value?.isDead) {
     return
   }
 
-  await media.stop()
+  await timer.value?.restart()
+  await start()
 
-  if (!props.canCheck) {
-    return store({ percentage: null, result: null })
+  return emits('restart')
+}
+
+const check = async () => {
+  await media.stop()
+  await confirmation.value?.close()
+
+  if (!props.canCheck || resets.value?.isDead) {
+    return store()
   }
 
-  if (props.modelValue === undefined && !timer.value?.isFinished) {
+  const ok = async () => {
+    await resets.value?.increase()
+    await pause()
+    return emits('check')
+  }
+
+  if (props.modelValue === undefined && !timer.value?.isFinished && !resets.value?.isDead) {
     return confirmation.value?.open({
-      message: 'Deseja realmente deixar a resposta em branco?',
-      ok: async () => {
-        await pause()
-        return emits('check')
-      },
+      title: 'Deseja realmente deixar a resposta em branco?',
+      ok,
       cancel: () => {
         status.value = 'playing'
       }
     })
   }
 
-  await pause()
-  return emits('check')
+  return ok()
 }
 
-const store = async (_result: ActivityResult) => {
+const store = async (resultOptions: ActivityResult|null = null) => {
   await pause()
 
-  if (props.showResult) {
-    openResult(_result)
+  if (props.showResult && resultOptions) {
+    await openResult(resultOptions)
   }
 
-  await emits('store', {
-    ...props,
-    ..._result,
+  const stored = { ...props }
+
+  delete stored.modelValue
+
+  return emits('store', {
+    ...stored,
+
+    // result
+    ...(resultOptions || {}),
+
+    // answer
+    answer: props.modelValue,
+
+    // global timer
+    globalDuration: globalTimer.value?.duration,
+    globalTime: globalTimer.value?.formattedTime,
+    globalIsFinished: globalTimer.value?.isFinished,
+
+    // timer
     duration: timer.value?.duration,
     time: timer.value?.formattedTime,
+    isFinished: timer.value?.isFinished,
+
+    // resets
     resets: resets.value?.used,
-    answer: props.modelValue
+    remaining: resets.value?.remaining,
+    isDead: resets.value?.isDead
   } as ActivityStoreParams)
+}
+
+const finish = async (force = false) => {
+  await media.stop()
+  await confirmation.value?.close()
+
+  const ok = async () => {
+    await pause()
+    return emits('finish')
+  }
+
+  if (resets.value?.isDead || force) {
+    return ok()
+  }
+
+  await confirmation.value?.open({
+    title: 'Deseja realmente finalizar?',
+    ok,
+    cancel: () => {
+      status.value = 'playing'
+    }
+  })
 }
 
 const exit = async () => {
   await media.stop()
 
-  if (status.value === 'dead') {
-    await pause()
-    return emits('exit')
-  }
-
-  confirmation.value?.open({
-    message: 'Deseja realmente sair?',
+  await confirmation.value?.open({
+    title: 'Deseja realmente sair?',
     ok: async () => {
       await pause()
       return emits('exit')
@@ -255,11 +374,6 @@ const exit = async () => {
   })
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const error = (e: unknown) => {
-  status.value = 'error'
-}
-
 const provideAndExpose = {
   instance: getCurrentInstance(),
   props,
@@ -268,20 +382,24 @@ const provideAndExpose = {
   status,
   header,
   footer,
+  globalTimer,
   timer,
   resets,
   confirmation,
+  message,
   result,
+  openMessage,
+  closeMessage,
   openResult,
   closeResult,
   start,
   pause,
-  stop,
+  dead,
   restart,
   check,
   store,
-  exit,
-  error
+  finish,
+  exit
 }
 
 provide('activity', provideAndExpose)
@@ -289,17 +407,7 @@ defineExpose(provideAndExpose)
 </script>
 
 <template>
-  <section
-    class="activity"
-    bg-center-center
-    bg-no-repeat
-    bg-cover
-    w-full
-    min-h-screen
-    relative
-    p-2
-    :style="background && { 'background-image': `url(${background})` }"
-  >
+  <Section :class="[`activity-${type}`]">
     <slot name="activity-header">
       <Header ref="header">
         <slot name="activity-logo" />
@@ -330,7 +438,7 @@ defineExpose(provideAndExpose)
     </slot>
 
     <slot
-      v-if="status === 'dead'"
+      v-if="resets?.isDead"
       name="activity-dead"
     >
       <Dead />
@@ -341,17 +449,17 @@ defineExpose(provideAndExpose)
     </slot>
 
     <slot
-      v-if="status === 'stopped' && result"
+      v-if="message"
+      name="activity-message"
+    >
+      <Message v-bind="message" />
+    </slot>
+
+    <slot
+      v-if="result"
       name="activity-result"
     >
       <Result v-bind="result" />
     </slot>
-
-    <slot
-      v-if="status === 'error'"
-      name="activity-error"
-    >
-      <Error />
-    </slot>
-  </section>
+  </Section>
 </template>

@@ -71,7 +71,9 @@ const check = () => {
     return null
   }
 
-  const percentage = grid.value.usedWords.length * 100 / grid.value.foundWords.length
+  const percentage = grid.value.foundWords.length
+    ? (grid.value.foundWords.length * 100 / grid.value.usedWords.length)
+    : 0
 
   const result = {
     right: grid.value.foundWords.length,
@@ -89,7 +91,8 @@ const check = () => {
   <Activity
     ref="activity"
     v-model="answer"
-    class="activity-word-search"
+    type="word-search"
+    :options="props"
     @start="start"
     @answered="answered"
     @check="check"

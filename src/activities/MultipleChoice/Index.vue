@@ -4,29 +4,33 @@ import Option from './Option.vue'
 
 export type MultipleChoiceValue = number[] | number | undefined
 
+export type MultipleChoiceType = 'checkbox' | 'radio'
+
+export type MultipleChoiceMarker = 'none' | 'number' | 'letter' | 'letter_uppercase'
+
 export type MultipleChoiceOption = {
   label: string
   value: number
 }
 
 export type MultipleChoiceAnswer = {
-  value: MultipleChoiceValue
+  selecteds: MultipleChoiceValue
   options: MultipleChoiceOption[]
 }
 
 export interface MultipleChoiceProps {
   options: MultipleChoiceOption[]
-  type?: 'checkbox' | 'radio'
+  type?: MultipleChoiceType
   cols?: number
   shuffle?: boolean
-  markerType?: boolean | 'number' | 'letter' | 'letter_uppercase'
+  markerType?: MultipleChoiceMarker
 }
 
 const props = withDefaults(defineProps<MultipleChoiceProps>(), {
   type: 'radio',
   cols: 1,
   shuffle: true,
-  markerType: false
+  markerType: 'none'
 })
 
 const activity = ref<InstanceType<typeof Activity>>()
@@ -34,10 +38,10 @@ const answer = ref<MultipleChoiceAnswer>()
 const answers = ref<MultipleChoiceValue>()
 const options = ref<MultipleChoiceOption[]>([])
 
-watch(answers, value => {
-  answer.value = (Array.isArray(value) ? value.length > 0 : value !== undefined)
+watch(answers, selecteds => {
+  answer.value = (Array.isArray(selecteds) ? selecteds.length > 0 : selecteds !== undefined)
     ? {
-        value,
+        selecteds,
         options: options.value
       }
     : undefined
@@ -49,7 +53,7 @@ const start = () => {
 }
 
 const answered = (_answer: unknown) => {
-  answers.value = (_answer as MultipleChoiceAnswer).value
+  answers.value = (_answer as MultipleChoiceAnswer).selecteds
   options.value = (_answer as MultipleChoiceAnswer).options
 }
 
@@ -85,7 +89,8 @@ const check = () => {
   <Activity
     ref="activity"
     v-model="answer"
-    class="activity-multiple-choice"
+    type="multiple-choice"
+    :options="props"
     @start="start"
     @answered="answered"
     @check="check"

@@ -23,6 +23,7 @@ const props = withDefaults(defineProps<WordSearchGridProps>(), {
   shuffle: true
 })
 
+const activity = useActivity()
 const emits = defineEmits<WordSearchGridEmits>()
 
 const words = props.words.map(item => ({
@@ -38,7 +39,6 @@ const foundTiles = ref<WordSearchGridPosition[]>([])
 const guess = ref<WordSearchGridPosition[]>([])
 const selectedRange = ref<{start: WordSearchGridPosition|null, end: WordSearchGridPosition|null}>({ start: null, end: null })
 const guessedWord = computed(() => guess.value.map(l => gridVal(l)).join(''))
-const activity = useActivity()
 
 const isAnswer = ({ x, y }: WordSearchGridPosition) => {
   return activity.props.mode === 'preview' &&

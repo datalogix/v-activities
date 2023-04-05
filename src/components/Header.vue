@@ -1,29 +1,41 @@
 <script setup lang="ts">
-import Timer from './Timer.vue'
-import Lifes from './Lifes.vue'
+import Timer, { type TimerParams } from './Timer.vue'
+import Resets, { type ResetsParams } from './Resets.vue'
 
-const { instance, props, stop, check } = useActivity()
+const { instance, props, openMessage, dead, check, finish, exit } = useActivity()
+const globalTimer = ref<InstanceType<typeof Timer>>()
 const timer = ref<InstanceType<typeof Timer>>()
-const resets = ref<InstanceType<typeof Lifes>>()
+const resets = ref<InstanceType<typeof Resets>>()
 
-const onTimerTime = (time: number) => instance.emit('timer-time', time)
-const onTimerPlay = (time: number) => instance.emit('timer-play', time)
-const onTimerPause = (time: number) => instance.emit('timer-pause', time)
-const onTimerStop = (time: number) => instance.emit('timer-stop', time)
-const onTimerRestart = (time: number) => instance.emit('timer-restart', time)
-const onTimerEnd = async (time: number) => {
-  await check()
-  await instance.emit('timer-end', time)
+const onGlobalTimerTime = (params: TimerParams) => instance.emit('global-timer-time', params)
+const onGlobalTimerPlay = (params: TimerParams) => instance.emit('global-timer-play', params)
+const onGlobalTimerPause = (params: TimerParams) => instance.emit('global-timer-pause', params)
+const onGlobalTimerStop = (params: TimerParams) => instance.emit('global-timer-stop', params)
+const onGlobalTimerRestart = (params: TimerParams) => instance.emit('global-timer-restart', params)
+const onGlobalTimerEnd = async (params: TimerParams) => {
+  await finish(true)
+  await instance.emit('global-timer-end', params)
 }
 
-const onResetsIncrease = (lifes: number) => instance.emit('resets-increase', lifes)
-const onResetsDecrease = (lifes: number) => instance.emit('resets-decrease', lifes)
-const onResetsEnd = async (lifes: number) => {
-  await stop()
-  await instance.emit('resets-end', lifes)
+const onTimerTime = (params: TimerParams) => instance.emit('timer-time', params)
+const onTimerPlay = (params: TimerParams) => instance.emit('timer-play', params)
+const onTimerPause = (params: TimerParams) => instance.emit('timer-pause', params)
+const onTimerStop = (params: TimerParams) => instance.emit('timer-stop', params)
+const onTimerRestart = (params: TimerParams) => instance.emit('timer-restart', params)
+const onTimerEnd = async (params: TimerParams) => {
+  await check()
+  await instance.emit('timer-end', params)
+}
+
+const onResetsIncrease = (params: ResetsParams) => instance.emit('resets-increase', params)
+const onResetsDecrease = (params: ResetsParams) => instance.emit('resets-decrease', params)
+const onResetsEnd = async (params: ResetsParams) => {
+  await dead()
+  await instance.emit('resets-end', params)
 }
 
 defineExpose({
+  globalTimer,
   timer,
   resets
 })
@@ -55,24 +67,58 @@ defineExpose({
     >
       <slot />
 
-      <slot name="timer">
-        <Timer
-          ref="timer"
-          :countdown="props.countdown"
-          :start="props.startTime"
-          :max="props.maxTime"
-          :show="props.showTimer"
-          @time="onTimerTime"
-          @play="onTimerPlay"
-          @pause="onTimerPause"
-          @stop="onTimerStop"
-          @restart="onTimerRestart"
-          @end="onTimerEnd"
-        />
-      </slot>
+      <div
+        v-show="props.globalShowTimer || props.showTimer"
+        flex
+        flex-col
+        items-center
+      >
+        <slot name="global-timer">
+          <Timer
+            ref="globalTimer"
+            :start="props.globalStartTime"
+            :max="props.globalMaxTime"
+            :show="props.globalShowTimer"
+            :countdown="props.globalCountdown"
+            @time="onGlobalTimerTime"
+            @play="onGlobalTimerPlay"
+            @pause="onGlobalTimerPause"
+            @stop="onGlobalTimerStop"
+            @restart="onGlobalTimerRestart"
+            @end="onGlobalTimerEnd"
+          />
+        </slot>
+
+        <slot name="timer">
+          <Timer
+            ref="timer"
+            :start="props.startTime"
+            :max="props.maxTime"
+            :show="props.showTimer"
+            :countdown="props.countdown"
+            @time="onTimerTime"
+            @play="onTimerPlay"
+            @pause="onTimerPause"
+            @stop="onTimerStop"
+            @restart="onTimerRestart"
+            @end="onTimerEnd"
+          >
+            <template
+              v-if="props.globalShowTimer"
+              #default="{ formattedTime }"
+            >
+              <span
+                ml-8
+                text-xs
+                v-text="formattedTime"
+              />
+            </template>
+          </Timer>
+        </slot>
+      </div>
 
       <slot name="resets">
-        <Lifes
+        <Resets
           ref="resets"
           :start="props.usedResets"
           :max="props.maxResets"
@@ -81,6 +127,59 @@ defineExpose({
           @decrease="onResetsDecrease"
           @end="onResetsEnd"
         />
+      </slot>
+
+      <slot
+        v-if="props.instructions"
+        name="instructions"
+      >
+        <button
+          type="button"
+          class="activity-button-instructions"
+          text-blue
+          bg-white
+          flex
+          items-center
+          justify-center
+          hover:opacity-70
+          @click="openMessage({ type: 'info', content: String(props.instructions) })"
+        >
+          <i
+            class="activity-button-instructions-icon"
+            i-mdi-info
+            w-8
+            h-8
+          />
+        </button>
+      </slot>
+
+      <slot
+        v-if="props.canExit"
+        name="close"
+      >
+        <button
+          type="button"
+          class="activity-button-close"
+          cursor-pointer
+          border-none
+          outline-none
+          rounded-full
+          text-white
+          bg-black
+          flex
+          items-center
+          justify-center
+          p-1
+          hover:opacity-70
+          @click="exit()"
+        >
+          <i
+            class="activity-button-close-icon"
+            i-mdi-close
+            w-4
+            h-4
+          />
+        </button>
       </slot>
     </div>
   </header>

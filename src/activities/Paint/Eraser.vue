@@ -99,7 +99,7 @@ defineExpose({
       rounded
       w-10
       h-10
-      @click="toggle"
+      @click="toggle()"
     >
       <i
         class="activity-paint-eraser-selector-icon"

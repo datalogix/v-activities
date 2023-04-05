@@ -2,9 +2,9 @@ import type { ComponentInternalInstance } from 'vue'
 import type Header from './components/Header.vue'
 import type Footer from './components/Footer.vue'
 import type Timer from './components/Timer.vue'
-import type Lifes from './components/Lifes.vue'
+import type Resets from './components/Resets.vue'
 import type Confirmation from './components/Confirmation.vue'
-import type { ActivityProps, ActivityStatus, ActivityResult } from '../activities/Activity.vue'
+import type { ActivityMessage, ActivityProps, ActivityStatus, ActivityResult } from '../activities/Activity.vue'
 
 export interface ActivityInject {
   instance: ComponentInternalInstance
@@ -14,20 +14,24 @@ export interface ActivityInject {
   status: ActivityStatus
   header: typeof Header
   footer: typeof Footer
+  globalTimer: typeof Timer
   timer: typeof Timer
-  resets: typeof Lifes
+  resets: typeof Resets
   confirmation: typeof Confirmation
+  message: ActivityMessage
   result: ActivityResult
+  openMessage: (message: ActivityMessage) => void | Promise<void>
+  closeMessage: () => void | Promise<void>
   openResult: (result: ActivityResult) => void | Promise<void>
   closeResult: () => void | Promise<void>
   start: () => void | Promise<void>
   pause: () => void | Promise<void>
-  stop: () => void | Promise<void>
+  dead: () => void | Promise<void>
   restart: () => void | Promise<void>
   check: () => void | Promise<void>
   store: (result: ActivityResult) => void | Promise<void>
+  finish: (force?: boolean) => void | Promise<void>
   exit: () => void | Promise<void>
-  error: () => void | Promise<void>
 }
 
 export function useActivity () {

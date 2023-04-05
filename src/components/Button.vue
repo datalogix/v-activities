@@ -1,6 +1,7 @@
 <script setup lang="ts">
 export interface ButtonProps {
-  disabled?: boolean
+  icon?: string
+  text?: string
 }
 
 defineProps<ButtonProps>()
@@ -9,7 +10,6 @@ defineProps<ButtonProps>()
 <template>
   <button
     class="activity-button"
-    :disabled="disabled"
     type="button"
     cursor-pointer
     rounded
@@ -25,7 +25,26 @@ defineProps<ButtonProps>()
     disabled:cursor-not-allowed
     disabled:bg-gray-300
     hover:opacity-70
+    w-full
+    text-base
+    md:text-lg
+    font-bold
+    p-2
+    md:p-4
   >
-    <slot />
+    <slot>
+      <i
+        v-if="icon"
+        class="activity-button-icon"
+        :class="icon"
+        w-6
+        h-6
+      />
+      <span
+        v-if="text"
+        class="activity-button-text"
+        v-text="text"
+      />
+    </slot>
   </button>
 </template>

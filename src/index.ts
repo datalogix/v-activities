@@ -2,7 +2,7 @@ import Activities from './activities/Activities.vue'
 import type { ActivitiesProps } from './activities/Activities.vue'
 
 import Activity from './activities/Activity.vue'
-import type { ActivityStatus, ActivityMode, ActivityResult, ActivityProps, ActivityStoreParams } from './activities/Activity.vue'
+import type { ActivityStatus, ActivityMode, ActivityMessage, ActivityResult, ActivityProps, ActivityStoreParams } from './activities/Activity.vue'
 
 import Hangman from './activities/Hangman/Index.vue'
 import type HangmanProps from './activities/Hangman/Index.vue'
@@ -26,6 +26,7 @@ export {
   Activity,
   ActivityStatus,
   ActivityMode,
+  ActivityMessage,
   ActivityResult,
   ActivityProps,
   ActivityStoreParams,

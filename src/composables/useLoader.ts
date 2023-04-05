@@ -1,17 +1,30 @@
+import { createHooks } from 'hookable'
+import type { Hookable, HookKeys, HookCallback } from 'hookable'
+
 import type { Fragment } from 'snapsvg'
 
-export type LoaderKey = string | Blob
+export type LoaderKey = undefined | string | Blob
 export type LoaderValue = HTMLImageElement | HTMLAudioElement | HTMLVideoElement | Fragment | ArrayBuffer | string | null
 
+export type Hooks = {
+  loaded: (item: LoaderKey, result: LoaderValue) => void
+}
+
 class Loader extends Map<LoaderKey, LoaderValue> {
+  hooks: Hookable<Hooks>
+
   constructor (items: LoaderKey[] = []) {
     super()
+    this.hooks = createHooks<Hooks>()
+    items.forEach(item => this.add(item))
+  }
 
-    items.forEach(item => this.set(item, null))
+  on (hook: HookKeys<Hooks>, callback: HookCallback) {
+    this.hooks.hook(hook, callback)
   }
 
   add (item: LoaderKey) {
-    if (!this.has(item)) {
+    if (item && !this.has(item)) {
       this.set(item, null)
     }
   }
@@ -23,10 +36,12 @@ class Loader extends Map<LoaderKey, LoaderValue> {
   async load (item: LoaderKey): Promise<LoaderValue> {
     let result = this.get(item)
 
-    if (result === null || result === undefined) {
+    if (!result) {
       result = await this.prepare(item)
 
       this.set(item, result)
+
+      this.hooks.callHook('loaded', item, result)
     }
 
     return result
@@ -34,6 +49,11 @@ class Loader extends Map<LoaderKey, LoaderValue> {
 
   prepare (item: LoaderKey): Promise<LoaderValue> {
     return new Promise((resolve, reject) => {
+      if (!item) {
+        resolve(null)
+        return
+      }
+
       if (item instanceof Blob) {
         const reader = new FileReader()
         reader.readAsDataURL(item as Blob)

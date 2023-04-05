@@ -1,11 +1,14 @@
 <template>
-  <Modal class="activity-dead">
+  <Modal
+    class="activity-dead"
+    z-60
+  >
     <template #header>
       <i
         class="activity-dead-icon"
         i-cil-face-dead
-        w-8
-        h-8
+        w-10
+        h-10
       />
       <span
         class="activity-dead-title"

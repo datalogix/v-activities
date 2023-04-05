@@ -7,8 +7,8 @@
       <i
         class="activity-loading-icon"
         i-eos-icons-bubble-loading
-        w-8
-        h-8
+        w-10
+        h-10
       />
       <span
         class="activity-loading-title"

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import printJS from 'print-js'
-
 export interface PaintImagePosition {
   x?: number
   y?: number
@@ -146,18 +144,6 @@ const generateImage = () => {
   return canvas.value.toDataURL('image/png')
 }
 
-const save = () => {
-  const a = document.createElement('a')
-  a.setAttribute('download', 'colorize.png')
-  a.setAttribute('href', String(generateImage()))
-  a.setAttribute('target', '_blank')
-  a.click()
-}
-
-const print = () => {
-  printJS({ printable: generateImage(), type: 'image' })
-}
-
 const init = (content: HTMLImageElement) => {
   img.value = content
 
@@ -191,8 +177,6 @@ const start = () => {
 defineExpose({
   init,
   start,
-  save,
-  print,
   generateImage
 })
 </script>

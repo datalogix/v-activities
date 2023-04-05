@@ -43,8 +43,10 @@
   "dependencies": {
     "@vueuse/core": "^9.13.0",
     "arrows-svg": "^1.5.6",
+    "buffer": "^6.0.3",
     "change-case": "^4.1.2",
     "eve": "^0.5.4",
+    "hookable": "^5.5.3",
     "jimp": "^0.22.7",
     "lodash.shuffle": "^4.2.0",
     "print-js": "^1.6.0",
@@ -54,7 +56,7 @@
     "@cypress/vite-dev-server": "^5.0.5",
     "@cypress/vue": "^5.0.5",
     "@cypress/webpack-dev-server": "^3.4.0",
-    "@iconify/json": "^2.2.42",
+    "@iconify/json": "^2.2.45",
     "@types/jsdom": "^21.1.1",
     "@types/lodash.shuffle": "^4.2.7",
     "@types/node": "^18.15.11",
@@ -82,7 +84,7 @@
     "unplugin-vue-components": "^0.24.1",
     "vite": "^4.2.1",
     "vite-plugin-eslint": "^1.8.1",
-    "vitepress": "^1.0.0-alpha.64",
+    "vitepress": "^1.0.0-alpha.65",
     "vitest": "^0.29.8",
     "vue": "^3.2.47",
     "vue-tsc": "^1.2.0"
@@ -90,5 +92,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "packageManager": "pnpm@8.1.0"
+  "packageManager": "pnpm@8.1.1"
 }

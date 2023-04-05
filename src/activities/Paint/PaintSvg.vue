@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import 'eve'
 import Snap from 'snapsvg'
-import printJS from 'print-js'
 
 export interface PaintSvgProps {
   color?: string
@@ -19,33 +18,6 @@ const generateImage = () => {
   )
 
   return URL.createObjectURL(blob)
-}
-
-const save = () => {
-  const canvasTemp = document.createElement('canvas')
-  const a = document.createElement('a')
-  const context = canvasTemp.getContext('2d')
-
-  const image = new Image()
-  image.src = String(generateImage())
-  image.onload = () => {
-    canvasTemp.width = 800
-    canvasTemp.height = 400
-
-    if (context) {
-      context.clearRect(0, 0, canvasTemp.width, canvasTemp.height)
-      context.drawImage(image, 0, 0)
-    }
-
-    a.setAttribute('download', 'paint.png')
-    a.setAttribute('href', canvasTemp.toDataURL('image/png'))
-    a.setAttribute('target', '_blank')
-    a.click()
-  }
-}
-
-const print = () => {
-  printJS({ printable: 'svg', type: 'html' })
 }
 
 const init = (content: string) => {
@@ -71,8 +43,6 @@ const start = () => {
 defineExpose({
   init,
   start,
-  save,
-  print,
   generateImage
 })
 </script>

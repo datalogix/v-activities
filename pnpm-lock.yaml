@@ -7,12 +7,18 @@ dependencies:
   arrows-svg:
     specifier: ^1.5.6
     version: 1.5.6
+  buffer:
+    specifier: ^6.0.3
+    version: 6.0.3
   change-case:
     specifier: ^4.1.2
     version: 4.1.2
   eve:
     specifier: ^0.5.4
     version: 0.5.4
+  hookable:
+    specifier: ^5.5.3
+    version: 5.5.3
   jimp:
     specifier: ^0.22.7
     version: 0.22.7
@@ -37,8 +43,8 @@ devDependencies:
     specifier: ^3.4.0
     version: 3.4.0(webpack@5.77.0)
   '@iconify/json':
-    specifier: ^2.2.42
-    version: 2.2.42
+    specifier: ^2.2.45
+    version: 2.2.45
   '@types/jsdom':
     specifier: ^21.1.1
     version: 21.1.1
@@ -121,7 +127,7 @@ devDependencies:
     specifier: ^1.8.1
     version: 1.8.1(eslint@8.37.0)(vite@4.2.1)
   vitepress:
-    specifier: ^1.0.0-alpha.64
+    specifier: ^1.0.0-alpha.65
     version: 1.0.0-draft.1(@algolia/client-search@4.16.0)(sass@1.60.0)
   vitest:
     specifier: ^0.29.8
@@ -686,8 +692,8 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@iconify/json@2.2.42:
-    resolution: {integrity: sha512-CLZHgcBIqNuy9lRwHjuvFb++OcqJFjJmr5Rg8MZ8Dc/hfcpU9L5IW4O3oB2UPQecXMKswZLoamfFajBAt03igw==}
+  /@iconify/json@2.2.45:
+    resolution: {integrity: sha512-gSCDDAHnjCMN/n3BUStVS30Z375o/I++kQBLJy4n93FoL0Xv+UjQYcRo8+Vfjz0/Zw/bm8UdLIQbbxvblHafeA==}
     dependencies:
       '@iconify/types': 2.0.0
       pathe: 1.1.0
@@ -2647,6 +2653,13 @@ packages:
     dependencies:
       base64-js: 1.5.1
       ieee754: 1.2.1
+
+  /buffer@6.0.3:
+    resolution: {integrity: sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==}
+    dependencies:
+      base64-js: 1.5.1
+      ieee754: 1.2.1
+    dev: false
 
   /builtins@5.0.1:
     resolution: {integrity: sha512-qwVpFEHNfhYJIzNRBvd2C1kyo6jz3ZSMPyyuR47OPdiKWlbYnZNyDWuyR175qDnAJLiCo5fBBqPb3RiXgWlkOQ==}
@@ -4704,6 +4717,10 @@ packages:
     dependencies:
       capital-case: 1.0.4
       tslib: 2.5.0
+    dev: false
+
+  /hookable@5.5.3:
+    resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==}
     dev: false
 
   /hpack.js@2.1.6:

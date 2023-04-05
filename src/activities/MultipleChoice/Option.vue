@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { MultipleChoiceValue } from './Index.vue'
+import type { MultipleChoiceValue, MultipleChoiceType, MultipleChoiceMarker } from './Index.vue'
 
 export interface MultipleChoiceOptionProps {
-  markerType?: boolean | 'number' | 'letter' | 'letter_uppercase'
+  markerType?: MultipleChoiceMarker
   position: number
-  type?: 'checkbox' | 'radio'
+  type?: MultipleChoiceType
   label: string
   value: number
   modelValue: MultipleChoiceValue
@@ -17,7 +17,7 @@ export type MultipleChoiceOptionEmits = {
 const activity = useActivity()
 
 const props = withDefaults(defineProps<MultipleChoiceOptionProps>(), {
-  markerType: false,
+  markerType: 'none',
   type: 'radio'
 })
 
@@ -51,6 +51,10 @@ const checked = computed(() => {
 })
 
 const markerText = computed(() => {
+  if (props.markerType === 'none') {
+    return false
+  }
+
   if (props.markerType === 'letter') {
     return `${LETTERS[props.position].toLocaleLowerCase()}.`
   }
@@ -73,7 +77,7 @@ const markerText = computed(() => {
     w-full
   >
     <label
-      v-if="markerType"
+      v-if="markerText"
       class="activity-multiple-choice-option-number"
       text-lg
       text-right

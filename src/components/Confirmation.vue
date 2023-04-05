@@ -9,13 +9,13 @@ export interface ConfirmationOptions {
 const openned = ref<boolean>(false)
 const options = reactive<ConfirmationOptions>({})
 
-const open = (opts: ConfirmationOptions = {}) => {
+const open = async (opts: ConfirmationOptions = {}) => {
   Object.assign(options, opts)
 
   openned.value = true
 }
 
-const close = () => {
+const close = async () => {
   openned.value = false
 }
 
@@ -24,7 +24,7 @@ const ok = async () => {
     await options.ok()
   }
 
-  close()
+  await close()
 }
 
 const cancel = async () => {
@@ -32,7 +32,7 @@ const cancel = async () => {
     await options.cancel()
   }
 
-  close()
+  await close()
 }
 
 defineExpose({
@@ -51,9 +51,9 @@ defineExpose({
     <template #header>
       <i
         class="activity-confirmation-icon"
-        i-mdi-alert-outline
-        w-8
-        h-8
+        i-mdi-warning-outline
+        w-10
+        h-10
       />
       <span
         class="activity-confirmation-title"
@@ -64,7 +64,8 @@ defineExpose({
 
     <slot>
       <div
-        class="my-10"
+        class="activity-confirmation-content"
+        my-10
         v-html="options.message"
       />
     </slot>
@@ -76,24 +77,24 @@ defineExpose({
         grid-cols-2
         gap-4
       >
-        <Action
+        <Button
           v-if="options.cancel"
-          class="activity-action-ok"
+          class="activity-confirmation-ok"
           text-white
           bg-green-500
           icon="i-mdi-check"
           text="Ok"
-          @click="ok"
+          @click="ok()"
         />
 
-        <Action
+        <Button
           v-if="options.cancel"
-          class="activity-action-cancel"
+          class="activity-confirmation-cancel"
           text-white
           bg-red-500
           icon="i-mdi-close"
           text="Cancelar"
-          @click="cancel"
+          @click="cancel()"
         />
       </div>
     </template>

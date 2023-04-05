@@ -84,7 +84,7 @@ defineExpose({
       rounded-xl
       w-10
       h-10
-      @click="toggle"
+      @click="toggle()"
     >
       <i
         :class="{

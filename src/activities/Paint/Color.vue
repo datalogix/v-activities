@@ -92,7 +92,7 @@ defineExpose({
       rounded
       w-10
       h-10
-      @click="toggle"
+      @click="toggle()"
     >
       <i
         :style="`color: ${!['#fff', '#ffffff'].includes(selected.toLocaleLowerCase()) ? '#fff' : '#000'};`"

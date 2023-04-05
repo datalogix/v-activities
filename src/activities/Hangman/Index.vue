@@ -17,7 +17,7 @@ export interface HangmanProps {
   levels?: string[]
 }
 
-defineProps<HangmanProps>()
+const props = defineProps<HangmanProps>()
 
 const activity = ref<InstanceType<typeof Activity>>()
 const answer = ref<HangmanAnswer>()
@@ -44,8 +44,8 @@ const start = () => {
   return options.value?.run()
 }
 
-const answered = (answer: unknown) => {
-  return options.value?.answered(answer as HangmanAnswer)
+const answered = (_answer: unknown) => {
+  return options.value?.answered(_answer as HangmanAnswer)
 }
 </script>
 
@@ -53,7 +53,8 @@ const answered = (answer: unknown) => {
   <Activity
     ref="activity"
     v-model="answer"
-    class="activity-hangman"
+    type="hangman"
+    :options="props"
     :can-check="false"
     @start="start"
     @answered="answered"

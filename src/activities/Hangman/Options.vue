@@ -98,7 +98,7 @@ run()
     gap-2
     mx-auto
   >
-    <Button
+    <button
       v-for="option in options"
       :key="option"
       :disabled="isDisabled(option)"
@@ -106,8 +106,13 @@ run()
       :class="{
         'activity-hangman-option-disabled': isDisabled(option),
         'activity-hangman-option-enabled': !isDisabled(option),
-        'activity-hangman-option-answered !cursor-not-allowed': activity.props.mode === 'answered'
+        'activity-hangman-option-answered !cursor-not-allowed': activity.props.mode === 'answered',
+        'hover:bg-blue-300': activity.props.mode !== 'answered'
       }"
+      type="button"
+      cursor-pointer
+      outline-none
+      rounded
       border
       border-solid
       uppercase
@@ -121,9 +126,13 @@ run()
       md:h-12
       lg:w-14
       lg:h-14
+      transition-all
+      disabled:bg-gray-300
+      disabled:hover:bg-gray-300
+      disabled:cursor-not-allowed
       @click="onSelect(option)"
     >
       {{ option }}
-    </Button>
+    </button>
   </transition-group>
 </template>

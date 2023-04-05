@@ -87,7 +87,7 @@ defineExpose({
       rounded
       w-10
       h-10
-      @click="toggle"
+      @click="toggle()"
     >
       <div
         class="activity-paint-line-width-selector-line"

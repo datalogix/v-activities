@@ -17,10 +17,10 @@
       px-10
       rounded-xl
       shadow-xl
-      max-w-lg
       m-4
     >
       <header
+        v-if="$slots.header"
         class="activity-modal-header"
         flex
         items-center
@@ -29,11 +29,17 @@
         <slot name="header" />
       </header>
 
-      <main class="activity-modal-main">
+      <main
+        v-if="$slots.default"
+        class="activity-modal-main"
+      >
         <slot />
       </main>
 
-      <footer class="activity-modal-footer">
+      <footer
+        v-if="$slots.footer"
+        class="activity-modal-footer"
+      >
         <slot name="footer" />
       </footer>
     </div>

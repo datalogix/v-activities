@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Buffer } from 'buffer'
+import printJS from 'print-js'
 import Activity from '../Activity.vue'
 import Eraser from './Eraser.vue'
 import Color from './Color.vue'
@@ -30,7 +32,7 @@ const lineWidth = ref<InstanceType<typeof LineWidth>>()
 const alpha = ref<InstanceType<typeof Alpha>>()
 const paintSvg = ref<InstanceType<typeof PaintSvg>>()
 const paintImage = ref<InstanceType<typeof PaintImage>>()
-const isSvg = computed(() => props.image.split('.').pop() === 'svg')
+const isSvg = ref(false)
 const painter = computed(() => isSvg.value ? paintSvg.value : paintImage.value)
 const painted = ref<string | null>(null)
 
@@ -42,8 +44,32 @@ const closeAll = (el: unknown = null) => {
 }
 
 const init = () => {
-  // @ts-ignore
-  painter.value?.init(activity.value?.loader.get(props.image))
+  const content = activity.value?.loader.get(props.image)
+
+  if (typeof content === 'string' && (content.startsWith('data:image/svg+xml') || props.image.endsWith('.svg'))) {
+    isSvg.value = true
+
+    // @ts-ignore
+    return painter.value?.init(props.image.endsWith('.svg')
+      ? content
+      : Buffer.from(content.replace('data:image/svg+xml;base64,', ''), 'base64').toString()
+    )
+  }
+
+  if (content instanceof HTMLImageElement) {
+    isSvg.value = false
+    // @ts-ignore
+    return painter.value?.init(content)
+  }
+
+  if (typeof content === 'string') {
+    isSvg.value = false
+
+    const img = new Image()
+    // @ts-ignore
+    img.onload = () => painter.value?.init(img)
+    img.src = content
+  }
 }
 
 const start = () => {
@@ -64,6 +90,12 @@ const check = async () => {
     return null
   }
 
+  const imageToCompareContent = activity.value?.loader.get(props.imageToCompare)
+
+  if (imageToCompareContent === null || imageToCompareContent === undefined) {
+    return null
+  }
+
   try {
     answer.value = {
       image: String(painter.value.generateImage())
@@ -74,7 +106,7 @@ const check = async () => {
 
     // @ts-ignore
     const jimp = window.Jimp
-    const image1 = await jimp.read(props.imageToCompare)
+    const image1 = await jimp.read(imageToCompareContent)
     const image2 = await jimp.read(answer.value.image)
     const diff = jimp.compareHashes(image1.pHash(), image2.pHash())
 
@@ -82,9 +114,46 @@ const check = async () => {
       percentage: diff > 0.02 ? 0 : 100,
       result: !(diff > 0.02)
     })
-  } catch (e) {
-    return activity.value?.error(e)
+  } catch (error) {
+    return activity.value?.openMessage({
+      type: 'error',
+      content: String(error)
+    })
   }
+}
+
+const save = () => {
+  const img = new Image()
+  img.src = String(painter.value?.generateImage())
+  img.onload = async () => {
+    const canvasTemp = document.createElement('canvas')
+    const context = canvasTemp.getContext('2d')
+
+    canvasTemp.width = 800
+    canvasTemp.height = 400
+
+    if (context) {
+      context.clearRect(0, 0, canvasTemp.width, canvasTemp.height)
+      context.drawImage(img, 0, 0)
+    }
+
+    const image = canvasTemp.toDataURL('image/png')
+    const a = document.createElement('a')
+
+    a.setAttribute('download', 'paint.png')
+    a.setAttribute('href', image)
+    a.setAttribute('target', '_blank')
+    a.click()
+
+    answer.value = { image }
+
+    await activity.value?.store()
+    await activity.value?.start()
+  }
+}
+
+const print = () => {
+  printJS({ printable: painter.value?.generateImage(), type: 'image' })
 }
 </script>
 
@@ -92,8 +161,9 @@ const check = async () => {
   <Activity
     ref="activity"
     v-model="answer"
-    class="activity-paint"
-    :load="[props.image]"
+    type="paint"
+    :options="props"
+    :load="[props.image, props.imageToCompare]"
     :can-check="!!props.imageToCompare"
     @init="init"
     @start="start"
@@ -186,22 +256,22 @@ const check = async () => {
       v-if="!painted"
       #activity-actions
     >
-      <Action
-        class="activity-action-save"
+      <Button
+        class="activity-button-save"
         text-white
         bg-teal-500
         icon="i-mdi-content-save"
         text="Salvar"
-        @click="painter?.save()"
+        @click="save()"
       />
 
-      <Action
-        class="activity-action-print"
+      <Button
+        class="activity-button-print"
         text-white
         bg-purple-500
         icon="i-mdi-printer"
         text="Imprimir"
-        @click="painter?.print()"
+        @click="print()"
       />
     </template>
   </Activity>
