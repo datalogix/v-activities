@@ -93,9 +93,9 @@ const check = async () => {
     return null
   }
 
-  const imageToCompareContent = activity.value?.loader.get(props.imageToCompare)
+  const compareContent = activity.value?.loader.get(props.imageToCompare)
 
-  if (imageToCompareContent === null || imageToCompareContent === undefined) {
+  if (compareContent === null || compareContent === undefined) {
     return null
   }
 
@@ -109,7 +109,7 @@ const check = async () => {
 
     // @ts-ignore
     const jimp = window.Jimp
-    const image1 = await jimp.read(imageToCompareContent)
+    const image1 = await jimp.read(compareContent instanceof HTMLImageElement ? compareContent.src : compareContent)
     const image2 = await jimp.read(answer.value.image)
     const diff = jimp.compareHashes(image1.pHash(), image2.pHash())
 
