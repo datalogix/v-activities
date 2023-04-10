@@ -78,7 +78,6 @@ defineExpose({
         gap-4
       >
         <Button
-          v-if="options.cancel"
           class="activity-confirmation-ok"
           text-white
           bg-green-500
@@ -88,7 +87,6 @@ defineExpose({
         />
 
         <Button
-          v-if="options.cancel"
           class="activity-confirmation-cancel"
           text-white
           bg-red-500
