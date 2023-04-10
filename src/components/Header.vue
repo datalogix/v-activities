@@ -45,18 +45,17 @@ defineExpose({
   <header
     class="activity-header"
     relative
-    w-full
     container
     max-w-5xl
+    w-full
+    z-30
+    mx-auto
     flex
     justify-center
     items-center
-    mx-auto
-    z-10
   >
     <div
       flex
-      bg-white
       gap-4
       px-4
       py-1
