@@ -1,6 +1,31 @@
 # Changelog
 
 
+## v0.2.1
+
+[compare changes](https://undefined/undefined/compare/v0.2.0...v0.2.1)
+
+
+### 🩹 Fixes
+
+  - Detect image as svg (cd99a8e)
+  - Check image content (f75a838)
+  - Confirmation actions (cb7ab0b)
+  - Don't change status when cancel confirmation (b94b1cd)
+  - Always display header (1aba33a)
+
+### 🏡 Chore
+
+  - Update deps (718218d)
+
+### ✅ Tests
+
+  - Update (b0fdbee)
+
+### ❤️  Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.2.0
 
 [compare changes](https://undefined/undefined/compare/v0.1.1...v0.2.0)
