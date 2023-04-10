@@ -350,26 +350,21 @@ const finish = async (force = false) => {
     return ok()
   }
 
-  await confirmation.value?.open({
+  return confirmation.value?.open({
     title: 'Deseja realmente finalizar?',
-    ok,
-    cancel: () => {
-      status.value = 'playing'
-    }
+    ok
   })
 }
 
 const exit = async () => {
   await media.stop()
+  await confirmation.value?.close()
 
-  await confirmation.value?.open({
+  return confirmation.value?.open({
     title: 'Deseja realmente sair?',
     ok: async () => {
       await pause()
       return emits('exit')
-    },
-    cancel: () => {
-      status.value = 'playing'
     }
   })
 }
