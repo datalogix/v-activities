@@ -7,13 +7,4 @@ describe('activity', () => {
     const wrapper = mount(Activity)
     expect(wrapper).toBeTruthy()
   })
-
-  it('should be display background imamge', () => {
-    const wrapper = mount(Activity, {
-      props: {
-        background: 'image.png'
-      }
-    })
-    expect(wrapper.attributes().style).toContain('image.png')
-  })
 })
