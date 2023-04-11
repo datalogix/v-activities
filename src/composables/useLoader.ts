@@ -90,7 +90,6 @@ class Loader extends Map<LoaderKey, LoaderValue> {
 
       fetch(url, {
         method: 'GET',
-        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json'
