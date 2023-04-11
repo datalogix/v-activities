@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v0.2.2
+
+[compare changes](https://undefined/undefined/compare/v0.2.1...v0.2.2)
+
+
+### 🩹 Fixes
+
+  - Loader cors (1c71942)
+
+### 📦 Build
+
+  - Add `variablePrefix` (afcfdcb)
+
+### ❤️  Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.2.1
 
 [compare changes](https://undefined/undefined/compare/v0.2.0...v0.2.1)
