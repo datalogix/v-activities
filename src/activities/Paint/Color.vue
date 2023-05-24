@@ -1,7 +1,7 @@
 <script setup lang="ts">
-export interface PaintColorProps {
+export type PaintColorProps = {
   alpha?: number
-  options?: string[]
+  colors?: string[]
 }
 
 export type PaintColorEmits = {
@@ -13,7 +13,7 @@ export type PaintColorEmits = {
 
 withDefaults(defineProps<PaintColorProps>(), {
   alpha: 1,
-  options: () => [
+  colors: () => [
     '#000000', // black
     '#ffffff', // white
     '#ed213a', // red
@@ -49,9 +49,9 @@ const toggle = () => {
   emits('toggle', openned.value)
 }
 
-const select = (option: string) => {
+const select = (color: string) => {
   close()
-  selected.value = option
+  selected.value = color
   emits('select', selected.value)
 }
 
@@ -119,10 +119,10 @@ defineExpose({
       p-2
     >
       <button
-        v-for="option in options"
-        :key="option"
-        :style="`background-color: ${option}`"
-        class="activity-paint-color-option"
+        v-for="color in colors"
+        :key="color"
+        :style="`background-color: ${color}`"
+        class="activity-paint-color-item"
         type="button"
         cursor-pointer
         mx-auto
@@ -135,7 +135,7 @@ defineExpose({
         rounded
         w-10
         h-10
-        @click="select(option)"
+        @click="select(color)"
       />
     </div>
   </div>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-export interface PaintLineWidthProps {
+export type PaintLineWidthProps = {
   color?: string
   alpha?: number
-  options?: number[]
+  lineWidths?: number[]
 }
 
 export type PaintLineWidthEmits = {
@@ -15,7 +15,7 @@ export type PaintLineWidthEmits = {
 withDefaults(defineProps<PaintLineWidthProps>(), {
   color: '#000000',
   alpha: 1,
-  options: () => [
+  lineWidths: () => [
     2,
     4,
     6,
@@ -45,9 +45,9 @@ const toggle = () => {
   emits('toggle', openned.value)
 }
 
-const select = (option: number) => {
+const select = (lineWidth: number) => {
   close()
-  selected.value = option
+  selected.value = lineWidth
   emits('select', selected.value)
 }
 
@@ -114,9 +114,9 @@ defineExpose({
       p-2
     >
       <button
-        v-for="option in options"
-        :key="option"
-        class="activity-paint-line-width-option"
+        v-for="lineWidth in lineWidths"
+        :key="lineWidth"
+        class="activity-paint-line-width-item"
         type="button"
         cursor-pointer
         mx-auto
@@ -130,11 +130,11 @@ defineExpose({
         rounded
         w-10
         h-10
-        @click="select(option)"
+        @click="select(lineWidth)"
       >
         <div
-          class="activity-paint-line-width-option-line"
-          :style="`background-color: ${color}; width: ${option}px; opacity: ${alpha};`"
+          class="activity-paint-line-width-item-line"
+          :style="`background-color: ${color}; width: ${lineWidth}px; opacity: ${alpha};`"
           border
           border-solid
           border-gray-300

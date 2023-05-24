@@ -1,11 +1,11 @@
 <script setup lang="ts">
-export interface ResetsProps {
+export type ResetsProps = {
   start?: number | string
   max?: number
   show?: boolean
 }
 
-export interface ResetsParams {
+export type ResetsParams = {
   used: number,
   remaining: number,
   isDead: boolean

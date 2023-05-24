@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { MultipleChoiceValue, MultipleChoiceType, MultipleChoiceMarker } from './Index.vue'
 
-export interface MultipleChoiceOptionProps {
+export type MultipleChoiceOptionProps = {
   markerType?: MultipleChoiceMarker
   position: number
   type?: MultipleChoiceType
@@ -79,6 +79,9 @@ const markerText = computed(() => {
     <label
       v-if="markerText"
       class="activity-multiple-choice-option-number"
+      :class="{
+        '!cursor-not-allowed': activity.props.mode === 'answered',
+      }"
       text-lg
       text-right
       font-semibold
@@ -88,6 +91,9 @@ const markerText = computed(() => {
     <input
       :id="`awnser${position}`"
       class="activity-multiple-choice-option-input"
+      :class="{
+        '!cursor-not-allowed': activity.props.mode === 'answered',
+      }"
       w-16
       scale-120
       :type="type"
@@ -98,6 +104,9 @@ const markerText = computed(() => {
     >
     <label
       class="activity-multiple-choice-option-label"
+      :class="{
+        '!cursor-not-allowed': activity.props.mode === 'answered',
+      }"
       flex-1
       :for="`awnser${position}`"
       v-html="label"

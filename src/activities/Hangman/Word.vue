@@ -1,5 +1,5 @@
 <script setup lang="ts">
-export interface HangmanWordProps {
+export type HangmanWordProps = {
   word: string
   rights: string[]
 }

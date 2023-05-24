@@ -7,7 +7,7 @@ import level5 from './levels/5.png'
 import level6 from './levels/6.png'
 import level7 from './levels/7.png'
 
-export interface HangmanLevelProps {
+export type HangmanLevelProps = {
   current?: number
   levels?: string[]
 }

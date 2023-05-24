@@ -1,12 +1,12 @@
 <script setup lang="ts">
-export interface TimerProps {
+export type TimerProps = {
   start?: number|string
   max?: number|string
   show?: boolean
   countdown?: boolean
 }
 
-export interface TimerParams {
+export type TimerParams = {
   start: number
   max: number
   time: number

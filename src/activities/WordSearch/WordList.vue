@@ -1,5 +1,5 @@
 <script setup lang="ts">
-export interface WordSearchWordListProps {
+export type WordSearchWordListProps = {
   words: string[]
   selected: string[]
 }

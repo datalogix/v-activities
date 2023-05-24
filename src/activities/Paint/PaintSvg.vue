@@ -2,7 +2,7 @@
 import 'eve'
 import Snap from 'snapsvg'
 
-export interface PaintSvgProps {
+export type PaintSvgProps = {
   color?: string
 }
 

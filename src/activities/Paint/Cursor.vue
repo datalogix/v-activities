@@ -1,5 +1,5 @@
 <script setup lang="ts">
-export interface PaintCursorProps {
+export type PaintCursorProps = {
   eraser?: boolean
   color?: string
   alpha?: number

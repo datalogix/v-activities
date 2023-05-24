@@ -10,7 +10,7 @@ import Cursor from './Cursor.vue'
 import PaintSvg from './PaintSvg.vue'
 import PaintImage from './PaintImage.vue'
 
-export interface PaintProps {
+export type PaintProps = {
   image: string,
   imageToCompare?: string
   colors?: string[]
@@ -19,7 +19,7 @@ export interface PaintProps {
   alphas?: number[]
 }
 
-export interface PaintAnswer {
+export type PaintAnswer = {
   image: string
 }
 
@@ -76,6 +76,7 @@ const init = () => {
 }
 
 const start = () => {
+  activity.value?.filled()
   answer.value = { image: '' }
   painter.value?.start()
   eraser.value?.start()
@@ -84,8 +85,8 @@ const start = () => {
   alpha.value?.start()
 }
 
-const answered = (_answer: unknown) => {
-  painted.value = (_answer as PaintAnswer).image
+const answered = (_answer: PaintAnswer) => {
+  painted.value = _answer.image
 }
 
 const check = async () => {
@@ -206,14 +207,14 @@ const print = () => {
         <Eraser
           v-show="!isSvg"
           ref="eraser"
-          :options="erasers"
+          :erasers="erasers"
           @toggle="closeAll(eraser);eraser?.enable();"
           @select="closeAll()"
         />
 
         <Color
           ref="color"
-          :options="colors"
+          :colors="colors"
           :alpha="alpha?.selected"
           @toggle="closeAll(color);eraser?.disable();"
           @select="closeAll()"
@@ -222,7 +223,7 @@ const print = () => {
         <LineWidth
           v-show="!isSvg"
           ref="lineWidth"
-          :options="lineWidths"
+          :line-widths="lineWidths"
           :color="color?.selected"
           :alpha="alpha?.selected"
           @toggle="closeAll(lineWidth);eraser?.disable();"
@@ -232,7 +233,7 @@ const print = () => {
         <Alpha
           v-show="!isSvg"
           ref="alpha"
-          :options="alphas"
+          :alphas="alphas"
           :color="color?.selected"
           @toggle="closeAll(alpha);eraser?.disable();"
           @select="closeAll()"

@@ -1,44 +1,44 @@
 <script setup lang="ts">
 import type { HangmanAnswer } from './Index.vue'
 
-export interface HangmanOptionsProps {
+export type HangmanItemsProps = {
   word: string
 }
 
-export type HangmanOptionsEmits = {
-  (e: 'right', params: HangmanAnswer): Promise<void>
-  (e: 'wrong', params: HangmanAnswer): Promise<void>
+export type HangmanItemsEmits = {
+  (e: 'right', params: HangmanAnswer): void
+  (e: 'wrong', params: HangmanAnswer): void
 }
 
+const props = defineProps<HangmanItemsProps>()
+const emits = defineEmits<HangmanItemsEmits>()
 const activity = useActivity()
-const props = defineProps<HangmanOptionsProps>()
-const emits = defineEmits<HangmanOptionsEmits>()
-const MAX_OPTIONS = 20
+const MAX_ITEMS = 20
 const unique = ref<string[]>(Array.from(new Set(replace(props.word, '', { space: false }).toLocaleUpperCase().split(''))))
-const options = ref<string[]>([])
+const items = ref<string[]>([])
 const used = ref<string[]>([])
 const right = ref<string[]>([])
 const wrong = ref<string[]>([])
 
-const isDisabled = (option: string) => {
-  return used.value.includes(option)
+const isDisabled = (item: string) => {
+  return used.value.includes(item)
 }
 
-const onSelect = (option: string) => {
-  if (isDisabled(option) || activity.props.mode === 'answered') {
+const select = (item: string) => {
+  if (isDisabled(item) || activity.props.mode === 'answered') {
     return
   }
 
-  if (!used.value.includes(option)) {
-    used.value.push(option)
+  if (!used.value.includes(item)) {
+    used.value.push(item)
   }
 
-  if (!unique.value.includes(option)) {
-    if (!wrong.value.includes(option)) {
-      wrong.value.push(option)
+  if (!unique.value.includes(item)) {
+    if (!wrong.value.includes(item)) {
+      wrong.value.push(item)
 
       emits('wrong', {
-        options: options.value,
+        items: items.value,
         unique: unique.value,
         used: used.value,
         right: right.value,
@@ -48,11 +48,11 @@ const onSelect = (option: string) => {
     return
   }
 
-  if (!right.value.includes(option)) {
-    right.value.push(option)
+  if (!right.value.includes(item)) {
+    right.value.push(item)
 
     emits('right', {
-      options: options.value,
+      items: items.value,
       unique: unique.value,
       used: used.value,
       right: right.value,
@@ -61,35 +61,35 @@ const onSelect = (option: string) => {
   }
 }
 
-const run = () => {
-  options.value = shuffle(generateUniqueStringFromString(unique.value.join(''), MAX_OPTIONS).split(''))
+const start = () => {
+  items.value = shuffle(generateUniqueStringFromString(unique.value.join(''), MAX_ITEMS).split(''))
   used.value = []
   right.value = []
   wrong.value = []
 }
 
 const answered = (answer: HangmanAnswer) => {
-  options.value = answer.options
+  items.value = answer.items
+  unique.value = answer.unique
   used.value = answer.used
   right.value = answer.right
   wrong.value = answer.wrong
 }
 
 defineExpose({
+  items,
   unique,
   used,
   right,
   wrong,
-  run,
+  start,
   answered
 })
-
-run()
 </script>
 
 <template>
   <transition-group
-    class="activity-hangman-options"
+    class="activity-hangman-items"
     tag="div"
     max-w-2xl
     flex
@@ -99,14 +99,14 @@ run()
     mx-auto
   >
     <button
-      v-for="option in options"
-      :key="option"
-      :disabled="isDisabled(option)"
-      class="activity-hangman-option"
+      v-for="item in items"
+      :key="item"
+      :disabled="isDisabled(item)"
+      class="activity-hangman-item"
       :class="{
-        'activity-hangman-option-disabled': isDisabled(option),
-        'activity-hangman-option-enabled': !isDisabled(option),
-        'activity-hangman-option-answered !cursor-not-allowed': activity.props.mode === 'answered',
+        'activity-hangman-item-disabled': isDisabled(item),
+        'activity-hangman-item-enabled': !isDisabled(item),
+        '!cursor-not-allowed': activity.props.mode === 'answered',
         'hover:bg-blue-300': activity.props.mode !== 'answered'
       }"
       type="button"
@@ -130,9 +130,9 @@ run()
       disabled:bg-gray-300
       disabled:hover:bg-gray-300
       disabled:cursor-not-allowed
-      @click="onSelect(option)"
+      @click="select(item)"
     >
-      {{ option }}
+      {{ item }}
     </button>
   </transition-group>
 </template>

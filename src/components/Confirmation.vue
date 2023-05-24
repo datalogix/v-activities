@@ -1,5 +1,5 @@
 <script setup lang="ts">
-export interface ConfirmationOptions {
+export type ConfirmationOptions = {
   title?: string
   message?: string
   ok?: () => void | Promise<void>

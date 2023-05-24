@@ -6,13 +6,13 @@ export type WordSearchGridPosition = {
   y: number
 }
 
-export interface WordSearchGridProps {
+export type WordSearchGridProps = {
   size: number
   words: WordSearchWord[]
   shuffle?: boolean
 }
 
-export interface WordSearchGridEmits {
+export type WordSearchGridEmits = {
   (e: 'right', word: string): void
   (e: 'wrong', word: string, invertedWord: string): void
   (e: 'complete'): void
@@ -86,7 +86,7 @@ const gridVal = ({ x, y }: WordSearchGridPosition) => {
   return ''
 }
 
-const onWordSelectStart = ({ x, y }: WordSearchGridPosition) => {
+const wordSelectStart = ({ x, y }: WordSearchGridPosition) => {
   if (activity.props.mode === 'answered') {
     return
   }
@@ -94,7 +94,7 @@ const onWordSelectStart = ({ x, y }: WordSearchGridPosition) => {
   selectedRange.value.start = { x, y }
 }
 
-const onWordSelectUpdate = (event: Event, { x, y }: WordSearchGridPosition) => {
+const wordSelectUpdate = (event: Event, { x, y }: WordSearchGridPosition) => {
   if (selectedRange.value.start === null || activity.props.mode === 'answered') {
     return
   }
@@ -347,11 +347,10 @@ defineExpose({
       <div
         class="activity-word-search-letter"
         :class="{
-          'bg-green-100 activity-word-search-letter-answered': isAnswer({ x, y }),
+          'bg-green-100 activity-word-search-letter-preview': isAnswer({ x, y }),
           '!bg-blue-300 activity-word-search-letter-highlighted': isTileHighlighted({ x, y }),
           '!bg-green-300 activity-word-search-letter-selected': isTileAFoundWordTile({ x, y }),
-          'cursor-pointer': activity.props.mode !== 'answered',
-          'cursor-not-allowed': activity.props.mode === 'answered'
+          '!cursor-not-allowed': activity.props.mode === 'answered',
         }"
         uppercase
         w-8
@@ -369,12 +368,13 @@ defineExpose({
         border
         border-solid
         border-gray-300
-        @mousedown.prevent="onWordSelectStart({ x, y })"
-        @mouseup="(e) => onWordSelectUpdate(e, { x, y })"
-        @mousemove="(e) => onWordSelectUpdate(e, { x, y })"
-        @touchstart.prevent.passive="onWordSelectStart({ x, y })"
-        @touchend.passive="(e) => onWordSelectUpdate(e, { x, y })"
-        @touchmove.passive="(e) => onWordSelectUpdate(e, { x, y })"
+        cursor-pointer
+        @mousedown.prevent="wordSelectStart({ x, y })"
+        @mouseup="(e) => wordSelectUpdate(e, { x, y })"
+        @mousemove="(e) => wordSelectUpdate(e, { x, y })"
+        @touchstart.prevent.passive="wordSelectStart({ x, y })"
+        @touchend.passive="(e) => wordSelectUpdate(e, { x, y })"
+        @touchmove.passive="(e) => wordSelectUpdate(e, { x, y })"
         v-text="gridVal({ x, y })"
       />
     </div>

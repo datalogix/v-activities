@@ -1,5 +1,5 @@
 <script setup lang="ts">
-export interface ButtonProps {
+export type ButtonProps = {
   icon?: string
   text?: string
 }

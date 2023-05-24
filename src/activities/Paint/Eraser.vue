@@ -1,6 +1,6 @@
 <script setup lang="ts">
-export interface PaintEraserProps {
-  options?: number[]
+export type PaintEraserProps = {
+  erasers?: number[]
 }
 
 export type PaintEraserEmits = {
@@ -13,7 +13,7 @@ export type PaintEraserEmits = {
 }
 
 withDefaults(defineProps<PaintEraserProps>(), {
-  options: () => [
+  erasers: () => [
     4,
     6,
     8,
@@ -43,9 +43,9 @@ const toggle = () => {
   emits('toggle', openned.value)
 }
 
-const select = (option: number) => {
+const select = (eraser: number) => {
   close()
-  selected.value = option
+  selected.value = eraser
   emits('select', selected.value)
 }
 
@@ -125,9 +125,9 @@ defineExpose({
       p-2
     >
       <button
-        v-for="option in options"
-        :key="option"
-        class="activity-paint-eraser-option"
+        v-for="eraser in erasers"
+        :key="eraser"
+        class="activity-paint-eraser-item"
         type="button"
         cursor-pointer
         mx-auto
@@ -141,11 +141,11 @@ defineExpose({
         rounded
         w-10
         h-10
-        @click="select(option)"
+        @click="select(eraser)"
       >
         <i
-          class="activity-paint-eraser-option-icon"
-          :style="`width: ${option * 2}px; height: ${option * 2}px;`"
+          class="activity-paint-eraser-item-icon"
+          :style="`width: ${eraser * 2}px; height: ${eraser * 2}px;`"
           i-mdi-eraser
         />
       </button>

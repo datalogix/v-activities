@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import * as All from '../'
 
-export interface ActivitiesProps {
+export type ActivitiesProps = {
   model: string,
 }
 

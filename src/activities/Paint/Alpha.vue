@@ -1,7 +1,7 @@
 <script setup lang="ts">
-export interface PaintAlphaProps {
+export type PaintAlphaProps = {
   color?: string
-  options?: number[]
+  alphas?: number[]
 }
 
 export type PaintAlphaEmits = {
@@ -13,7 +13,7 @@ export type PaintAlphaEmits = {
 
 withDefaults(defineProps<PaintAlphaProps>(), {
   color: '#000000',
-  options: () => [
+  alphas: () => [
     0.2,
     0.4,
     0.6,
@@ -42,9 +42,9 @@ const toggle = () => {
   emits('toggle', openned.value)
 }
 
-const select = (option: number) => {
+const select = (alpha: number) => {
   close()
-  selected.value = option
+  selected.value = alpha
   emits('select', selected.value)
 }
 
@@ -112,10 +112,10 @@ defineExpose({
       p-2
     >
       <button
-        v-for="option in options"
-        :key="option"
-        class="activity-paint-alpha-option"
-        :style="`background-color: ${color}; opacity: ${option};`"
+        v-for="alpha in alphas"
+        :key="alpha"
+        class="activity-paint-alpha-item"
+        :style="`background-color: ${color}; opacity: ${alpha};`"
         type="button"
         cursor-pointer
         mx-auto
@@ -129,7 +129,7 @@ defineExpose({
         rounded
         w-10
         h-10
-        @click="select(option)"
+        @click="select(alpha)"
       />
     </div>
   </div>

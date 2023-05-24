@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { MaybeElementRef } from '@vueuse/core'
+import type { MaybeComputedElementRef } from '@vueuse/core'
 
 const { props, header, footer } = useActivity()
 const { height } = useWindowSize()
 
-const headerSize = useElementSize(header as unknown as MaybeElementRef, undefined, { box: 'border-box' })
-const footerSize = useElementSize(footer as unknown as MaybeElementRef, undefined, { box: 'border-box' })
+const headerSize = useElementSize(header as unknown as MaybeComputedElementRef, undefined, { box: 'border-box' })
+const footerSize = useElementSize(footer as unknown as MaybeComputedElementRef, undefined, { box: 'border-box' })
 const space = computed(() => headerSize.height.value + footerSize.height.value + 10)
 </script>
 

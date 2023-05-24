@@ -7,29 +7,29 @@ const globalTimer = ref<InstanceType<typeof Timer>>()
 const timer = ref<InstanceType<typeof Timer>>()
 const resets = ref<InstanceType<typeof Resets>>()
 
-const onGlobalTimerTime = (params: TimerParams) => instance.emit('global-timer-time', params)
-const onGlobalTimerPlay = (params: TimerParams) => instance.emit('global-timer-play', params)
-const onGlobalTimerPause = (params: TimerParams) => instance.emit('global-timer-pause', params)
-const onGlobalTimerStop = (params: TimerParams) => instance.emit('global-timer-stop', params)
-const onGlobalTimerRestart = (params: TimerParams) => instance.emit('global-timer-restart', params)
-const onGlobalTimerEnd = async (params: TimerParams) => {
+const globalTimerTime = (params: TimerParams) => instance.emit('global-timer-time', params)
+const globalTimerPlay = (params: TimerParams) => instance.emit('global-timer-play', params)
+const globalTimerPause = (params: TimerParams) => instance.emit('global-timer-pause', params)
+const globalTimerStop = (params: TimerParams) => instance.emit('global-timer-stop', params)
+const globalTimerRestart = (params: TimerParams) => instance.emit('global-timer-restart', params)
+const globalTimerEnd = async (params: TimerParams) => {
   await finish(true)
   await instance.emit('global-timer-end', params)
 }
 
-const onTimerTime = (params: TimerParams) => instance.emit('timer-time', params)
-const onTimerPlay = (params: TimerParams) => instance.emit('timer-play', params)
-const onTimerPause = (params: TimerParams) => instance.emit('timer-pause', params)
-const onTimerStop = (params: TimerParams) => instance.emit('timer-stop', params)
-const onTimerRestart = (params: TimerParams) => instance.emit('timer-restart', params)
-const onTimerEnd = async (params: TimerParams) => {
+const timerTime = (params: TimerParams) => instance.emit('timer-time', params)
+const timerPlay = (params: TimerParams) => instance.emit('timer-play', params)
+const timerPause = (params: TimerParams) => instance.emit('timer-pause', params)
+const timerStop = (params: TimerParams) => instance.emit('timer-stop', params)
+const timerRestart = (params: TimerParams) => instance.emit('timer-restart', params)
+const timerEnd = async (params: TimerParams) => {
   await check()
   await instance.emit('timer-end', params)
 }
 
-const onResetsIncrease = (params: ResetsParams) => instance.emit('resets-increase', params)
-const onResetsDecrease = (params: ResetsParams) => instance.emit('resets-decrease', params)
-const onResetsEnd = async (params: ResetsParams) => {
+const resetsIncrease = (params: ResetsParams) => instance.emit('resets-increase', params)
+const resetsDecrease = (params: ResetsParams) => instance.emit('resets-decrease', params)
+const resetsEnd = async (params: ResetsParams) => {
   await dead()
   await instance.emit('resets-end', params)
 }
@@ -79,12 +79,12 @@ defineExpose({
             :max="props.globalMaxTime"
             :show="props.globalShowTimer"
             :countdown="props.globalCountdown"
-            @time="onGlobalTimerTime"
-            @play="onGlobalTimerPlay"
-            @pause="onGlobalTimerPause"
-            @stop="onGlobalTimerStop"
-            @restart="onGlobalTimerRestart"
-            @end="onGlobalTimerEnd"
+            @time="globalTimerTime"
+            @play="globalTimerPlay"
+            @pause="globalTimerPause"
+            @stop="globalTimerStop"
+            @restart="globalTimerRestart"
+            @end="globalTimerEnd"
           />
         </slot>
 
@@ -95,12 +95,12 @@ defineExpose({
             :max="props.maxTime"
             :show="props.showTimer"
             :countdown="props.countdown"
-            @time="onTimerTime"
-            @play="onTimerPlay"
-            @pause="onTimerPause"
-            @stop="onTimerStop"
-            @restart="onTimerRestart"
-            @end="onTimerEnd"
+            @time="timerTime"
+            @play="timerPlay"
+            @pause="timerPause"
+            @stop="timerStop"
+            @restart="timerRestart"
+            @end="timerEnd"
           >
             <template
               v-if="props.globalShowTimer"
@@ -122,9 +122,9 @@ defineExpose({
           :start="props.usedResets"
           :max="props.maxResets"
           :show="props.showResets"
-          @increase="onResetsIncrease"
-          @decrease="onResetsDecrease"
-          @end="onResetsEnd"
+          @increase="resetsIncrease"
+          @decrease="resetsDecrease"
+          @end="resetsEnd"
         />
       </slot>
 

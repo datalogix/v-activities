@@ -1,10 +1,10 @@
 <script setup lang="ts">
-export interface PaintImagePosition {
+export type PaintImagePosition = {
   x?: number
   y?: number
 }
 
-export interface PaintImagePoint {
+export type PaintImagePoint = {
   x: number
   y: number
   dx: number
@@ -14,7 +14,7 @@ export interface PaintImagePoint {
   alpha: number
 }
 
-export interface PaintImageProps {
+export type PaintImageProps = {
   eraser?: number
   color?: string
   lineWidth?: number
