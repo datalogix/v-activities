@@ -34,7 +34,7 @@ const props = withDefaults(defineProps<WordSearchProps>(), {
 const activity = ref<InstanceType<typeof Activity>>()
 const answer = ref<WordSearchAnswer>()
 const grid = ref<InstanceType<typeof Grid>>()
-const words = props.words.map((word) => {
+const _words = props.words.map((word) => {
   if (typeof word === 'string') {
     return {
       word,
@@ -109,7 +109,7 @@ const check = () => {
     <Grid
       ref="grid"
       :size="size"
-      :words="words"
+      :words="_words"
       :shuffle="shuffle"
       @right="activity?.filled()"
       @wrong="activity?.filled()"

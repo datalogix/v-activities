@@ -23,7 +23,7 @@ export type MemoryGameProps = {
 const props = defineProps<MemoryGameProps>()
 const activity = ref<InstanceType<typeof Activity>>()
 const answer = ref<MemorGameAnswer>()
-const items = ref<InstanceType<typeof Items>>()
+const itemsRef = ref<InstanceType<typeof Items>>()
 
 const select = (item: MemoryGameItem) => {
   activity.value?.filled()
@@ -33,7 +33,7 @@ const select = (item: MemoryGameItem) => {
 const right = (item1: MemoryGameItem, item2: MemoryGameItem) => {
   answer.value?.right.push(item1, item2)
 
-  if (answer.value?.right.length === items.value?.items.length) {
+  if (answer.value?.right.length === itemsRef.value?.items.length) {
     activity.value?.store({ percentage: 100, result: true })
   }
 }
@@ -45,10 +45,10 @@ const wrong = (item1: MemoryGameItem, item2: MemoryGameItem) => {
 }
 
 const start = () => {
-  items.value?.start()
+  itemsRef.value?.start()
 
   answer.value = {
-    items: items.value!.items,
+    items: itemsRef.value!.items,
     selecteds: [],
     right: [],
     wrong: []
@@ -56,7 +56,7 @@ const start = () => {
 }
 
 const answered = (_answer: MemorGameAnswer) => {
-  return items.value?.answered(_answer)
+  return itemsRef.value?.answered(_answer)
 }
 </script>
 
@@ -81,7 +81,7 @@ const answered = (_answer: MemorGameAnswer) => {
     </template>
 
     <Items
-      ref="items"
+      ref="itemsRef"
       :items="props.items"
       :timeout="timeout"
       :duration="duration"

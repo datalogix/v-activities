@@ -14,7 +14,7 @@ export type ConnectTheDotsItemsEmits = {
 const props = defineProps<ConnectTheDotsItemsProps>()
 const emits = defineEmits<ConnectTheDotsItemsEmits>()
 const activity = useActivity()
-const items = ref(props.items)
+const _items = ref(props.items)
 const itemsRef = ref<InstanceType<typeof Item>[]>([])
 const selected = ref<InstanceType<typeof Item>>()
 
@@ -34,7 +34,7 @@ const select = (item: ConnectTheDotsItem) => {
 }
 
 const clear = () => {
-  items.value = shuffle(items.value)
+  _items.value = shuffle(_items.value)
 
   if (selected.value) {
     selected.value.clear()
@@ -43,8 +43,8 @@ const clear = () => {
   selected.value = undefined
 }
 
-const answered = (_items: ConnectTheDotsItem[]) => {
-  items.value = _items
+const answered = (answer: ConnectTheDotsItem[]) => {
+  _items.value = answer
 }
 
 const find = (item: ConnectTheDotsItem) => {
@@ -55,7 +55,7 @@ defineExpose({
   answered,
   find,
   selected,
-  items,
+  items: _items,
   clear
 })
 </script>
@@ -71,7 +71,7 @@ defineExpose({
     gap-2
   >
     <Item
-      v-for="item in items"
+      v-for="item in _items"
       ref="itemsRef"
       :key="item.value"
       :item="item"

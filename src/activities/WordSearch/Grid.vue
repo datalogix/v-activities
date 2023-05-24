@@ -26,11 +26,12 @@ const props = withDefaults(defineProps<WordSearchGridProps>(), {
 const activity = useActivity()
 const emits = defineEmits<WordSearchGridEmits>()
 
-const words = props.words.map(item => ({
+const _words = props.words.map(item => ({
   ...item,
   word: replace(item.word, '', { space: false }).toLocaleUpperCase()
 }))
-const size = Math.max(props.size, ...words.map(item => item.word.length), words.length)
+
+const _size = Math.max(props.size, ..._words.map(item => item.word.length), _words.length)
 const usedWords = ref<string[]>([])
 const foundWords = ref<string[]>([])
 const letterGrid = ref<string[][]>([])
@@ -192,15 +193,15 @@ const wordSelectUpdate = (event: Event, { x, y }: WordSearchGridPosition) => {
 }
 
 const build = () => {
-  letterGrid.value = [...Array(size)].map(() => Array(size))
-  gridWord.value = [...Array(size)].map(() => Array(size))
+  letterGrid.value = [...Array(_size)].map(() => Array(_size))
+  gridWord.value = [...Array(_size)].map(() => Array(_size))
   usedWords.value = []
   foundWords.value = []
   foundTiles.value = []
   guess.value = []
 
-  Array.from(props.shuffle ? shuffle(words) : words).forEach(({ word, invert, diagonal }) => {
-    if (word.length > size) {
+  Array.from(props.shuffle ? shuffle(_words) : _words).forEach(({ word, invert, diagonal }) => {
+    if (word.length > _size) {
       return
     }
 
@@ -218,8 +219,8 @@ const build = () => {
         return
       }
 
-      x = Math.floor(Math.random() * size)
-      y = Math.floor(Math.random() * size)
+      x = Math.floor(Math.random() * _size)
+      y = Math.floor(Math.random() * _size)
       dx = 0
       dy = 0
       isValid = false
@@ -257,13 +258,13 @@ const build = () => {
       try {
         const endX = x + (dx * word.length)
 
-        if (endX < 0 || endX > size) {
+        if (endX < 0 || endX > _size) {
           throw new Error('Word exceeds width')
         }
 
         const endY = y + (dy * word.length)
 
-        if (endY < 0 || endY > size) {
+        if (endY < 0 || endY > _size) {
           throw new Error('Word exceeds height')
         }
 
@@ -295,17 +296,17 @@ const build = () => {
     }
   })
 
-  const generateCharOptions = generateOptionsFromString(words.map(item => item.word).join(''))
+  const generateCharOptions = generateOptionsFromString(_words.map(item => item.word).join(''))
 
-  for (let y = 0; y < size; y += 1) {
-    for (let x = 0; x < size; x += 1) {
+  for (let y = 0; y < _size; y += 1) {
+    for (let x = 0; x < _size; x += 1) {
       if (letterGrid.value[y][x] === undefined) {
         letterGrid.value[y][x] = generateChar(generateCharOptions)
       }
     }
   }
 
-  if (usedWords.value.length !== words.length) {
+  if (usedWords.value.length !== _words.length) {
     build()
   }
 }
@@ -331,7 +332,7 @@ defineExpose({
 
 <template>
   <div
-    v-for="(r, y) in size"
+    v-for="(r, y) in _size"
     :key="`row_${y}`"
     flex
     flex-wrap
@@ -339,7 +340,7 @@ defineExpose({
     class="activity-word-search-row"
   >
     <div
-      v-for="(c, x) in size"
+      v-for="(c, x) in _size"
       :key="`row_${y}_col_${x}`"
       tag="div"
       class="activity-word-search-col"

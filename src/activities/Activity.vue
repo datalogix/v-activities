@@ -169,7 +169,7 @@ const globalTimer = computed(() => header.value?.globalTimer)
 const timer = computed(() => header.value?.timer)
 const resets = computed(() => header.value?.resets)
 const confirmation = ref<InstanceType<typeof Confirmation>>()
-const message = ref<ActivityMessage>()
+const _message = ref<ActivityMessage>()
 const result = ref<ActivityResult>()
 const isEmpty = ref<boolean>(true)
 
@@ -204,11 +204,11 @@ onMounted(async () => {
 })
 
 const openMessage = async (activityMessage: ActivityMessage) => {
-  message.value = activityMessage
+  _message.value = activityMessage
 }
 
 const closeMessage = async () => {
-  message.value = undefined
+  _message.value = undefined
 
   if (props.mode === 'preview' && status.value === 'stopped') {
     await start()
@@ -394,7 +394,7 @@ const provideAndExpose = {
   timer,
   resets,
   confirmation,
-  message,
+  message: _message,
   result,
   openMessage,
   closeMessage,
@@ -459,10 +459,10 @@ defineExpose(provideAndExpose)
     </slot>
 
     <slot
-      v-if="message"
+      v-if="_message"
       name="activity-message"
     >
-      <Message v-bind="message" />
+      <Message v-bind="_message" />
     </slot>
 
     <slot

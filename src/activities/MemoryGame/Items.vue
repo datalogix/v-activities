@@ -20,7 +20,7 @@ const activity = useActivity()
 const itemsRef = ref<InstanceType<typeof Item>[]>([])
 const item1 = ref<InstanceType<typeof Item>>()
 const item2 = ref<InstanceType<typeof Item>>()
-const items = ref<MemoryGameItem[]>([
+const _items = ref<MemoryGameItem[]>([
   ...props.items,
   ...props.items.map(item => ({ value: item.related, related: item.value }))
 ])
@@ -84,11 +84,11 @@ const start = () => {
   itemsRef.value.forEach(ref => ref.reset())
   item1.value = undefined
   item2.value = undefined
-  items.value = shuffle(items.value)
+  _items.value = shuffle(_items.value)
 }
 
 const answered = (answer: MemorGameAnswer) => {
-  items.value = answer.items
+  _items.value = answer.items
 
   answer.selecteds.forEach(selected => {
     const item = itemsRef.value.find(i => i.item.value === selected.value)
@@ -101,7 +101,7 @@ const answered = (answer: MemorGameAnswer) => {
 }
 
 defineExpose({
-  items,
+  items: _items,
   start,
   answered
 })
@@ -113,17 +113,17 @@ defineExpose({
       tag="div"
       class="activity-memory-game-items"
       :class="{
-        flex: items.length % 3 !== 0 && items.length % 4 !== 0,
-        grid: items.length % 3 === 0 || items.length % 4 === 0,
-        'flex-wrap': items.length % 3 !== 0 && items.length % 4 !== 0,
-        'grid-cols-3': items.length % 3 === 0,
-        'grid-cols-4': items.length % 4 === 0
+        flex: _items.length % 3 !== 0 && _items.length % 4 !== 0,
+        grid: _items.length % 3 === 0 || _items.length % 4 === 0,
+        'flex-wrap': _items.length % 3 !== 0 && _items.length % 4 !== 0,
+        'grid-cols-3': _items.length % 3 === 0,
+        'grid-cols-4': _items.length % 4 === 0
       }"
       mx-auto
       gap-2
     >
       <Item
-        v-for="item in items"
+        v-for="item in _items"
         ref="itemsRef"
         :key="item.value"
         :item="item"

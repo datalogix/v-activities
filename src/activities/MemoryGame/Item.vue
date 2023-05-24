@@ -22,7 +22,7 @@ const emits = defineEmits<MemoryGameItemEmits>()
 const opened = ref<boolean>(false)
 const locked = ref<boolean>(false)
 const media = ref<HTMLMediaElement>()
-const timeout = ref<number>(props.timeout)
+const _timeout = ref<number>(props.timeout)
 
 const open = (forcePlay = true) => {
   opened.value = true
@@ -70,7 +70,8 @@ const select = () => {
 
 const loadedMetadata = (event: Event) => {
   if (!(event.target instanceof HTMLMediaElement)) return
-  timeout.value = Math.round(event.target.duration * 1000)
+
+  _timeout.value = Math.round(event.target.duration * 1000)
 }
 
 defineExpose({
@@ -82,7 +83,7 @@ defineExpose({
   reset,
   lock,
   unlock,
-  timeout
+  timeout: _timeout
 })
 </script>
 

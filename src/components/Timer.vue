@@ -33,21 +33,21 @@ const props = withDefaults(defineProps<TimerProps>(), {
   countdown: false
 })
 
-const start = hmsToSeconds(props.start)
-const max = hmsToSeconds(props.max)
-const time = ref(props.countdown ? max - start : start)
+const startSeconds = hmsToSeconds(props.start)
+const maxSeconds = hmsToSeconds(props.max)
+const time = ref(props.countdown ? maxSeconds - startSeconds : startSeconds)
 const formattedTime = computed(() => formatSeconds(time.value))
-const duration = computed(() => props.countdown ? max - time.value : time.value)
+const duration = computed(() => props.countdown ? maxSeconds - time.value : time.value)
 const isFinished = computed(() => {
-  return Boolean(max && ((time.value >= max && !props.countdown) || (time.value < 1 && props.countdown)))
+  return Boolean(maxSeconds && ((time.value >= maxSeconds && !props.countdown) || (time.value < 1 && props.countdown)))
 })
 
 const interval = useIntervalFn(async () => {
   time.value = props.countdown ? time.value - 1 : time.value + 1
 
   await emits('time', {
-    start,
-    max,
+    start: startSeconds,
+    max: maxSeconds,
     time: time.value,
     formattedTime: formattedTime.value,
     duration: duration.value,
@@ -55,71 +55,46 @@ const interval = useIntervalFn(async () => {
   })
 }, 1000, { immediate: false })
 
-watch(time, async () => {
-  if (isFinished.value) {
-    await pause()
-    await emits('end', {
-      start,
-      max,
-      time: time.value,
-      formattedTime: formattedTime.value,
-      duration: duration.value,
-      isFinished: isFinished.value
-    })
-  }
-})
-
-const play = async () => {
-  await emits('play', {
-    start,
-    max,
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const emit = (event: any) => {
+  return emits(event, {
+    start: startSeconds,
+    max: maxSeconds,
     time: time.value,
     formattedTime: formattedTime.value,
     duration: duration.value,
     isFinished: isFinished.value
   })
+}
+
+watch(time, async () => {
+  if (isFinished.value) {
+    await pause()
+    await emit('end')
+  }
+})
+
+const play = async () => {
+  await emit('play')
 
   interval.resume()
 }
 
 const pause = async () => {
-  await emits('pause', {
-    start,
-    max,
-    time: time.value,
-    formattedTime: formattedTime.value,
-    duration: duration.value,
-    isFinished: isFinished.value
-  })
+  await emit('pause')
 
   interval.pause()
 }
 
 const stop = async () => {
-  await emits('stop', {
-    start,
-    max,
-    time: time.value,
-    formattedTime: formattedTime.value,
-    duration: duration.value,
-    isFinished: isFinished.value
-  })
-
+  await emit('stop')
   await pause()
 
-  time.value = props.countdown ? max : 0
+  time.value = props.countdown ? maxSeconds : 0
 }
 
 const restart = async () => {
-  await emits('restart', {
-    start,
-    max,
-    time: time.value,
-    formattedTime: formattedTime.value,
-    duration: duration.value,
-    isFinished: isFinished.value
-  })
-
+  await emit('restart')
   await stop()
   await play()
 }
@@ -146,8 +121,8 @@ defineExpose({
     space-x-2
   >
     <slot
-      :start="start"
-      :max="max"
+      :start="startSeconds"
+      :max="maxSeconds"
       :time="time"
       :formatted-time="formattedTime"
       :duration="duration"

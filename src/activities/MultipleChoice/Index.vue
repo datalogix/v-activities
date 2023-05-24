@@ -36,7 +36,7 @@ const props = withDefaults(defineProps<MultipleChoiceProps>(), {
 const activity = ref<InstanceType<typeof Activity>>()
 const answer = ref<MultipleChoiceAnswer>()
 const answers = ref<MultipleChoiceValue>()
-const options = ref<MultipleChoiceOption[]>(props.shuffle ? shuffle(props.options) : props.options)
+const _options = ref<MultipleChoiceOption[]>(props.shuffle ? shuffle(props.options) : props.options)
 
 watch(answers, selecteds => {
   if (activity.value?.props.mode === 'answered') {
@@ -54,21 +54,21 @@ watch(answers, selecteds => {
 
 const start = () => {
   answers.value = undefined
-  options.value = props.shuffle ? shuffle(props.options) : props.options
+  _options.value = props.shuffle ? shuffle(props.options) : props.options
 
   answer.value = {
     selecteds: [],
-    options: options.value
+    options: _options.value
   }
 }
 
 const answered = (_answer: MultipleChoiceAnswer) => {
   answers.value = _answer.selecteds
-  options.value = _answer.options
+  _options.value = _answer.options
 }
 
 const check = () => {
-  const selecteds = options.value.filter((option, index) => {
+  const selecteds = _options.value.filter((option, index) => {
     return Array.isArray(answers.value)
       ? answers.value.includes(index)
       : answers.value === index
@@ -83,7 +83,7 @@ const check = () => {
   const result = Array.isArray(answers.value)
     ? { right: percentage || 0, total }
     : (
-        (options.value.filter((option) => option.value !== 100).length === options.value.length - 1)
+        (_options.value.filter((option) => option.value !== 100).length === _options.value.length - 1)
           ? percentage
           : (percentage !== null && percentage !== 0)
       )
@@ -139,7 +139,7 @@ const check = () => {
       gap-4
     >
       <Option
-        v-for="(option, index) in options"
+        v-for="(option, index) in _options"
         :key="index"
         v-model="answers"
         :marker-type="markerType"
