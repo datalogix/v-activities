@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v0.3.1
+
+[compare changes](https://undefined/undefined/compare/v0.3.0...v0.3.1)
+
+
+### 🩹 Fixes
+
+  - Use `items` instead of `words` (0aa1eb8)
+
+### ❤️  Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.3.0
 
 [compare changes](https://undefined/undefined/compare/v0.2.2...v0.3.0)
