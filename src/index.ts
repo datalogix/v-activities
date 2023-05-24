@@ -35,36 +35,31 @@ import type { WordSearchProps } from './activities/WordSearch/Index.vue'
 import 'uno.css'
 import './assets/style.scss'
 
-export {
-  Activities,
+export type {
   ActivitiesProps,
-
-  Activity,
   ActivityStatus,
   ActivityMode,
   ActivityMessage,
   ActivityResult,
   ActivityProps,
   ActivityStoreParams,
-
-  ConnectTheDots,
   ConnectTheDotsProps,
-
-  Crossword,
   CrosswordProps,
-
-  Hangman,
   HangmanProps,
-
-  MemoryGame,
   MemoryGameProps,
-
-  MultipleChoice,
   MultipleChoiceProps,
-
-  Paint,
   PaintProps,
-
-  WordSearch,
   WordSearchProps
+}
+
+export {
+  Activities,
+  Activity,
+  ConnectTheDots,
+  Crossword,
+  Hangman,
+  MemoryGame,
+  MultipleChoice,
+  Paint,
+  WordSearch
 }
