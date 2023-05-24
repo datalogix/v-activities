@@ -87,7 +87,7 @@ createApp(WordSearch, {
   statement: 'dfs<p>fds</p>dafadsfdsafds',
   maxResets: 30,
   showResets: true,
-  words: [
+  items: [
     {
       invert: true,
       diagonal: true,

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import Activity from '../Activity.vue'
 import Grid from './Grid.vue'
-import WordList from './WordList.vue'
+import List from './List.vue'
 import type { WordSearchGridPosition } from './Grid.vue'
 
-export type WordSearchWord = {
+export type WordSearchItem = {
   word: string
   diagonal?: boolean
   invert?: boolean
@@ -19,7 +19,7 @@ export type WordSearchAnswer = {
 }
 
 export type WordSearchProps = {
-  words: (WordSearchWord | string)[]
+  items: (WordSearchItem | string)[]
   size?: number
   position?: 'top' | 'bottom' | 'both'
   shuffle?: boolean
@@ -34,16 +34,16 @@ const props = withDefaults(defineProps<WordSearchProps>(), {
 const activity = ref<InstanceType<typeof Activity>>()
 const answer = ref<WordSearchAnswer>()
 const grid = ref<InstanceType<typeof Grid>>()
-const _words = props.words.map((word) => {
-  if (typeof word === 'string') {
+const _items = props.items.map((item) => {
+  if (typeof item === 'string') {
     return {
-      word,
+      word: item,
       diagonal: false,
       invert: false
-    } as WordSearchWord
+    } as WordSearchItem
   }
 
-  return word
+  return item
 })
 
 const start = () => {
@@ -99,9 +99,9 @@ const check = () => {
       />
     </template>
 
-    <WordList
+    <List
       v-if="position === 'top' || position === 'both'"
-      :words="grid?.usedWords || []"
+      :items="grid?.usedWords || []"
       :selected="grid?.foundWords || []"
       mb-4
     />
@@ -109,16 +109,16 @@ const check = () => {
     <Grid
       ref="grid"
       :size="size"
-      :words="_words"
+      :items="_items"
       :shuffle="shuffle"
       @right="activity?.filled()"
       @wrong="activity?.filled()"
       @complete="check"
     />
 
-    <WordList
+    <List
       v-if="position === 'bottom' || position === 'both'"
-      :words="grid?.usedWords || []"
+      :items="grid?.usedWords || []"
       :selected="grid?.foundWords || []"
       mt-4
     />

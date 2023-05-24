@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { WordSearchWord, WordSearchAnswer } from './Index.vue'
+import type { WordSearchItem, WordSearchAnswer } from './Index.vue'
 
 export type WordSearchGridPosition = {
   x: number
@@ -8,7 +8,7 @@ export type WordSearchGridPosition = {
 
 export type WordSearchGridProps = {
   size: number
-  words: WordSearchWord[]
+  items: WordSearchItem[]
   shuffle?: boolean
 }
 
@@ -26,12 +26,12 @@ const props = withDefaults(defineProps<WordSearchGridProps>(), {
 const activity = useActivity()
 const emits = defineEmits<WordSearchGridEmits>()
 
-const _words = props.words.map(item => ({
+const _items = props.items.map(item => ({
   ...item,
   word: replace(item.word, '', { space: false }).toLocaleUpperCase()
 }))
 
-const _size = Math.max(props.size, ..._words.map(item => item.word.length), _words.length)
+const _size = Math.max(props.size, ..._items.map(item => item.word.length), _items.length)
 const usedWords = ref<string[]>([])
 const foundWords = ref<string[]>([])
 const letterGrid = ref<string[][]>([])
@@ -200,7 +200,7 @@ const build = () => {
   foundTiles.value = []
   guess.value = []
 
-  Array.from(props.shuffle ? shuffle(_words) : _words).forEach(({ word, invert, diagonal }) => {
+  Array.from(props.shuffle ? shuffle(_items) : _items).forEach(({ word, invert, diagonal }) => {
     if (word.length > _size) {
       return
     }
@@ -296,7 +296,7 @@ const build = () => {
     }
   })
 
-  const generateCharOptions = generateOptionsFromString(_words.map(item => item.word).join(''))
+  const generateCharOptions = generateOptionsFromString(_items.map(item => item.word).join(''))
 
   for (let y = 0; y < _size; y += 1) {
     for (let x = 0; x < _size; x += 1) {
@@ -306,7 +306,7 @@ const build = () => {
     }
   }
 
-  if (usedWords.value.length !== _words.length) {
+  if (usedWords.value.length !== _items.length) {
     build()
   }
 }

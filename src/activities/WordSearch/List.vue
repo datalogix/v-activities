@@ -1,16 +1,16 @@
 <script setup lang="ts">
-export type WordSearchWordListProps = {
-  words: string[]
+export type WordSearchListProps = {
+  items: string[]
   selected: string[]
 }
 
-defineProps<WordSearchWordListProps>()
+defineProps<WordSearchListProps>()
 </script>
 
 <template>
   <transition-group
     tag="ul"
-    class="activity-word-search-words"
+    class="activity-word-search-list"
     flex
     flex-wrap
     items-center
@@ -20,11 +20,11 @@ defineProps<WordSearchWordListProps>()
     p-0
   >
     <li
-      v-for="word in words"
-      :key="word"
-      class="activity-word-search-word"
+      v-for="item in items"
+      :key="item"
+      class="activity-word-search-list-item"
       :class="{
-        'bg-green-300 activity-word-search-word-selected': selected.indexOf(word) !== -1
+        'bg-green-300 activity-word-search-list-item-selected': selected.indexOf(item) !== -1
       }"
       uppercase
       p-2
@@ -35,7 +35,7 @@ defineProps<WordSearchWordListProps>()
       border-solid
       border-gray-300
       transition-all
-      v-text="word"
+      v-text="item"
     />
   </transition-group>
 </template>
