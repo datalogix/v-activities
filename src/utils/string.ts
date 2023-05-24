@@ -1,6 +1,6 @@
 export { pascalCase } from 'change-case'
 
-export interface StringOptions {
+export type StringOptions = {
   alpha?: boolean
   numeric?: boolean
   space?: boolean
@@ -12,6 +12,10 @@ export interface StringOptions {
 }
 
 export const LETTERS = 'abcdefghijklmnopqrstuvwxyz'
+
+export function ascii (str: string) {
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+}
 
 export function replace (str: string, replaceValue = '', options: StringOptions = {}) {
   const opts: StringOptions = {
