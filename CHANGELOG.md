@@ -1,6 +1,40 @@
 # Changelog
 
 
+## v0.3.0
+
+[compare changes](https://undefined/undefined/compare/v0.2.2...v0.3.0)
+
+
+### 🚀 Enhancements
+
+  - Add `ConnectTheDots` (2fd1559)
+  - Add `MemoryGame` (da70fa1)
+  - Add `Crossword` (90e7e80)
+
+### 🩹 Fixes
+
+  - Dupe keys (6e77ab1)
+  - Export types (e0b860c)
+  - Imports (5d736ef)
+
+### 💅 Refactors
+
+  - Mark answer as filled or blank (f6278b9)
+
+### 🏡 Chore
+
+  - Update deps (48073e4)
+  - Update exports (6678e30)
+
+### 🎨 Styles
+
+  - Formatting (de666cc)
+
+### ❤️  Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.2.2
 
 [compare changes](https://undefined/undefined/compare/v0.2.1...v0.2.2)
