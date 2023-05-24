@@ -18,7 +18,7 @@ export type MultipleChoiceAnswer = {
   options: MultipleChoiceOption[]
 }
 
-export interface MultipleChoiceProps {
+export type MultipleChoiceProps = {
   options: MultipleChoiceOption[]
   type?: MultipleChoiceType
   cols?: number
@@ -36,25 +36,35 @@ const props = withDefaults(defineProps<MultipleChoiceProps>(), {
 const activity = ref<InstanceType<typeof Activity>>()
 const answer = ref<MultipleChoiceAnswer>()
 const answers = ref<MultipleChoiceValue>()
-const options = ref<MultipleChoiceOption[]>([])
+const options = ref<MultipleChoiceOption[]>(props.shuffle ? shuffle(props.options) : props.options)
 
 watch(answers, selecteds => {
-  answer.value = (Array.isArray(selecteds) ? selecteds.length > 0 : selecteds !== undefined)
-    ? {
-        selecteds,
-        options: options.value
-      }
-    : undefined
+  if (activity.value?.props.mode === 'answered') {
+    return
+  }
+
+  if (Array.isArray(selecteds) ? selecteds.length > 0 : selecteds !== undefined) {
+    answer.value!.selecteds = selecteds
+    activity.value?.filled()
+  } else {
+    answer.value!.selecteds = []
+    activity.value?.blank()
+  }
 })
 
 const start = () => {
   answers.value = undefined
   options.value = props.shuffle ? shuffle(props.options) : props.options
+
+  answer.value = {
+    selecteds: [],
+    options: options.value
+  }
 }
 
-const answered = (_answer: unknown) => {
-  answers.value = (_answer as MultipleChoiceAnswer).selecteds
-  options.value = (_answer as MultipleChoiceAnswer).options
+const answered = (_answer: MultipleChoiceAnswer) => {
+  answers.value = _answer.selecteds
+  options.value = _answer.options
 }
 
 const check = () => {

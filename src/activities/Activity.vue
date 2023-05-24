@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type Header from '../components/Header.vue'
-import type Footer from '../components/Footer.vue'
-import type Confirmation from '../components/Confirmation.vue'
+import type { Header } from '../components/Header.vue'
+import type { Footer } from '../components/Footer.vue'
+import type { Confirmation } from '../components/Confirmation.vue'
 import type { MessageProps } from '../components/Message.vue'
 import type { ResultProps } from '../components/Result.vue'
 import type { LoaderKey } from '../composables/useLoader'
@@ -171,6 +171,7 @@ const resets = computed(() => header.value?.resets)
 const confirmation = ref<InstanceType<typeof Confirmation>>()
 const message = ref<ActivityMessage>()
 const result = ref<ActivityResult>()
+const isEmpty = ref<boolean>(true)
 
 onMounted(async () => {
   await emits('preload')
@@ -194,6 +195,7 @@ onMounted(async () => {
   }
 
   await emits('preview')
+  await emits('start')
 
   !props.message && openMessage({
     type: 'warning',
@@ -201,8 +203,8 @@ onMounted(async () => {
   })
 })
 
-const openMessage = async (options: ActivityMessage) => {
-  message.value = options
+const openMessage = async (activityMessage: ActivityMessage) => {
+  message.value = activityMessage
 }
 
 const closeMessage = async () => {
@@ -213,9 +215,9 @@ const closeMessage = async () => {
   }
 }
 
-const openResult = async (options: ActivityResult) => {
+const openResult = async (activityResult: ActivityResult) => {
   status.value = 'stopped'
-  result.value = options
+  result.value = activityResult
 }
 
 const closeResult = async () => {
@@ -231,6 +233,7 @@ const start = async () => {
 
   await globalTimer.value?.play()
   await timer.value?.play()
+
   status.value = 'playing'
 
   return emits('start')
@@ -241,6 +244,7 @@ const pause = async () => {
   await media.stop()
   await globalTimer.value?.pause()
   await timer.value?.pause()
+
   status.value = 'loading'
 
   return emits('pause')
@@ -260,6 +264,7 @@ const dead = async () => {
 
 const restart = async () => {
   emits('update:modelValue', undefined)
+  blank()
 
   await resets.value?.increase()
 
@@ -287,7 +292,7 @@ const check = async () => {
     return emits('check')
   }
 
-  if (props.modelValue === undefined && !timer.value?.isFinished && !resets.value?.isDead) {
+  if (isEmpty.value && !timer.value?.isFinished && !resets.value?.isDead) {
     return confirmation.value?.open({
       title: 'Deseja realmente deixar a resposta em branco?',
       ok,
@@ -300,11 +305,11 @@ const check = async () => {
   return ok()
 }
 
-const store = async (resultOptions: ActivityResult|null = null) => {
+const store = async (activityResult: ActivityResult|null = null) => {
   await pause()
 
-  if (props.showResult && resultOptions) {
-    await openResult(resultOptions)
+  if (props.showResult && activityResult) {
+    await openResult(activityResult)
   }
 
   const stored = { ...props }
@@ -315,7 +320,7 @@ const store = async (resultOptions: ActivityResult|null = null) => {
     ...stored,
 
     // result
-    ...(resultOptions || {}),
+    ...(activityResult || {}),
 
     // answer
     answer: props.modelValue,
@@ -369,6 +374,14 @@ const exit = async () => {
   })
 }
 
+const filled = () => {
+  isEmpty.value = false
+}
+
+const blank = () => {
+  isEmpty.value = true
+}
+
 const provideAndExpose = {
   instance: getCurrentInstance(),
   props,
@@ -394,7 +407,9 @@ const provideAndExpose = {
   check,
   store,
   finish,
-  exit
+  exit,
+  filled,
+  blank
 }
 
 provide('activity', provideAndExpose)
@@ -402,7 +417,7 @@ defineExpose(provideAndExpose)
 </script>
 
 <template>
-  <Section :class="[`activity-${type}`]">
+  <Section :class="[`activity-${type}`, `activity-${type}-${mode}`]">
     <slot name="activity-header">
       <Header ref="header">
         <slot name="activity-logo" />

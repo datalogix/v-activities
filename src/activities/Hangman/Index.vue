@@ -2,17 +2,17 @@
 import Activity from '../Activity.vue'
 import Level from './Level.vue'
 import Word from './Word.vue'
-import Options from './Options.vue'
+import Items from './Items.vue'
 
 export type HangmanAnswer = {
-  options: string[]
+  items: string[]
   unique: string[]
   used: string[]
   right: string[]
   wrong: string[]
 }
 
-export interface HangmanProps {
+export type HangmanProps = {
   word: string
   levels?: string[]
 }
@@ -22,9 +22,10 @@ const props = defineProps<HangmanProps>()
 const activity = ref<InstanceType<typeof Activity>>()
 const answer = ref<HangmanAnswer>()
 const level = ref<InstanceType<typeof Level>>()
-const options = ref<InstanceType<typeof Options>>()
+const items = ref<InstanceType<typeof Items>>()
 
-const onRight = (_answer: HangmanAnswer) => {
+const right = (_answer: HangmanAnswer) => {
+  activity.value?.filled()
   answer.value = _answer
 
   if (answer.value.right.length === answer.value.unique.length) {
@@ -32,7 +33,8 @@ const onRight = (_answer: HangmanAnswer) => {
   }
 }
 
-const onWrong = (_answer: HangmanAnswer) => {
+const wrong = (_answer: HangmanAnswer) => {
+  activity.value?.filled()
   answer.value = _answer
 
   if (level.value && answer.value.wrong.length >= level.value.max) {
@@ -41,11 +43,19 @@ const onWrong = (_answer: HangmanAnswer) => {
 }
 
 const start = () => {
-  return options.value?.run()
+  items.value?.start()
+
+  answer.value = {
+    items: items.value!.items,
+    unique: items.value!.unique,
+    used: [],
+    right: [],
+    wrong: []
+  }
 }
 
-const answered = (_answer: unknown) => {
-  return options.value?.answered(_answer as HangmanAnswer)
+const answered = (_answer: HangmanAnswer) => {
+  return items.value?.answered(_answer)
 }
 </script>
 
@@ -72,19 +82,19 @@ const answered = (_answer: unknown) => {
     <Level
       ref="level"
       :levels="levels"
-      :current="options ? options.wrong.length : 0"
+      :current="items?.wrong.length ?? 0"
     />
 
     <Word
       :word="word"
-      :rights="options ? options.right : []"
+      :rights="items?.right ?? []"
     />
 
-    <Options
-      ref="options"
+    <Items
+      ref="items"
       :word="word"
-      @right="onRight"
-      @wrong="onWrong"
+      @right="right"
+      @wrong="wrong"
     />
   </Activity>
 </template>

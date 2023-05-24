@@ -18,7 +18,7 @@ export type WordSearchAnswer = {
   foundTiles: WordSearchGridPosition[]
 }
 
-export interface WordSearchProps {
+export type WordSearchProps = {
   words: (WordSearchWord | string)[]
   size?: number
   position?: 'top' | 'bottom' | 'both'
@@ -46,38 +46,30 @@ const words = props.words.map((word) => {
   return word
 })
 
-const onFill = () => {
-  answer.value = grid.value
-    ? {
-        usedWords: grid.value.usedWords,
-        foundWords: grid.value.foundWords,
-        letterGrid: grid.value.letterGrid,
-        gridWord: grid.value.gridWord,
-        foundTiles: grid.value.foundTiles
-      }
-    : undefined
-}
-
 const start = () => {
-  return grid.value?.build()
+  grid.value?.build()
+
+  answer.value = {
+    usedWords: grid.value!.usedWords,
+    foundWords: grid.value!.foundWords,
+    letterGrid: grid.value!.letterGrid,
+    gridWord: grid.value!.gridWord,
+    foundTiles: grid.value!.foundTiles
+  }
 }
 
-const answered = (_answer: unknown) => {
-  return grid.value?.answered(_answer as WordSearchAnswer)
+const answered = (_answer: WordSearchAnswer) => {
+  return grid.value?.answered(_answer)
 }
 
 const check = () => {
-  if (!grid.value) {
-    return null
-  }
-
-  const percentage = grid.value.foundWords.length
-    ? (grid.value.foundWords.length * 100 / grid.value.usedWords.length)
+  const percentage = grid.value!.foundWords.length
+    ? (grid.value!.foundWords.length * 100 / grid.value!.usedWords.length)
     : 0
 
   const result = {
-    right: grid.value.foundWords.length,
-    total: grid.value.usedWords.length
+    right: grid.value!.foundWords.length,
+    total: grid.value!.usedWords.length
   }
 
   return activity.value?.store({
@@ -119,8 +111,8 @@ const check = () => {
       :size="size"
       :words="words"
       :shuffle="shuffle"
-      @right="onFill"
-      @wrong="onFill"
+      @right="activity?.filled()"
+      @wrong="activity?.filled()"
       @complete="check"
     />
 

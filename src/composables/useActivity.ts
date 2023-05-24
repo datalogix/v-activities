@@ -1,12 +1,12 @@
 import type { ComponentInternalInstance } from 'vue'
-import type Header from './components/Header.vue'
-import type Footer from './components/Footer.vue'
-import type Timer from './components/Timer.vue'
-import type Resets from './components/Resets.vue'
-import type Confirmation from './components/Confirmation.vue'
+import type { Header } from './components/Header.vue'
+import type { Footer } from './components/Footer.vue'
+import type { Timer } from './components/Timer.vue'
+import type { Resets } from './components/Resets.vue'
+import type { Confirmation } from './components/Confirmation.vue'
 import type { ActivityMessage, ActivityProps, ActivityStatus, ActivityResult } from '../activities/Activity.vue'
 
-export interface ActivityInject {
+export type ActivityInject = {
   instance: ComponentInternalInstance
   props: ActivityProps
   loader: typeof useLoader
@@ -32,6 +32,8 @@ export interface ActivityInject {
   store: (result: ActivityResult) => void | Promise<void>
   finish: (force?: boolean) => void | Promise<void>
   exit: () => void | Promise<void>
+  filled: () => void | Promise<void>
+  blank: () => void | Promise<void>
 }
 
 export function useActivity () {
