@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Header } from '../components/Header.vue'
-import type { Footer } from '../components/Footer.vue'
-import type { Confirmation } from '../components/Confirmation.vue'
+import Header from '../components/Header.vue'
+import Footer from '../components/Footer.vue'
+import Confirmation from '../components/Confirmation.vue'
 import type { MessageProps } from '../components/Message.vue'
 import type { ResultProps } from '../components/Result.vue'
 import type { LoaderKey } from '../composables/useLoader'

@@ -1,9 +1,9 @@
 import type { ComponentInternalInstance } from 'vue'
-import type { Header } from './components/Header.vue'
-import type { Footer } from './components/Footer.vue'
-import type { Timer } from './components/Timer.vue'
-import type { Resets } from './components/Resets.vue'
-import type { Confirmation } from './components/Confirmation.vue'
+import Header from './components/Header.vue'
+import Footer from './components/Footer.vue'
+import Timer from './components/Timer.vue'
+import Resets from './components/Resets.vue'
+import Confirmation from './components/Confirmation.vue'
 import type { ActivityMessage, ActivityProps, ActivityStatus, ActivityResult } from '../activities/Activity.vue'
 
 export type ActivityInject = {
