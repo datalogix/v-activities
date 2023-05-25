@@ -196,9 +196,11 @@ defineExpose({
         bg-center-center
         bg-no-repeat
         bg-contain
-        w-full
-        h-full
-        :style="{ 'background-image': `url('${file.url}')` }"
+        :style="{
+          'background-image': `url('${file.url}')`,
+          'width': '90%',
+          'height': '90%'
+        }"
       />
 
       <audio
@@ -236,6 +238,7 @@ defineExpose({
         class="activity-memory-game-item-html"
         text-lg
         font-semibold
+        overflow-hidden
         v-html="item.value"
       />
     </div>
