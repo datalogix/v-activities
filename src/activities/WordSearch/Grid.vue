@@ -319,6 +319,8 @@ const answered = (answer: unknown) => {
   foundTiles.value = (answer as WordSearchAnswer).foundTiles
 }
 
+build()
+
 defineExpose({
   usedWords,
   foundWords,

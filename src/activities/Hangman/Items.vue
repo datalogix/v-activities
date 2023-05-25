@@ -76,6 +76,8 @@ const answered = (answer: HangmanAnswer) => {
   wrong.value = answer.wrong
 }
 
+start()
+
 defineExpose({
   items,
   unique,

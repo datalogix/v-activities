@@ -195,7 +195,6 @@ onMounted(async () => {
   }
 
   await emits('preview')
-  await emits('start')
 
   !props.message && openMessage({
     type: 'warning',
