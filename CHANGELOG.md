@@ -1,6 +1,20 @@
 # Changelog
 
 
+## v0.3.3
+
+[compare changes](https://undefined/undefined/compare/v0.3.2...v0.3.3)
+
+
+### 🩹 Fixes
+
+  - Keys (107740e)
+  - Use image as background (0b4af2d)
+
+### ❤️  Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.3.2
 
 [compare changes](https://undefined/undefined/compare/v0.3.1...v0.3.2)
