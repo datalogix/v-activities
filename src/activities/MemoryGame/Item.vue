@@ -190,19 +190,16 @@ defineExpose({
       items-center
       rotate-y-180
     >
-      <img
+      <div
         v-if="file && ['jpeg', 'jpg', 'gif', 'png', 'svg'].includes(file.ext)"
         class="activity-memory-game-item-image"
-        object-contain
-        p-2
-        w-20
-        h-20
-        md:w-32
-        md:h-32
-        lg:w-40
-        lg:h-40
-        :src="file.url"
-      >
+        bg-center-center
+        bg-no-repeat
+        bg-contain
+        w-full
+        h-full
+        :style="{ 'background-image': `url('${file.url}')` }"
+      />
 
       <audio
         v-else-if="file && ['mp3'].includes(file.ext)"
