@@ -25,6 +25,12 @@ const _items = ref<MemoryGameItem[]>([
   ...props.items.map(item => ({ value: item.related, related: item.value }))
 ])
 
+const getKey = (item: MemoryGameItem) => {
+  return item.value instanceof File
+    ? item.value.name
+    : item.value.toString()
+}
+
 const find = (item: MemoryGameItem) => {
   return itemsRef.value.find(i => compare(i.item.value, item.value))
 }
@@ -127,9 +133,9 @@ defineExpose({
       gap-2
     >
       <Item
-        v-for="(item, key) in _items"
+        v-for="item in _items"
         ref="itemsRef"
-        :key="key"
+        :key="getKey(item)"
         :item="item"
         :timeout="timeout"
         :duration="duration"

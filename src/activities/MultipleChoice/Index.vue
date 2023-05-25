@@ -140,7 +140,7 @@ const check = () => {
     >
       <Option
         v-for="(option, index) in _options"
-        :key="index"
+        :key="option.label"
         v-model="answers"
         :marker-type="markerType"
         :position="index"

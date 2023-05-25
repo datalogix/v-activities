@@ -28,8 +28,8 @@ const tips = ref(props.items.filter(item => !!item.tip && !item.fixed))
       m-0
     >
       <li
-        v-for="(item, index) in tips"
-        :key="index"
+        v-for="item in tips"
+        :key="item.word"
         class="activity-crossword-tips-item"
         :class="{
           '!cursor-not-allowed': activity.props.mode === 'answered',
