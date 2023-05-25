@@ -21,18 +21,12 @@ const itemsRef = ref<InstanceType<typeof Item>[]>([])
 const item1 = ref<InstanceType<typeof Item>>()
 const item2 = ref<InstanceType<typeof Item>>()
 const _items = ref<MemoryGameItem[]>([
-  ...props.items,
-  ...props.items.map(item => ({ value: item.related, related: item.value }))
+  ...props.items.map((item, index) => ({ key: `v${index}`, value: item.value, related: item.related })),
+  ...props.items.map((item, index) => ({ key: `r${index}`, value: item.related, related: item.value }))
 ])
 
-const getKey = (item: MemoryGameItem) => {
-  return item.value instanceof File
-    ? item.value.name
-    : item.value.toString()
-}
-
 const find = (item: MemoryGameItem) => {
-  return itemsRef.value.find(i => compare(i.item.value, item.value))
+  return itemsRef.value.find(i => i.item.key === item.key)
 }
 
 const select = (item: MemoryGameItem) => {
@@ -104,7 +98,7 @@ const answered = (answer: MemorGameAnswer) => {
     const item = find(selected)
     item?.open(false)
 
-    if (answer.selecteds.some(s => compare(selected.related, s.value))) {
+    if (answer.selecteds.filter(s => s !== selected).some(s => compare(selected.related, s.value))) {
       item?.lock()
     }
   })
@@ -135,7 +129,7 @@ defineExpose({
       <Item
         v-for="item in _items"
         ref="itemsRef"
-        :key="getKey(item)"
+        :key="item.key"
         :item="item"
         :timeout="timeout"
         :duration="duration"
