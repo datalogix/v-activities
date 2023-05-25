@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v0.3.2
+
+[compare changes](https://undefined/undefined/compare/v0.3.1...v0.3.2)
+
+
+### 🚀 Enhancements
+
+  - Accept array (4397122)
+
+### 🩹 Fixes
+
+  - Use file as item (6336adb)
+
+### ❤️  Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.3.1
 
 [compare changes](https://undefined/undefined/compare/v0.3.0...v0.3.1)
