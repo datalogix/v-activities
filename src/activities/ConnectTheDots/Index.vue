@@ -102,8 +102,10 @@ const check = () => {
     .filter((line) => compare(line.left.item.value, line.right.item.related))
     .length
 
+  lineContainer.value?.clear()
+
   return activity.value?.store({
-    percentage: right ? (right * 100 / props.items.length) : 0,
+    percentage: right ? (right * 100 / total) : 0,
     result: {
       right,
       total
