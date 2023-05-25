@@ -18,6 +18,16 @@ const _items = ref(props.items)
 const itemsRef = ref<InstanceType<typeof Item>[]>([])
 const selected = ref<InstanceType<typeof Item>>()
 
+const getKey = (item: ConnectTheDotsItem) => {
+  return item.value instanceof File
+    ? item.value.name
+    : item.value.toString()
+}
+
+const find = (item: ConnectTheDotsItem) => {
+  return itemsRef.value.find(i => compare(i.item.value, item.value))
+}
+
 const select = (item: ConnectTheDotsItem) => {
   if (activity.props.mode === 'answered') {
     return
@@ -27,7 +37,7 @@ const select = (item: ConnectTheDotsItem) => {
     selected.value.clear()
   }
 
-  selected.value = itemsRef.value.find(i => i.item.value === item.value)
+  selected.value = find(item)
   selected.value?.select()
 
   emits('select', item)
@@ -45,10 +55,6 @@ const clear = () => {
 
 const answered = (answer: ConnectTheDotsItem[]) => {
   _items.value = answer
-}
-
-const find = (item: ConnectTheDotsItem) => {
-  return itemsRef.value.find(i => i.item.value === item.value)
 }
 
 defineExpose({
@@ -73,7 +79,7 @@ defineExpose({
     <Item
       v-for="item in _items"
       ref="itemsRef"
-      :key="item.value"
+      :key="getKey(item)"
       :item="item"
       :type="type"
       @select="select(item)"

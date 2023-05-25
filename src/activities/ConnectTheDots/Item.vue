@@ -13,8 +13,31 @@ export type ConnectTheDotsItemEmits = {
 const props = defineProps<ConnectTheDotsItemProps>()
 const emits = defineEmits<ConnectTheDotsItemEmits>()
 const activity = useActivity()
-
 const selected = ref<boolean>(false)
+
+const file = computed(() => {
+  if (props.item.value instanceof File) {
+    return {
+      name: props.item.value.name,
+      ext: String(props.item.value.name.split('.').pop()),
+      url: URL.createObjectURL(props.item.value)
+    }
+  }
+
+  try {
+    if (typeof props.item.value === 'string' || props.item.value instanceof URL) {
+      const url = new URL(props.item.value)
+
+      return {
+        name: String(url.pathname.split('/').pop()),
+        ext: String(url.pathname.split('.').pop()),
+        url: url.href
+      }
+    }
+  } catch { }
+
+  return false
+})
 
 const clear = () => {
   selected.value = false
@@ -80,34 +103,41 @@ defineExpose({
       justify-center
     />
 
-    <img
-      v-if="item.value.endsWith('.jpeg') || item.value.endsWith('.jpg') || item.value.endsWith('.png') || item.value.endsWith('.gif')"
+    <div
+      v-if="file && ['jpeg', 'jpg', 'gif', 'png', 'svg'].includes(file.ext)"
       class="activity-connect-the-dots-item-image"
-      :src="item.value"
-    >
+      bg-center-center
+      bg-no-repeat
+      bg-contain
+      :style="{
+        'background-image': `url('${file.url}')`,
+        'width': '90%',
+        'height': '90%'
+      }"
+    />
 
     <audio
-      v-else-if="item.value.endsWith('.mp3')"
+      v-else-if="file && ['mp3'].includes(file.ext)"
       class="activity-connect-the-dots-item-audio"
       controls
       w-full
       m-2
     >
       <source
-        :src="item.value"
+        :src="file.url"
         type="audio/mpeg"
       >
     </audio>
 
     <video
-      v-else-if="item.value.endsWith('.mp4')"
+      v-else-if="file && ['mp4'].includes(file.ext)"
       class="activity-connect-the-dots-item-video"
       controls
       w-full
       m-2
     >
       <source
-        :src="item.value"
+        :src="file.url"
         type="video/mp4"
       >
     </video>
@@ -115,6 +145,8 @@ defineExpose({
     <div
       v-else
       class="activity-connect-the-dots-item-html"
+      text-lg
+      font-semibold
       overflow-hidden
       v-html="item.value"
     />

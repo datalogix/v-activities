@@ -4,8 +4,8 @@ import LineContainer from './LineContainer.vue'
 import Items from './Items.vue'
 
 export type ConnectTheDotsItem = {
-  value: string
-  related: string
+  value: File | URL | string
+  related: File | URL | string
 }
 
 export type ConnectTheDotsAnswer = {
