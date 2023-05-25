@@ -1,6 +1,24 @@
 # Changelog
 
 
+## v0.3.4
+
+[compare changes](https://undefined/undefined/compare/v0.3.3...v0.3.4)
+
+
+### 🚀 Enhancements
+
+  - Use file as item (30d4d9c)
+
+### 🩹 Fixes
+
+  - Width and height (860070d)
+  - Draw arrow (598f641)
+
+### ❤️  Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.3.3
 
 [compare changes](https://undefined/undefined/compare/v0.3.2...v0.3.3)
