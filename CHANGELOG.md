@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v0.3.8
+
+[compare changes](https://undefined/undefined/compare/v0.3.7...v0.3.8)
+
+
+### 🩹 Fixes
+
+  - Selected line (7607b5c)
+
+### ❤️  Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.3.7
 
 [compare changes](https://undefined/undefined/compare/v0.3.6...v0.3.7)
