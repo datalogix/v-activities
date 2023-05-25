@@ -23,10 +23,12 @@ class Loader extends Map<LoaderKey, LoaderValue> {
     this.hooks.hook(hook, callback)
   }
 
-  add (item: LoaderKey) {
-    if (item && !this.has(item)) {
-      this.set(item, null)
-    }
+  add (item: LoaderKey | LoaderKey[]) {
+    (Array.isArray(item) ? item : [item]).forEach(item => {
+      if (item && !this.has(item)) {
+        this.set(item, null)
+      }
+    })
   }
 
   start () {
@@ -62,46 +64,50 @@ class Loader extends Map<LoaderKey, LoaderValue> {
         return
       }
 
-      const url = String(item)
-      const ext = url.split('.').pop() || ''
+      try {
+        const url = (new URL(item)).href
+        const ext = url.split('.').pop() || ''
 
-      if (['jpg', 'jpeg', 'gif', 'png'].includes(ext)) {
-        const image = new Image()
-        image.onload = () => resolve(image)
-        image.onerror = reject
-        image.src = url
-        return
-      }
-
-      if (['mp3', 'ogg', 'wav'].includes(ext)) {
-        const audio = new Audio(url)
-        audio.addEventListener('canplaythrough', () => resolve(audio))
-        audio.addEventListener('error', reject)
-        return
-      }
-
-      if (['mp4', 'webm', 'ogv'].includes(ext)) {
-        const video = document.createElement('video')
-        video.addEventListener('canplaythrough', () => resolve(video))
-        video.addEventListener('error', reject)
-        video.src = url
-        return
-      }
-
-      fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json'
+        if (['jpg', 'jpeg', 'gif', 'png'].includes(ext)) {
+          const image = new Image()
+          image.onload = () => resolve(image)
+          image.onerror = reject
+          image.src = url
+          return
         }
-      })
-        .then(response => {
-          return ['svg'].includes(ext)
-            ? response.text()
-            : response.json()
+
+        if (['mp3', 'ogg', 'wav'].includes(ext)) {
+          const audio = new Audio(url)
+          audio.addEventListener('canplaythrough', () => resolve(audio))
+          audio.addEventListener('error', reject)
+          return
+        }
+
+        if (['mp4', 'webm', 'ogv'].includes(ext)) {
+          const video = document.createElement('video')
+          video.addEventListener('canplaythrough', () => resolve(video))
+          video.addEventListener('error', reject)
+          video.src = url
+          return
+        }
+
+        fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+          }
         })
-        .then(resolve)
-        .catch(reject)
+          .then(response => {
+            return ['svg'].includes(ext)
+              ? response.text()
+              : response.json()
+          })
+          .then(resolve)
+          .catch(reject)
+      } catch (_) {
+        resolve(null)
+      }
     })
   }
 }
