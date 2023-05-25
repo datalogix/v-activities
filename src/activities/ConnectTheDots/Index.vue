@@ -48,7 +48,7 @@ const select = () => {
 
   answer.value!.selecteds = lineContainer.value.lines.map(line => ({
     left: line.left.item,
-    right: line.left.item
+    right: line.right.item
   }))
 
   itemsLeft.value.selected = undefined
