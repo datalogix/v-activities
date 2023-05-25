@@ -68,6 +68,9 @@ const clear = () => {
   })
 
   lines.value = []
+
+  const elements = document.querySelectorAll('.arrow-preview,.arrow')
+  while (elements.length > 0) elements[0].parentNode!.removeChild(elements[0])
 }
 
 defineExpose({
@@ -84,6 +87,14 @@ defineExpose({
 </template>
 
 <style>
+.arrow {
+  z-index: 10;
+}
+
+.arrow-preview {
+  z-index: 9;
+}
+
 .arrow__path,
 .arrow-preview__path {
   stroke: #000000;
