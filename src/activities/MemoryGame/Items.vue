@@ -25,6 +25,10 @@ const _items = ref<MemoryGameItem[]>([
   ...props.items.map(item => ({ value: item.related, related: item.value }))
 ])
 
+const find = (item: MemoryGameItem) => {
+  return itemsRef.value.find(i => compare(i.item.value, item.value))
+}
+
 const select = (item: MemoryGameItem) => {
   if ((item1.value && item2.value) || activity.props.mode === 'answered') {
     return
@@ -33,13 +37,13 @@ const select = (item: MemoryGameItem) => {
   emits('select', item)
 
   if (!item1.value) {
-    item1.value = itemsRef.value.find(i => i.item.value === item.value)
+    item1.value = find(item)
     item1.value?.open()
     return
   }
 
   if (!item2.value) {
-    item2.value = itemsRef.value.find(i => i.item.value === item.value)
+    item2.value = find(item)
     item2.value?.open()
   }
 
@@ -91,7 +95,7 @@ const answered = (answer: MemorGameAnswer) => {
   _items.value = answer.items
 
   answer.selecteds.forEach(selected => {
-    const item = itemsRef.value.find(i => i.item.value === selected.value)
+    const item = find(selected)
     item?.open(false)
 
     if (answer.selecteds.some(s => compare(selected.related, s.value))) {
@@ -123,9 +127,9 @@ defineExpose({
       gap-2
     >
       <Item
-        v-for="item in _items"
+        v-for="(item, key) in _items"
         ref="itemsRef"
-        :key="item.value"
+        :key="key"
         :item="item"
         :timeout="timeout"
         :duration="duration"

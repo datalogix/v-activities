@@ -24,6 +24,30 @@ const locked = ref<boolean>(false)
 const media = ref<HTMLMediaElement>()
 const _timeout = ref<number>(props.timeout)
 
+const file = computed(() => {
+  if (props.item.value instanceof File) {
+    return {
+      name: props.item.value.name,
+      ext: String(props.item.value.name.split('.').pop()),
+      url: URL.createObjectURL(props.item.value)
+    }
+  }
+
+  try {
+    if (typeof props.item.value === 'string' || props.item.value instanceof URL) {
+      const url = new URL(props.item.value)
+
+      return {
+        name: String(url.pathname.split('/').pop()),
+        ext: String(url.pathname.split('.').pop()),
+        url: url.href
+      }
+    }
+  } catch { }
+
+  return false
+})
+
 const open = (forcePlay = true) => {
   opened.value = true
   forcePlay && playMedia()
@@ -167,13 +191,21 @@ defineExpose({
       rotate-y-180
     >
       <img
-        v-if="item.value.endsWith('.jpeg') || item.value.endsWith('.jpg') || item.value.endsWith('.png') || item.value.endsWith('.gif')"
+        v-if="file && ['jpeg', 'jpg', 'gif', 'png', 'svg'].includes(file.ext)"
         class="activity-memory-game-item-image"
-        :src="item.value"
+        object-contain
+        p-2
+        w-20
+        h-20
+        md:w-32
+        md:h-32
+        lg:w-40
+        lg:h-40
+        :src="file.url"
       >
 
       <audio
-        v-else-if="item.value.endsWith('.mp3')"
+        v-else-if="file && ['mp3'].includes(file.ext)"
         ref="media"
         class="activity-memory-game-item-audio"
         controls="false"
@@ -182,13 +214,13 @@ defineExpose({
         @loadedmetadata="loadedMetadata"
       >
         <source
-          :src="item.value"
+          :src="file.url"
           type="audio/mpeg"
         >
       </audio>
 
       <video
-        v-else-if="item.value.endsWith('.mp4')"
+        v-else-if="file && ['mp4'].includes(file.ext)"
         ref="media"
         class="activity-memory-game-item-video"
         controls="false"
@@ -197,7 +229,7 @@ defineExpose({
         @loadedmetadata="loadedMetadata"
       >
         <source
-          :src="item.value"
+          :src="file.url"
           type="video/mp4"
         >
       </video>
@@ -205,6 +237,8 @@ defineExpose({
       <div
         v-else
         class="activity-memory-game-item-html"
+        text-lg
+        font-semibold
         v-html="item.value"
       />
     </div>

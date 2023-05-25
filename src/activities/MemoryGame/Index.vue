@@ -3,8 +3,8 @@ import Activity from '../Activity.vue'
 import Items from './Items.vue'
 
 export type MemoryGameItem = {
-  value: string
-  related: string
+  value: File | URL | string
+  related: File | URL | string
 }
 
 export type MemorGameAnswer = {
@@ -82,7 +82,7 @@ const answered = (_answer: MemorGameAnswer) => {
 
     <Items
       ref="itemsRef"
-      :items="props.items"
+      :items="items"
       :timeout="timeout"
       :duration="duration"
       @select="select"

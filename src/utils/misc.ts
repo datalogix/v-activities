@@ -7,6 +7,14 @@ export function compare (v1?: unknown, v2?: unknown) {
     return false
   }
 
+  if (v1 instanceof File) {
+    v1 = v1.name
+  }
+
+  if (v2 instanceof File) {
+    v2 = v2.name
+  }
+
   if ((typeof v1 === 'object' && v1 !== null) || (typeof v2 === 'object' && v2 !== null)) {
     return JSON.stringify(v1) === JSON.stringify(v2)
   }
