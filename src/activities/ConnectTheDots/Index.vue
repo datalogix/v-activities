@@ -46,7 +46,7 @@ const select = () => {
     itemsRight.value.selected
   )
 
-  answer.value!.selecteds = lineContainer.value.lines.filter(line => !line.preview).map(line => ({
+  answer.value!.selecteds = lineContainer.value.lines.map(line => ({
     left: line.left.item,
     right: line.left.item
   }))

@@ -12,10 +12,10 @@ export type ConnectTheDotsLine = {
 }
 
 const lines = ref<ConnectTheDotsLine[]>([])
+const linesPreview = ref<ConnectTheDotsLine[]>([])
 
 const clearIfExists = (left: ConnectTheDotsLineItem, right: ConnectTheDotsLineItem) => {
   lines.value
-    .filter(line => !line.preview)
     .filter(line => line.left === left || line.right === right)
     .forEach(line => {
       line.left.clear()
@@ -24,7 +24,6 @@ const clearIfExists = (left: ConnectTheDotsLineItem, right: ConnectTheDotsLineIt
     })
 
   lines.value = lines.value
-    .filter(line => !line.preview)
     .filter(line => !(line.left === left || line.right === right))
 }
 
@@ -53,9 +52,13 @@ const create = (left: ConnectTheDotsLineItem, right: ConnectTheDotsLineItem, pre
     preview
   }
 
-  lines.value.push(line)
-
   document.body.appendChild(line.element.node)
+
+  if (preview) {
+    linesPreview.value.push(line)
+  } else {
+    lines.value.push(line)
+  }
 
   return line
 }
@@ -67,11 +70,19 @@ const clear = () => {
     line.element.clear()
   })
 
-  lines.value = []
+  linesPreview.value.forEach(line => {
+    line.left.clear()
+    line.right.clear()
+    line.element.clear()
+  })
 
-  const elements = document.querySelectorAll('.arrow-preview,.arrow')
-  while (elements.length > 0) elements[0].parentNode!.removeChild(elements[0])
+  lines.value = []
+  linesPreview.value = []
 }
+
+onUnmounted(() => {
+  clear()
+})
 
 defineExpose({
   lines,
@@ -87,14 +98,6 @@ defineExpose({
 </template>
 
 <style>
-.arrow {
-  z-index: 10;
-}
-
-.arrow-preview {
-  z-index: 9;
-}
-
 .arrow__path,
 .arrow-preview__path {
   stroke: #000000;
