@@ -1,6 +1,27 @@
 # Changelog
 
 
+## v0.3.9
+
+[compare changes](https://undefined/undefined/compare/v0.3.8...v0.3.9)
+
+
+### 🚀 Enhancements
+
+  - Add `FillInTheBlanks` (8ed4762)
+
+### 🏡 Chore
+
+  - Update deps (e091ebd)
+
+### 🎨 Styles
+
+  - Formatting (566bf75)
+
+### ❤️  Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.3.8
 
 [compare changes](https://undefined/undefined/compare/v0.3.7...v0.3.8)
