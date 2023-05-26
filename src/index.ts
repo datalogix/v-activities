@@ -17,6 +17,9 @@ import type { ConnectTheDotsProps } from './activities/ConnectTheDots/Index.vue'
 import Crossword from './activities/Crossword/Index.vue'
 import type { CrosswordProps } from './activities/Crossword/Index.vue'
 
+import FillInTheBlanks from './activities/FillInTheBlanks/Index.vue'
+import type { FillInTheBlanksProps } from './activities/FillInTheBlanks/Index.vue'
+
 import Hangman from './activities/Hangman/Index.vue'
 import type { HangmanProps } from './activities/Hangman/Index.vue'
 
@@ -45,6 +48,7 @@ export type {
   ActivityStoreParams,
   ConnectTheDotsProps,
   CrosswordProps,
+  FillInTheBlanksProps,
   HangmanProps,
   MemoryGameProps,
   MultipleChoiceProps,
@@ -57,6 +61,7 @@ export {
   Activity,
   ConnectTheDots,
   Crossword,
+  FillInTheBlanks,
   Hangman,
   MemoryGame,
   MultipleChoice,
