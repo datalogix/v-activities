@@ -87,9 +87,7 @@ defineExpose({
       @click="toggle()"
     >
       <i
-        :class="{
-          'text-white': !['#ffffff', '#fff'].includes(color.toLocaleLowerCase())
-        }"
+        :class="{ 'text-white': !['#ffffff', '#fff'].includes(color.toLocaleLowerCase()) }"
         class="activity-paint-alpha-selector-icon"
         w-6
         h-6

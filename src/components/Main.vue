@@ -40,7 +40,6 @@ const space = computed(() => headerSize.height.value + footerSize.height.value +
 
     <div
       class="activity-container"
-      mt-4
       flex-1
       grid
       content-center

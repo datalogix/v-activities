@@ -23,9 +23,7 @@ defineProps<WordSearchListProps>()
       v-for="item in items"
       :key="item"
       class="activity-word-search-list-item"
-      :class="{
-        'bg-green-300 activity-word-search-list-item-selected': selected.indexOf(item) !== -1
-      }"
+      :class="{ 'bg-green-300 activity-word-search-list-item-selected': selected.indexOf(item) !== -1 }"
       uppercase
       p-2
       lg:p-4

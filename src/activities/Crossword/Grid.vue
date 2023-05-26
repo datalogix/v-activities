@@ -278,9 +278,7 @@ defineExpose({
           <div
             v-if="getByPoint(x, y)"
             class="activity-crossword-item"
-            :class="{
-              '!cursor-not-allowed': activity.props.mode === 'answered',
-            }"
+            :class="{ '!cursor-not-allowed': activity.props.mode === 'answered' }"
             relative
             w-full
             h-full

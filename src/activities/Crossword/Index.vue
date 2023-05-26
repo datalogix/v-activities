@@ -13,7 +13,7 @@ export type CrosswordItem = {
   fixed?: boolean
 }
 
-export interface CrosswordProps {
+export type CrosswordProps = {
   position?: 'top' | 'bottom' | 'both'
   specialCharacters?: boolean
   items: CrosswordItem[]
@@ -66,17 +66,7 @@ const check = () => {
   const total = props.items.filter(item => !item.fixed).length
   const right = props.items
     .filter(item => !item.fixed)
-    .filter(item => {
-      let word = item.word
-      let filled = grid.value!.getFilledWord(item)
-
-      if (!props.specialCharacters) {
-        word = ascii(word)
-        filled = ascii(filled)
-      }
-
-      return compare(word, filled)
-    })
+    .filter(item => compare(item.word, grid.value!.getFilledWord(item), false, props.specialCharacters))
     .length
 
   return activity.value?.store({

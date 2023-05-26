@@ -191,56 +191,61 @@ defineExpose({
       rotate-y-180
     >
       <div
-        v-if="file && ['jpeg', 'jpg', 'gif', 'png', 'svg'].includes(file.ext)"
-        class="activity-memory-game-item-image"
-        bg-center-center
-        bg-no-repeat
-        bg-contain
-        :style="{
-          'background-image': `url('${file.url}')`,
-          'width': '90%',
-          'height': '90%'
-        }"
-      />
-
-      <audio
-        v-else-if="file && ['mp3'].includes(file.ext)"
-        ref="media"
-        class="activity-memory-game-item-audio"
-        controls="false"
+        flex
+        items-center
+        justify-center
         w-full
-        m-2
-        @loadedmetadata="loadedMetadata"
+        h-full
+        p-2
       >
-        <source
-          :src="file.url"
-          type="audio/mpeg"
-        >
-      </audio>
+        <div
+          v-if="file && ['jpeg', 'jpg', 'gif', 'png', 'svg'].includes(file.ext)"
+          class="activity-memory-game-item-image"
+          bg-center-center
+          bg-no-repeat
+          bg-contain
+          w-full
+          h-full
+          :style="{
+            'background-image': `url('${file.url}')`,
+          }"
+        />
 
-      <video
-        v-else-if="file && ['mp4'].includes(file.ext)"
-        ref="media"
-        class="activity-memory-game-item-video"
-        controls="false"
-        w-full
-        m-2
-        @loadedmetadata="loadedMetadata"
-      >
-        <source
-          :src="file.url"
-          type="video/mp4"
+        <audio
+          v-else-if="file && ['mp3'].includes(file.ext)"
+          ref="media"
+          class="activity-memory-game-item-audio"
+          controls
+          @loadedmetadata="loadedMetadata"
         >
-      </video>
+          <source
+            :src="file.url"
+            type="audio/mpeg"
+          >
+        </audio>
 
-      <div
-        v-else
-        class="activity-memory-game-item-html"
-        text-lg
-        font-semibold
-        overflow-hidden
-        v-html="item.value"
-      />
+        <video
+          v-else-if="file && ['mp4'].includes(file.ext)"
+          ref="media"
+          class="activity-memory-game-item-video"
+          controls
+          @loadedmetadata="loadedMetadata"
+        >
+          <source
+            :src="file.url"
+            type="video/mp4"
+          >
+        </video>
+
+        <div
+          v-else
+          class="activity-memory-game-item-html"
+          text-lg
+          font-semibold
+          overflow-hidden
+          v-html="item.value"
+        />
+      </div>
     </div>
   </div>
 </template>
