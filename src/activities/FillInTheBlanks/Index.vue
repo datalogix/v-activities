@@ -1,13 +1,13 @@
 <script setup lang="ts">
+import type { MarkerType } from '../../components/Marker.vue'
+import type { MediaType } from '../../components/Media.vue'
 import Activity from '../Activity.vue'
 import Item from './Item.vue'
-import Parser from './Parser.vue'
-
-export type FillInTheBlanksMarker = 'none' | 'number' | 'letter' | 'letter_uppercase'
+import Parser, { type FillInTheBlanksField } from './Parser.vue'
 
 export type FillInTheBlanksItem = {
   content: string
-  file?: File | URL | string
+  file?: MediaType
 }
 
 export type FillInTheBlanksAnswer = {
@@ -21,7 +21,7 @@ export type FillInTheBlanksAnswer = {
 export type FillInTheBlanksProps = {
   items: FillInTheBlanksItem[]
   shuffle?: boolean
-  markerType?: FillInTheBlanksMarker
+  markerType?: MarkerType
   caseSensitive?: boolean
   specialCharacters?: boolean
 }
@@ -34,38 +34,24 @@ const props = withDefaults(defineProps<FillInTheBlanksProps>(), {
 })
 
 const activity = ref<InstanceType<typeof Activity>>()
-const answer = ref<FillInTheBlanksAnswer>()
+const answer = ref<FillInTheBlanksAnswer>({ items: [], fields: [] })
 const _items = ref<FillInTheBlanksItem[]>(props.shuffle ? shuffle(props.items) : props.items)
 const parsers = ref<InstanceType<typeof Parser>[]>([])
+const fields = ref<FillInTheBlanksField[]>([])
 
-watch(() => parsers.value.map((s) => s.items), () => {
+watch(fields, () => {
   if (activity.value?.props.mode === 'answered') {
     return
   }
 
-  if (!answer.value) {
-    answer.value = {
-      items: _items.value,
-      fields: []
+  answer.value.fields = fields.value.map(field => {
+    return {
+      value: field.value,
+      correct: field.correct
     }
-  }
-
-  answer.value!.fields = []
-
-  parsers.value.forEach(parser => {
-    answer.value!.fields.push(
-      ...parser.items
-        .filter(item => item.type !== 'content')
-        .map(item => {
-          return {
-            value: item.value,
-            correct: item.correct
-          }
-        })
-    )
   })
 
-  if (answer.value!.fields.some(item => item.value !== '')) {
+  if (answer.value.fields.some(field => field.value !== '')) {
     activity.value?.filled()
   } else {
     activity.value?.blank()
@@ -74,6 +60,7 @@ watch(() => parsers.value.map((s) => s.items), () => {
 
 const start = () => {
   _items.value = props.shuffle ? shuffle(props.items) : props.items
+  fields.value = []
 
   answer.value = {
     items: _items.value,
@@ -86,29 +73,22 @@ const start = () => {
 }
 
 const answered = (_answer: FillInTheBlanksAnswer) => {
-  answer.value = _answer
-  _items.value = answer.value.items
+  _items.value = _answer.items
+  fields.value = []
 
   nextTick(() => {
-    let i = 0
-    parsers.value.forEach(parser => {
-      parser.clear()
+    parsers.value.forEach(parser => parser.clear())
 
-      parser.items.filter(item => item.type !== 'content').forEach(item => {
-        if (answer.value?.fields && answer.value?.fields[i]) {
-          item.value = answer.value?.fields[i].value
-        }
-
-        i++
-      })
+    fields.value.forEach((field, index) => {
+      field.value = _answer.fields[index]?.value || ''
     })
   })
 }
 
 const check = () => {
-  const total = answer.value!.fields.length
-  const right = answer.value!.fields.filter(item => {
-    return compare(item.value, item.correct, props.caseSensitive, props.specialCharacters)
+  const total = fields.value.length
+  const right = fields.value.filter(field => {
+    return compare(field.value, field.correct, props.caseSensitive, props.specialCharacters)
   }).length
 
   return activity.value?.store({
@@ -157,6 +137,7 @@ const check = () => {
         <Parser
           ref="parsers"
           :content="content"
+          @field="(field) => fields.push(field)"
         />
       </Item>
     </div>

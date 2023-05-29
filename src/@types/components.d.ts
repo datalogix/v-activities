@@ -16,6 +16,8 @@ declare module '@vue/runtime-core' {
     Header: typeof import('./../components/Header.vue')['default']
     Loading: typeof import('./../components/Loading.vue')['default']
     Main: typeof import('./../components/Main.vue')['default']
+    Marker: typeof import('./../components/Marker.vue')['default']
+    Media: typeof import('./../components/Media.vue')['default']
     Message: typeof import('./../components/Message.vue')['default']
     Modal: typeof import('./../components/Modal.vue')['default']
     Resets: typeof import('./../components/Resets.vue')['default']

@@ -4,8 +4,8 @@ export type HangmanWordProps = {
   rights: string[]
 }
 
-const activity = useActivity()
 const props = defineProps<HangmanWordProps>()
+const activity = useActivity()
 const letters = replace(props.word).toLocaleUpperCase().split('')
 </script>
 

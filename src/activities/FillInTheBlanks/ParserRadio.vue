@@ -4,10 +4,14 @@ export type FillInTheBlanksParserRadioProps = {
   options: string[]
 }
 
+export type FillInTheBlanksParserRadioEmits = {
+  (e: 'update:modelValue', value: string): void
+}
+
 defineProps<FillInTheBlanksParserRadioProps>()
-const emits = defineEmits<{(e: 'update:modelValue', value: string): void}>()
-const update = (e: Event) => emits('update:modelValue', (e.target as HTMLInputElement).value)
+const emits = defineEmits<FillInTheBlanksParserRadioEmits>()
 const activity = useActivity()
+const update = (e: Event) => emits('update:modelValue', (e.target as HTMLInputElement).value)
 </script>
 
 <template>

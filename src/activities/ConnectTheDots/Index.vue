@@ -2,11 +2,7 @@
 import Activity from '../Activity.vue'
 import LineContainer from './LineContainer.vue'
 import Items from './Items.vue'
-
-export type ConnectTheDotsItem = {
-  value: File | URL | string
-  related: File | URL | string
-}
+import type { ConnectTheDotsItem } from './Item.vue'
 
 export type ConnectTheDotsAnswer = {
   left: ConnectTheDotsItem[]

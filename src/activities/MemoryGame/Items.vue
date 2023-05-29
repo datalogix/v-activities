@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { MemoryGameItem, MemorGameAnswer } from './Index.vue'
-import Item from './Item.vue'
+import type { MemorGameAnswer } from './Index.vue'
+import Item, { type MemoryGameItem } from './Item.vue'
 
 export type MemoryGameItemsProps = {
   items: MemoryGameItem[]
@@ -121,7 +121,7 @@ defineExpose({
         grid: _items.length % 3 === 0 || _items.length % 4 === 0,
         'flex-wrap': _items.length % 3 !== 0 && _items.length % 4 !== 0,
         'grid-cols-3': _items.length % 3 === 0,
-        'grid-cols-4': _items.length % 4 === 0
+        'grid-cols-2 lg:grid-cols-4': _items.length % 4 === 0
       }"
       mx-auto
       gap-2

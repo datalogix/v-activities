@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { ConnectTheDotsItem } from './Index.vue'
-import Item from './Item.vue'
+import Item, { type ConnectTheDotsItem } from './Item.vue'
 
 export type ConnectTheDotsItemsProps = {
   items: ConnectTheDotsItem[]

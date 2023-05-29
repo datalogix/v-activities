@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import type { ConnectTheDotsItem } from './Index.vue'
+import type { MediaType } from '../../components/Media.vue'
+
+export type ConnectTheDotsItem = {
+  value: MediaType
+  related: MediaType
+}
 
 export type ConnectTheDotsItemProps = {
   item: ConnectTheDotsItem
@@ -14,30 +19,6 @@ const props = defineProps<ConnectTheDotsItemProps>()
 const emits = defineEmits<ConnectTheDotsItemEmits>()
 const activity = useActivity()
 const selected = ref<boolean>(false)
-
-const file = computed(() => {
-  if (props.item.value instanceof File) {
-    return {
-      name: props.item.value.name,
-      ext: String(props.item.value.name.split('.').pop()),
-      url: URL.createObjectURL(props.item.value)
-    }
-  }
-
-  try {
-    if (typeof props.item.value === 'string' || props.item.value instanceof URL) {
-      const url = new URL(props.item.value)
-
-      return {
-        name: String(url.pathname.split('/').pop()),
-        ext: String(url.pathname.split('.').pop()),
-        url: url.href
-      }
-    }
-  } catch { }
-
-  return false
-})
 
 const clear = () => {
   selected.value = false
@@ -103,6 +84,7 @@ defineExpose({
       justify-center
     />
     <div
+      class="activity-connect-the-dots-item-value"
       flex
       items-center
       justify-center
@@ -110,47 +92,15 @@ defineExpose({
       h-full
       p-2
     >
-      <div
-        v-if="file && ['jpeg', 'jpg', 'gif', 'png', 'svg'].includes(file.ext)"
-        class="activity-connect-the-dots-item-image"
-        bg-center-center
-        bg-no-repeat
-        bg-contain
-        w-full
-        h-full
-        :style="{ 'background-image': `url('${file.url}')` }"
-      />
-
-      <audio
-        v-else-if="file && ['mp3'].includes(file.ext)"
-        class="activity-connect-the-dots-item-audio"
-        controls
-      >
-        <source
-          :src="file.url"
-          type="audio/mpeg"
-        >
-      </audio>
-
-      <video
-        v-else-if="file && ['mp4'].includes(file.ext)"
-        class="activity-connect-the-dots-item-video"
-        controls
-      >
-        <source
-          :src="file.url"
-          type="video/mp4"
-        >
-      </video>
-
-      <div
-        v-else
-        class="activity-connect-the-dots-item-html"
-        text-lg
-        font-semibold
-        overflow-hidden
-        v-html="item.value"
-      />
+      <Media :content="item.value">
+        <div
+          class="activity-connect-the-dots-item-text"
+          text-lg
+          font-semibold
+          overflow-hidden
+          v-html="item.value"
+        />
+      </Media>
     </div>
   </div>
 </template>

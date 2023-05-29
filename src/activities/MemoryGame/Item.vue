@@ -1,5 +1,12 @@
 <script setup lang="ts">
-import type { MemoryGameItem } from './Index.vue'
+import Media from '../../components/Media.vue'
+import type { MediaType } from '../../components/Media.vue'
+
+export type MemoryGameItem = {
+  key: string
+  value: MediaType
+  related: MediaType
+}
 
 export type MemoryGameItemProps = {
   item: MemoryGameItem
@@ -16,46 +23,21 @@ const props = withDefaults(defineProps<MemoryGameItemProps>(), {
   duration: 'fast'
 })
 
-const activity = useActivity()
 const emits = defineEmits<MemoryGameItemEmits>()
-
+const activity = useActivity()
 const opened = ref<boolean>(false)
 const locked = ref<boolean>(false)
-const media = ref<HTMLMediaElement>()
+const media = ref<InstanceType<typeof Media>>()
 const _timeout = ref<number>(props.timeout)
-
-const file = computed(() => {
-  if (props.item.value instanceof File) {
-    return {
-      name: props.item.value.name,
-      ext: String(props.item.value.name.split('.').pop()),
-      url: URL.createObjectURL(props.item.value)
-    }
-  }
-
-  try {
-    if (typeof props.item.value === 'string' || props.item.value instanceof URL) {
-      const url = new URL(props.item.value)
-
-      return {
-        name: String(url.pathname.split('/').pop()),
-        ext: String(url.pathname.split('.').pop()),
-        url: url.href
-      }
-    }
-  } catch { }
-
-  return false
-})
 
 const open = (forcePlay = true) => {
   opened.value = true
-  forcePlay && playMedia()
+  forcePlay && media.value?.play()
 }
 
 const close = () => {
   opened.value = false
-  stopMedia()
+  media.value?.stop()
 }
 
 const reset = () => {
@@ -69,19 +51,6 @@ const lock = () => {
 
 const unlock = () => {
   locked.value = false
-}
-
-const playMedia = () => {
-  if (!media.value) return
-
-  media.value.play()
-}
-
-const stopMedia = () => {
-  if (!media.value) return
-
-  media.value.pause()
-  media.value.currentTime = 0
 }
 
 const select = () => {
@@ -126,12 +95,10 @@ defineExpose({
     preserve-3d
     transition-all
     perspective="1000px"
-    w-20
-    h-20
-    md:w-32
-    md:h-32
-    lg:w-40
-    lg:h-40
+    w-40
+    h-40
+    lg:w-48
+    lg:h-48
     @click="select"
   >
     <div
@@ -147,12 +114,10 @@ defineExpose({
       backface-hidden
       absolute
       inset-0
-      w-20
-      h-20
-      md:w-32
-      md:h-32
-      lg:w-40
-      lg:h-40
+      w-40
+      h-40
+      lg:w-48
+      lg:h-48
       bg="#31393D"
       bg-center-center
       bg-no-repeat
@@ -176,12 +141,10 @@ defineExpose({
       backface-hidden
       absolute
       inset-0
-      w-20
-      h-20
-      md:w-32
-      md:h-32
-      lg:w-40
-      lg:h-40
+      w-40
+      h-40
+      lg:w-48
+      lg:h-48
       bg-center-center
       bg-no-repeat
       bg-contain
@@ -198,53 +161,20 @@ defineExpose({
         h-full
         p-2
       >
-        <div
-          v-if="file && ['jpeg', 'jpg', 'gif', 'png', 'svg'].includes(file.ext)"
-          class="activity-memory-game-item-image"
-          bg-center-center
-          bg-no-repeat
-          bg-contain
-          w-full
-          h-full
-          :style="{
-            'background-image': `url('${file.url}')`,
-          }"
-        />
-
-        <audio
-          v-else-if="file && ['mp3'].includes(file.ext)"
+        <Media
           ref="media"
-          class="activity-memory-game-item-audio"
-          controls
-          @loadedmetadata="loadedMetadata"
+          :content="item.value"
+          :audio-attrs="{ onLoadeddata: loadedMetadata }"
+          :video-attrs="{ onLoadeddata: loadedMetadata }"
         >
-          <source
-            :src="file.url"
-            type="audio/mpeg"
-          >
-        </audio>
-
-        <video
-          v-else-if="file && ['mp4'].includes(file.ext)"
-          ref="media"
-          class="activity-memory-game-item-video"
-          controls
-          @loadedmetadata="loadedMetadata"
-        >
-          <source
-            :src="file.url"
-            type="video/mp4"
-          >
-        </video>
-
-        <div
-          v-else
-          class="activity-memory-game-item-html"
-          text-lg
-          font-semibold
-          overflow-hidden
-          v-html="item.value"
-        />
+          <div
+            class="activity-memory-game-item-html"
+            text-lg
+            font-semibold
+            overflow-hidden
+            v-html="item.value"
+          />
+        </Media>
       </div>
     </div>
   </div>

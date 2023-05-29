@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import Activity from '../Activity.vue'
-import Grid from './Grid.vue'
+import Grid, { type WordSearchGridPosition } from './Grid.vue'
 import List from './List.vue'
-import type { WordSearchGridPosition } from './Grid.vue'
 
 export type WordSearchItem = {
   word: string

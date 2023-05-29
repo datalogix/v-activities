@@ -6,6 +6,9 @@ import ParserSelect from './ParserSelect.vue'
 export type FillInTheBlanksParser = {
   type: 'content' | 'input' | 'radio' | 'select'
   content: string
+}
+
+export type FillInTheBlanksField = FillInTheBlanksParser & {
   value?: string
   correct?: string
   options?: string[]
@@ -15,7 +18,12 @@ export type FillInTheBlanksParserProps = {
   content: string
 }
 
+export type FillInTheBlanksParserEmits = {
+  (e: 'field', option: FillInTheBlanksField): Promise<void>
+}
+
 const props = defineProps<FillInTheBlanksParserProps>()
+const emits = defineEmits<FillInTheBlanksParserEmits>()
 const activity = useActivity()
 const items = ref<FillInTheBlanksParser[]>([])
 
@@ -51,6 +59,8 @@ const parser = (content: string) => {
 
     i = (match.index || 0) + match[0].length
 
+    let field = {} as FillInTheBlanksField
+
     if (match[0].includes('|')) {
       const options = match[0]
         .replace('[', '')
@@ -59,7 +69,7 @@ const parser = (content: string) => {
         .split('|')
         .map((option) => option.trim())
 
-      _items.push({
+      field = {
         type: 'select',
         value: '',
         content: `<ParserSelect
@@ -68,7 +78,7 @@ const parser = (content: string) => {
           />${activity.props.mode === 'preview' ? `(${options[0]})` : ''}`,
         correct: options[0],
         options: shuffle(options)
-      })
+      }
     } else if (match[0].includes('\\')) {
       const options = match[0]
         .replace('[', '')
@@ -77,7 +87,7 @@ const parser = (content: string) => {
         .split('\\')
         .map((option) => option.trim())
 
-      _items.push({
+      field = {
         type: 'radio',
         value: '',
         content: `<ParserRadio
@@ -87,14 +97,14 @@ const parser = (content: string) => {
         />${activity.props.mode === 'preview' ? `(${options[0]})` : ''}`,
         correct: options[0],
         options: shuffle(options)
-      })
+      }
     } else {
       const option = match[0]
         .replace('[', '')
         .replace(']', '')
         .trim()
 
-      _items.push({
+      field = {
         type: 'input',
         value: '',
         content: `<ParserInput
@@ -103,8 +113,12 @@ const parser = (content: string) => {
             placeholder="${activity.props.mode === 'preview' ? option : ''}"
           />`,
         correct: option
-      })
+      }
     }
+
+    emits('field', field)
+
+    _items.push(field)
   }
 
   if (content.length > i) {

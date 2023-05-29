@@ -4,9 +4,8 @@ export type MessageProps = {
   content: string
 }
 
-const { closeMessage } = useActivity()
-
 defineProps<MessageProps>()
+const { closeMessage } = useActivity()
 </script>
 
 <template>

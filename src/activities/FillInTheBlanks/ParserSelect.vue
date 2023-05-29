@@ -4,10 +4,15 @@ export type FillInTheBlanksParserSelectProps = {
   options: string[]
 }
 
+export type FillInTheBlanksParserSelectEmits = {
+   (e: 'update:modelValue', value: string): void
+}
+
 defineProps<FillInTheBlanksParserSelectProps>()
-const emits = defineEmits<{(e: 'update:modelValue', value: string): void}>()
-const update = (e: Event) => emits('update:modelValue', (e.target as HTMLSelectElement).value)
+
+const emits = defineEmits<FillInTheBlanksParserSelectEmits>()
 const activity = useActivity()
+const update = (e: Event) => emits('update:modelValue', (e.target as HTMLSelectElement).value)
 </script>
 
 <template>

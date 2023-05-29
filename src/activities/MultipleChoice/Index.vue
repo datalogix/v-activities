@@ -1,29 +1,23 @@
 <script setup lang="ts">
+import type { MarkerType } from '../../components/Marker.vue'
 import Activity from '../Activity.vue'
-import Option from './Option.vue'
-
-export type MultipleChoiceValue = number[] | number | undefined
-
-export type MultipleChoiceType = 'checkbox' | 'radio'
-
-export type MultipleChoiceMarker = 'none' | 'number' | 'letter' | 'letter_uppercase'
-
-export type MultipleChoiceOption = {
-  label: string
-  value: number
-}
+import Option, {
+  type MultipleChoiceOption,
+  type MultipleChoiceOptionType,
+  type MultipleChoiceOptionValue
+} from './Option.vue'
 
 export type MultipleChoiceAnswer = {
-  selecteds: MultipleChoiceValue
+  selecteds: MultipleChoiceOptionValue
   options: MultipleChoiceOption[]
 }
 
 export type MultipleChoiceProps = {
   options: MultipleChoiceOption[]
-  type?: MultipleChoiceType
+  type?: MultipleChoiceOptionType
   cols?: number
   shuffle?: boolean
-  markerType?: MultipleChoiceMarker
+  markerType?: MarkerType
 }
 
 const props = withDefaults(defineProps<MultipleChoiceProps>(), {
@@ -35,7 +29,7 @@ const props = withDefaults(defineProps<MultipleChoiceProps>(), {
 
 const activity = ref<InstanceType<typeof Activity>>()
 const answer = ref<MultipleChoiceAnswer>()
-const answers = ref<MultipleChoiceValue>()
+const answers = ref<MultipleChoiceOptionValue>()
 const _options = ref<MultipleChoiceOption[]>(props.shuffle ? shuffle(props.options) : props.options)
 
 watch(answers, selecteds => {
@@ -145,8 +139,7 @@ const check = () => {
         :marker-type="markerType"
         :position="index"
         :type="type"
-        :label="option.label"
-        :value="option.value"
+        :option="option"
       />
     </div>
   </Activity>

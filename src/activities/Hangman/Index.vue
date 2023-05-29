@@ -18,7 +18,6 @@ export type HangmanProps = {
 }
 
 const props = defineProps<HangmanProps>()
-
 const activity = ref<InstanceType<typeof Activity>>()
 const answer = ref<HangmanAnswer>()
 const level = ref<InstanceType<typeof Level>>()

@@ -38,7 +38,7 @@ const letterGrid = ref<string[][]>([])
 const gridWord = ref<string[][]>([])
 const foundTiles = ref<WordSearchGridPosition[]>([])
 const guess = ref<WordSearchGridPosition[]>([])
-const selectedRange = ref<{start: WordSearchGridPosition|null, end: WordSearchGridPosition|null}>({ start: null, end: null })
+const selectedRange = ref<{start: WordSearchGridPosition |null, end: WordSearchGridPosition |null}>({ start: null, end: null })
 const guessedWord = computed(() => guess.value.map(l => gridVal(l)).join(''))
 
 const isAnswer = ({ x, y }: WordSearchGridPosition) => {
@@ -311,12 +311,12 @@ const build = () => {
   }
 }
 
-const answered = (answer: unknown) => {
-  usedWords.value = (answer as WordSearchAnswer).usedWords
-  foundWords.value = (answer as WordSearchAnswer).foundWords
-  letterGrid.value = (answer as WordSearchAnswer).letterGrid
-  gridWord.value = (answer as WordSearchAnswer).gridWord
-  foundTiles.value = (answer as WordSearchAnswer).foundTiles
+const answered = (answer: WordSearchAnswer) => {
+  usedWords.value = answer.usedWords
+  foundWords.value = answer.foundWords
+  letterGrid.value = answer.letterGrid
+  gridWord.value = answer.gridWord
+  foundTiles.value = answer.foundTiles
 }
 
 build()

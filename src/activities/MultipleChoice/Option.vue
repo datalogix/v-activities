@@ -1,20 +1,26 @@
 <script setup lang="ts">
-import type { MultipleChoiceValue, MultipleChoiceType, MultipleChoiceMarker } from './Index.vue'
+import type { MarkerType } from '../../components/Marker.vue'
 
-export type MultipleChoiceOptionProps = {
-  markerType?: MultipleChoiceMarker
-  position: number
-  type?: MultipleChoiceType
+export type MultipleChoiceOptionValue = number[] | number | undefined
+
+export type MultipleChoiceOptionType = 'checkbox' | 'radio'
+
+export type MultipleChoiceOption = {
   label: string
   value: number
-  modelValue: MultipleChoiceValue
+}
+
+export type MultipleChoiceOptionProps = {
+  markerType?: MarkerType
+  position: number
+  type?: MultipleChoiceOptionType
+  option: MultipleChoiceOption
+  modelValue: MultipleChoiceOptionValue
 }
 
 export type MultipleChoiceOptionEmits = {
-  (e: 'update:modelValue', value: MultipleChoiceValue): void
+  (e: 'update:modelValue', value: MultipleChoiceOptionValue): void
 }
-
-const activity = useActivity()
 
 const props = withDefaults(defineProps<MultipleChoiceOptionProps>(), {
   markerType: 'none',
@@ -22,6 +28,7 @@ const props = withDefaults(defineProps<MultipleChoiceOptionProps>(), {
 })
 
 const emits = defineEmits<MultipleChoiceOptionEmits>()
+const activity = useActivity()
 
 const update = (e: Event) => {
   const input = (e.target as HTMLInputElement)
@@ -49,22 +56,6 @@ const checked = computed(() => {
     ? props.modelValue.includes(props.position)
     : props.modelValue === props.position
 })
-
-const markerText = computed(() => {
-  if (props.markerType === 'none') {
-    return false
-  }
-
-  if (props.markerType === 'letter') {
-    return `${LETTERS[props.position].toLocaleLowerCase()}.`
-  }
-
-  if (props.markerType === 'letter_uppercase') {
-    return `${LETTERS[props.position].toLocaleUpperCase()}.`
-  }
-
-  return `${props.position + 1}.`
-})
 </script>
 
 <template>
@@ -76,16 +67,11 @@ const markerText = computed(() => {
     mx-auto
     w-full
   >
-    <label
-      v-if="markerText"
+    <Marker
       class="activity-multiple-choice-option-position"
-      :class="{ '!cursor-not-allowed': activity.props.mode === 'answered' }"
-      text-sm
-      md:text-base
-      lg:text-lg
-      font-semibold
       :for="`awnser${position}`"
-      v-text="markerText"
+      :type="markerType"
+      :position="position"
     />
     <input
       :id="`awnser${position}`"
@@ -104,7 +90,7 @@ const markerText = computed(() => {
       :class="{ '!cursor-not-allowed': activity.props.mode === 'answered' }"
       flex-1
       :for="`awnser${position}`"
-      v-html="label"
+      v-html="option.label"
     />
     <span
       v-if="activity.props.mode === 'preview'"
@@ -115,7 +101,7 @@ const markerText = computed(() => {
       space-y--1
     >
       <span text-xs>Valor</span>
-      <b text-sm>{{ value }}</b>
+      <b text-sm>{{ option.value }}</b>
     </span>
   </div>
 </template>

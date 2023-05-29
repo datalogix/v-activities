@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import Activity from '../Activity.vue'
 import Items from './Items.vue'
-
-export type MemoryGameItem = {
-  key: string
-  value: File | URL | string
-  related: File | URL | string
-}
+import type { MemoryGameItem } from './Item.vue'
 
 export type MemorGameAnswer = {
   items: MemoryGameItem[]
