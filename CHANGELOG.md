@@ -1,6 +1,27 @@
 # Changelog
 
 
+## v0.4.0
+
+[compare changes](https://undefined/undefined/compare/v0.3.9...v0.4.0)
+
+
+### 🚀 Enhancements
+
+  - Add `DragAndDrop` (9fb9fe2)
+
+### 💅 Refactors
+
+  - Formatting (599ba27)
+
+### 🏡 Chore
+
+  - Update deps (5c80402)
+
+### ❤️  Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.3.9
 
 [compare changes](https://undefined/undefined/compare/v0.3.8...v0.3.9)
