@@ -1,6 +1,42 @@
 # Changelog
 
 
+## v0.5.0
+
+[compare changes](https://undefined/undefined/compare/v0.4.0...v0.5.0)
+
+
+### 🚀 Enhancements
+
+  - Add message when it doesn't hit anything (13ac658)
+  - Add title (0c595f6)
+
+### 🩹 Fixes
+
+  - Update delay (892099b)
+  - Add timeout to store (debb128)
+  - Activity container (a972275)
+  - Increase resets only in run mode (d0938f3)
+  - Check on dead (b17e8e9)
+
+### 💅 Refactors
+
+  - Remove exit and move finish to header (773c08b)
+
+### 🏡 Chore
+
+  - Update deps (e05249a)
+  - Formatting (aeaf36d)
+  - Add types (b07ffc7)
+
+### 🎨 Styles
+
+  - Set overflow hidden (e22d7d9)
+
+### ❤️  Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.4.0
 
 [compare changes](https://undefined/undefined/compare/v0.3.9...v0.4.0)
