@@ -250,12 +250,7 @@ const pause = async () => {
 
 const dead = async () => {
   await pause()
-
-  if (props.canCheck) {
-    await check()
-  } else if (props.canFinish) {
-    await finish()
-  }
+  await check()
 
   return emits('dead')
 }
