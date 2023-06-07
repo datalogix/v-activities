@@ -31,6 +31,22 @@ defineProps<ResultProps>()
       </span>
     </div>
     <div
+      v-else-if="typeof result === 'object' && result?.right < 1"
+      flex
+      flex-col
+      items-center
+      space-y-4
+      text-xl
+    >
+      <i
+        i-mdi-close
+        w-20
+        h-20
+        text-red-500
+      />
+      Você não acertou nenhuma
+    </div>
+    <div
       v-else
       flex
       flex-col
@@ -45,7 +61,7 @@ defineProps<ResultProps>()
         text-green-500
       />
       <span v-if="result === true">
-        Parabéns você acertou!
+        Parabéns, você acertou!
       </span>
       <span v-else-if="typeof result === 'object'">
         Você acertou {{ result?.right }} de {{ result?.total }}
