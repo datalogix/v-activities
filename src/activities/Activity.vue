@@ -14,6 +14,7 @@ export type ActivityMessage = MessageProps
 export type ActivityResult = ResultProps
 
 export type ActivityProps = {
+  title?: string
   type: string
   options: unknown
   modelValue: unknown
@@ -117,6 +118,7 @@ export type ActivityEmits = {
 }
 
 const props = withDefaults(defineProps<ActivityProps>(), {
+  title: undefined,
   mode: 'run',
   load: () => [],
   answer: undefined,
@@ -402,7 +404,14 @@ defineExpose(provideAndExpose)
   <Section :class="[`activity-${type}`, `activity-${type}-${mode}`]">
     <slot name="activity-header">
       <Header ref="header">
-        <slot name="activity-logo" />
+        <slot name="activity-logo">
+          <h1
+            font-semibold
+            text-lg
+          >
+            {{ title }}
+          </h1>
+        </slot>
       </Header>
     </slot>
 
