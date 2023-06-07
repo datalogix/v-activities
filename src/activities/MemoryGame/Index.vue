@@ -30,7 +30,7 @@ const right = (item1: MemoryGameItem, item2: MemoryGameItem) => {
   answer.value?.right.push(item1, item2)
 
   if (answer.value?.right.length === itemsRef.value?.items.length) {
-    activity.value?.store({ percentage: 100, result: true })
+    setTimeout(() => activity.value?.store({ percentage: 100, result: true }), 1000)
   }
 }
 
