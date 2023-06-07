@@ -264,7 +264,9 @@ const restart = async () => {
   emits('update:modelValue', undefined)
   blank()
 
-  await resets.value?.increase()
+  if (props.mode === 'run') {
+    await resets.value?.increase()
+  }
 
   if (resets.value?.isDead) {
     return
@@ -285,7 +287,10 @@ const check = async () => {
   }
 
   const ok = async () => {
-    await resets.value?.increase()
+    if (props.mode === 'run') {
+      await resets.value?.increase()
+    }
+
     await pause()
     return emits('check')
   }
