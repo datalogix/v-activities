@@ -37,6 +37,7 @@ const create = (left: ConnectTheDotsLineItem, right: ConnectTheDotsLineItem, pre
 
   const line = {
     element: arrowCreate({
+      updateDelay: 0,
       className: preview ? 'arrow-preview' : 'arrow',
       from: {
         node: left.$el,
@@ -98,6 +99,10 @@ defineExpose({
 </template>
 
 <style>
+.arrow {
+  pointer-events: none;
+}
+
 .arrow__path,
 .arrow-preview__path {
   stroke: #000000;
