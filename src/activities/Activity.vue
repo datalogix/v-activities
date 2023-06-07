@@ -54,7 +54,6 @@ export type ActivityProps = {
   canRestart?: boolean
   canCheck?: boolean
   canFinish?: boolean
-  canExit?: boolean
 }
 
 export type ActivityStoreParams = ActivityProps & ActivityResult & {
@@ -94,7 +93,6 @@ export type ActivityEmits = {
   (e: 'check'): void | Promise<void>
   (e: 'store', params: ActivityStoreParams): void | Promise<void>
   (e: 'finish'): void | Promise<void>
-  (e: 'exit'): void | Promise<void>
 
   // global timer
   (e: 'global-timer-time', params: TimerParams): void | Promise<void>
@@ -155,8 +153,7 @@ const props = withDefaults(defineProps<ActivityProps>(), {
   // Actions
   canRestart: true,
   canCheck: true,
-  canFinish: true,
-  canExit: true
+  canFinish: true
 })
 
 const emits = defineEmits<ActivityEmits>()
@@ -360,19 +357,6 @@ const finish = async (force = false) => {
   })
 }
 
-const exit = async () => {
-  await media.stop()
-  await confirmation.value?.close()
-
-  return confirmation.value?.open({
-    title: 'Deseja realmente sair?',
-    ok: async () => {
-      await pause()
-      return emits('exit')
-    }
-  })
-}
-
 const filled = () => {
   isEmpty.value = false
 }
@@ -406,7 +390,6 @@ const provideAndExpose = {
   check,
   store,
   finish,
-  exit,
   filled,
   blank
 }

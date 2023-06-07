@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const { props, status, result, restart, check, finish } = useActivity()
+const { props, status, result, restart, check } = useActivity()
 </script>
 
 <template>
@@ -39,16 +39,6 @@ const { props, status, result, restart, check, finish } = useActivity()
       icon="i-mdi-check"
       text="Verificar"
       @click="check()"
-    />
-
-    <Button
-      v-if="props.canFinish && status !== 'loading' && props.mode === 'run'"
-      class="activity-button-finish"
-      text-white
-      bg-gray-500
-      icon="i-mdi-exit-to-app"
-      text="Finalizar"
-      @click="finish()"
     />
   </footer>
 </template>

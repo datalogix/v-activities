@@ -2,7 +2,7 @@
 import Timer, { type TimerParams } from './Timer.vue'
 import Resets, { type ResetsParams } from './Resets.vue'
 
-const { instance, props, openMessage, dead, check, finish, exit } = useActivity()
+const { instance, props, status, openMessage, dead, check, finish } = useActivity()
 const globalTimer = ref<InstanceType<typeof Timer>>()
 const timer = ref<InstanceType<typeof Timer>>()
 const resets = ref<InstanceType<typeof Resets>>()
@@ -48,24 +48,21 @@ defineExpose({
     container
     max-w-5xl
     w-full
-    z-30
+    z-10
     mx-auto
-    flex
-    justify-center
+    grid
+    grid-cols-3
     items-center
+    rounded-t-xl
+    shadow-inner
+    px-4
+    py-3
   >
-    <div
-      flex
-      gap-4
-      px-4
-      py-1
-      rounded-t-xl
-      shadow-inner
-      items-center
-      justify-center
-    >
+    <div>
       <slot />
+    </div>
 
+    <div>
       <div
         v-show="props.globalShowTimer || props.showTimer"
         flex
@@ -135,12 +132,17 @@ defineExpose({
         <button
           type="button"
           class="activity-button-instructions"
+          cursor-pointer
+          border-none
+          outline-none
+          rounded-full
           text-blue
           bg-white
           flex
           items-center
           justify-center
           hover:opacity-70
+
           @click="openMessage({ type: 'info', content: String(props.instructions) })"
         >
           <i
@@ -151,33 +153,38 @@ defineExpose({
           />
         </button>
       </slot>
+    </div>
 
+    <div
+      place-self-end
+    >
       <slot
-        v-if="props.canExit"
+        v-if="props.canFinish && status !== 'loading' && props.mode === 'run'"
         name="close"
       >
         <button
           type="button"
-          class="activity-button-close"
+          class="activity-button-finish"
           cursor-pointer
           border-none
           outline-none
-          rounded-full
-          text-white
-          bg-black
+          text-red-500
           flex
           items-center
           justify-center
-          p-1
+          space-x-2
+          py-2
+          px-3
           hover:opacity-70
-          @click="exit()"
+          @click="finish()"
         >
           <i
-            class="activity-button-close-icon"
-            i-mdi-close
+            class="activity-button-finish-icon"
+            i-mdi-exit-to-app
             w-4
             h-4
           />
+          <span>Finalizar</span>
         </button>
       </slot>
     </div>

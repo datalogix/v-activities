@@ -31,7 +31,6 @@ export type ActivityInject = {
   check: () => void | Promise<void>
   store: (result: ActivityResult) => void | Promise<void>
   finish: (force?: boolean) => void | Promise<void>
-  exit: () => void | Promise<void>
   filled: () => void | Promise<void>
   blank: () => void | Promise<void>
 }
