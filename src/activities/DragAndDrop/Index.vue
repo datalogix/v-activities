@@ -137,7 +137,7 @@ const check = () => {
           ref="parsers"
           :content="content"
           :options="options"
-          @option="(option) => options.push(option)"
+          @option="(option: DragAndDropOption) => options.push(option)"
         />
       </Item>
     </div>

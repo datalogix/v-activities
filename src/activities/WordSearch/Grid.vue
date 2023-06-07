@@ -373,11 +373,11 @@ defineExpose({
         border-gray-300
         cursor-pointer
         @mousedown.prevent="wordSelectStart({ x, y })"
-        @mouseup="(e) => wordSelectUpdate(e, { x, y })"
-        @mousemove="(e) => wordSelectUpdate(e, { x, y })"
+        @mouseup="(e: MouseEvent) => wordSelectUpdate(e, { x, y })"
+        @mousemove="(e: MouseEvent) => wordSelectUpdate(e, { x, y })"
         @touchstart.prevent.passive="wordSelectStart({ x, y })"
-        @touchend.passive="(e) => wordSelectUpdate(e, { x, y })"
-        @touchmove.passive="(e) => wordSelectUpdate(e, { x, y })"
+        @touchend.passive="(e: TouchEvent) => wordSelectUpdate(e, { x, y })"
+        @touchmove.passive="(e: TouchEvent) => wordSelectUpdate(e, { x, y })"
         v-text="gridVal({ x, y })"
       />
     </div>

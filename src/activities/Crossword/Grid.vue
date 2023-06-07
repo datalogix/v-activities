@@ -296,7 +296,7 @@ defineExpose({
               v-text="getByPoint(x, y)!.position"
             />
             <input
-              :ref="el => { getByPoint(x, y)!.input = el as HTMLInputElement }"
+              :ref="(el: Element | ComponentPublicInstance | null) => { getByPoint(x, y)!.input = el as HTMLInputElement }"
               v-model="getByPoint(x, y)!.value"
               :disabled="getByPoint(x, y)!.fixed || activity.props.mode === 'answered'"
               class="activity-crossword-input"
