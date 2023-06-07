@@ -1,7 +1,7 @@
 <script setup lang="ts">
 export type TimerProps = {
-  start?: number|string
-  max?: number|string
+  start?: number | string
+  max?: number | string
   show?: boolean
   countdown?: boolean
 }

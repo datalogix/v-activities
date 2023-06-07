@@ -303,7 +303,7 @@ const check = async () => {
   return ok()
 }
 
-const store = async (activityResult: ActivityResult|null = null) => {
+const store = async (activityResult: ActivityResult | null = null) => {
   await pause()
 
   if (props.showResult && activityResult) {

@@ -1,4 +1,4 @@
-export function hmsToSeconds (value: string|number) {
+export function hmsToSeconds (value: string | number) {
   return value.toString().split(':').reduce((acc, time) => (60 * acc) + +time, 0)
 }
 

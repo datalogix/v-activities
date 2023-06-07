@@ -20,7 +20,7 @@ export type CrosswordProps = {
 }
 
 export type CrosswordAnswer = {
-  values: (string|undefined)[][]
+  values: (string | undefined)[][]
 }
 
 const props = withDefaults(defineProps<CrosswordProps>(), {

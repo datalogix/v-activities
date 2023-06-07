@@ -8,7 +8,7 @@ export type StringOptions = {
   unicode?: boolean
   lowercase?: boolean
   uppercase?: boolean
-  exclude?: string|string[]
+  exclude?: string | string[]
 }
 
 export const LETTERS = 'abcdefghijklmnopqrstuvwxyz'
