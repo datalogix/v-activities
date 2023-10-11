@@ -3,10 +3,12 @@
     img {
       max-width: 100%;
       height: auto;
+      display: initial;
     }
 
     audio, video {
       max-width: 100%;
+      display: initial;
     }
 
     audio::-internal-media-controls-download-button,
