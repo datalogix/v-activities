@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v0.5.1
+
+[compare changes](https://undefined/undefined/compare/v0.5.0...v0.5.1)
+
+
+### 🩹 Fixes
+
+  - Use display initial (7d948d0)
+
+### ❤️  Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.5.0
 
 [compare changes](https://undefined/undefined/compare/v0.4.0...v0.5.0)
