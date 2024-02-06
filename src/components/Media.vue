@@ -24,27 +24,26 @@ const player = computed(() => {
 })
 
 const file = computed(() => {
+  const validExtensions = ['jpeg', 'jpg', 'gif', 'png', 'svg', 'mp3', 'mp4']
+  let ext
+  let url
+
   if (props.content instanceof File) {
-    return {
-      name: props.content.name,
-      ext: String(props.content.name.split('.').pop()),
-      url: URL.createObjectURL(props.content)
-    }
+    ext = String(props.content.name.split('.').pop())
+    url = URL.createObjectURL(props.content)
+  } else if (props.content instanceof URL) {
+    ext = String(props.content.pathname.split('.').pop())
+    url = props.content.href
+  } else {
+    ext = String(props.content?.split('.').pop())
+    url = props.content
   }
 
-  try {
-    if (typeof props.content === 'string' || props.content instanceof URL) {
-      const url = new URL(props.content)
+  if (!validExtensions.includes(ext)) {
+    return false
+  }
 
-      return {
-        name: String(url.pathname.split('/').pop()),
-        ext: String(url.pathname.split('.').pop()),
-        url: url.href
-      }
-    }
-  } catch { }
-
-  return false
+  return { ext, url }
 })
 
 const play = () => {
