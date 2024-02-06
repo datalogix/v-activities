@@ -14,11 +14,11 @@ const ConnectTheDots = defineAsyncComponent(() => import('../../').then(m => m.C
   <ConnectTheDots
     statement="Ligue as imagens entre as colunas corretamente!"
     :background="`/examples/bgs/bg${Math.floor(Math.random() * 4) + 1}.jpg`"
-    :options="{
-      'Video game': '/examples/connect-the-dots/videogame.jpg',
-      'Bandeira': '/examples/connect-the-dots/bandeira.jpg',
-      'Livro': '/examples/connect-the-dots/livro.jpg',
-      'Médico': '/examples/connect-the-dots/medico.jpg',
-    }"
+    :items="[
+      { value: 'Video game', related: '/examples/connect-the-dots/videogame.jpg' },
+      { value: 'Bandeira', related: '/examples/connect-the-dots/bandeira.jpg' },
+      { value: 'Livro', related: '/examples/connect-the-dots/livro.jpg' },
+      { value: 'Médico', related: '/examples/connect-the-dots/medico.jpg' },
+    ]"
   />
 </ClientOnly>

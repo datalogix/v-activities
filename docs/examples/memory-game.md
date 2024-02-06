@@ -14,13 +14,13 @@ const MemoryGame = defineAsyncComponent(() => import('../../').then(m => m.Memor
   <MemoryGame
     statement="Encontre os pares."
     :background="`/examples/bgs/bg${Math.floor(Math.random() * 4) + 1}.jpg`"
-    :options="{
-      'Video game': '/examples/memory-game/videogame.jpg',
-      'Bandeira': '/examples/memory-game/bandeira.jpg',
-      'Livro': '/examples/memory-game/livro.jpg',
-      'Médico': '/examples/memory-game/medico.jpg',
-      'Estudante': '/examples/memory-game/estudante.jpg',
-      'Salada': '/examples/memory-game/salada.jpg'
-    }"
+    :items="[
+      { value: 'Video game', related: '/examples/memory-game/videogame.jpg' },
+      { value: 'Bandeira', related: '/examples/memory-game/bandeira.jpg' },
+      { value: 'Livro', related: '/examples/memory-game/livro.jpg' },
+      { value: 'Médico', related: '/examples/memory-game/medico.jpg' },
+      { value: 'Estudante', related: '/examples/memory-game/estudante.jpg' },
+      { value: 'Salada', related: '/examples/memory-game/salada.jpg' }
+    ]"
   />
 </ClientOnly>
