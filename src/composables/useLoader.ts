@@ -64,34 +64,38 @@ class Loader extends Map<LoaderKey, LoaderValue> {
         return
       }
 
+      if (typeof item !== 'string') {
+        resolve(null)
+        return
+      }
+
+      const ext = String(item.split('.').pop())
+
+      if (['jpg', 'jpeg', 'gif', 'png'].includes(ext)) {
+        const image = new Image()
+        image.onload = () => resolve(image)
+        image.onerror = reject
+        image.src = item
+        return
+      }
+
+      if (['mp3', 'ogg', 'wav'].includes(ext)) {
+        const audio = new Audio(item)
+        audio.addEventListener('canplaythrough', () => resolve(audio))
+        audio.addEventListener('error', reject)
+        return
+      }
+
+      if (['mp4', 'webm', 'ogv'].includes(ext)) {
+        const video = document.createElement('video')
+        video.addEventListener('canplaythrough', () => resolve(video))
+        video.addEventListener('error', reject)
+        video.src = item
+        return
+      }
+
       try {
-        const url = (new URL(item)).href
-        const ext = url.split('.').pop() || ''
-
-        if (['jpg', 'jpeg', 'gif', 'png'].includes(ext)) {
-          const image = new Image()
-          image.onload = () => resolve(image)
-          image.onerror = reject
-          image.src = url
-          return
-        }
-
-        if (['mp3', 'ogg', 'wav'].includes(ext)) {
-          const audio = new Audio(url)
-          audio.addEventListener('canplaythrough', () => resolve(audio))
-          audio.addEventListener('error', reject)
-          return
-        }
-
-        if (['mp4', 'webm', 'ogv'].includes(ext)) {
-          const video = document.createElement('video')
-          video.addEventListener('canplaythrough', () => resolve(video))
-          video.addEventListener('error', reject)
-          video.src = url
-          return
-        }
-
-        fetch(url, {
+        fetch(item, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
