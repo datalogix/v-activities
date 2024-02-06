@@ -26,4 +26,12 @@
       width: calc(100% + 30px);
     }
   }
+
+  &.activity-essay {
+    .activity-main {
+      .activity-container {
+        align-content: start !important;
+      }
+    }
+  }
 }

@@ -20,6 +20,9 @@ import type { CrosswordProps } from './activities/Crossword/Index.vue'
 import DragAndDrop from './activities/DragAndDrop/Index.vue'
 import type { DragAndDropProps } from './activities/DragAndDrop/Index.vue'
 
+import Essay from './activities/Essay/Index.vue'
+import type { EssayProps } from './activities/Essay/Index.vue'
+
 import FillInTheBlanks from './activities/FillInTheBlanks/Index.vue'
 import type { FillInTheBlanksProps } from './activities/FillInTheBlanks/Index.vue'
 
@@ -51,6 +54,7 @@ export type {
   ConnectTheDotsProps,
   CrosswordProps,
   DragAndDropProps,
+  EssayProps,
   FillInTheBlanksProps,
   HangmanProps,
   MemoryGameProps,
@@ -65,6 +69,7 @@ export {
   ConnectTheDots,
   Crossword,
   DragAndDrop,
+  Essay,
   FillInTheBlanks,
   Hangman,
   MemoryGame,
