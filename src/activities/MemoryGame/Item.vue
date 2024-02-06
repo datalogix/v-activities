@@ -3,7 +3,7 @@ import Media from '../../components/Media.vue'
 import type { MediaType } from '../../components/Media.vue'
 
 export type MemoryGameItem = {
-  key: string
+  key?: string
   value: MediaType
   related: MediaType
 }
