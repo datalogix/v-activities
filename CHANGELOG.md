@@ -1,6 +1,31 @@
 # Changelog
 
 
+## v0.6.0
+
+[compare changes](https://undefined/undefined/compare/v0.5.1...v0.6.0)
+
+
+### 🚀 Enhancements
+
+  - Add essay activity (16e3e8f)
+
+### 🩹 Fixes
+
+  - Parse media url (cf15cec)
+  - Optional key (dd6d788)
+  - Textarea position (59ff155)
+  - Parse load url (792b202)
+
+### 📖 Documentation
+
+  - Update (5b547c3)
+  - Add `essay` section (247c5c4)
+
+### ❤️  Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.5.1
 
 [compare changes](https://undefined/undefined/compare/v0.5.0...v0.5.1)
