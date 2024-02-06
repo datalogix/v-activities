@@ -64,23 +64,31 @@ const check = () => {
       />
     </template>
 
-    <textarea
-      v-model="answer"
-      class="activity-essay-textarea"
-      w-full
-      resize-none
-      p-2
-      m-1
-      border
-      border-solid
-      border-gray-300
-      rounded
-      disabled:cursor-not-allowed
-      :disabled="activity?.props.mode === 'answered'"
-      :rows="props.rows"
-    />
-    <i v-if="max">
-      {{ max - answer.length }} caracteres restantes
-    </i>
+    <div
+      flex
+      flex-col
+    >
+      <textarea
+        v-model="answer"
+        class="activity-essay-textarea"
+        resize-none
+        flex-1
+        p-2
+        m-1
+        border
+        border-solid
+        border-gray-300
+        rounded
+        disabled:cursor-not-allowed
+        :disabled="activity?.props.mode === 'answered'"
+        :rows="props.rows"
+      />
+      <i
+        v-if="max"
+        class="activity-essay-info"
+      >
+        {{ max - answer.length }} caracteres restantes
+      </i>
+    </div>
   </Activity>
 </template>
