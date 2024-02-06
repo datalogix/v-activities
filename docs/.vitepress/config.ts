@@ -45,6 +45,7 @@ export default defineConfig({
             { text: 'Colorir', link: '/guide/activities/paint' },
             { text: 'Montar palavra', link: '/guide/activities/assemble-word' },
             { text: 'Palavra Cruzada', link: '/guide/activities/crossword' },
+            { text: 'Dissertativa', link: '/guide/activities/essay' },
           ],
         },
       ],
