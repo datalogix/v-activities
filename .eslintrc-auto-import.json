@@ -294,6 +294,7 @@
     "watchTriggerable": true,
     "watchWithFilter": true,
     "whenever": true,
-    "ascii": true
+    "ascii": true,
+    "similarity": true
   }
 }

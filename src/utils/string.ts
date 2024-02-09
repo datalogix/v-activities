@@ -160,3 +160,16 @@ export function shuffleString (str: string) {
 export function shuffleStringUnique (str: string) {
   return shuffleString(Array.from(new Set(str.split(''))).join(''))
 }
+
+export function similarity (str1: string, str2: string) {
+  const lowerStr1 = str1.toLocaleLowerCase().replace(/[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/g, '').trim()
+  const lowerStr2 = str2.toLocaleLowerCase().replace(/[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/g, '').trim()
+
+  const set1 = new Set(lowerStr1.split(''))
+  const set2 = new Set(lowerStr2.split(''))
+
+  const intersection = new Set([...set1].filter(char => set2.has(char)))
+  const union = new Set([...set1, ...set2])
+
+  return (intersection.size / union.size) * 100
+}

@@ -38,6 +38,9 @@ import type { MultipleChoiceProps } from './activities/MultipleChoice/Index.vue'
 import Paint from './activities/Paint/Index.vue'
 import type { PaintProps } from './activities/Paint/Index.vue'
 
+import SpeechRecognition from './activities/SpeechRecognition/Index.vue'
+import type { SpeechRecognitionProps } from './activities/SpeechRecognition/Index.vue'
+
 import WordSearch, { type WordSearchProps } from './activities/WordSearch/Index.vue'
 
 import 'uno.css'
@@ -60,6 +63,7 @@ export type {
   MemoryGameProps,
   MultipleChoiceProps,
   PaintProps,
+  SpeechRecognitionProps,
   WordSearchProps
 }
 
@@ -75,5 +79,6 @@ export {
   MemoryGame,
   MultipleChoice,
   Paint,
+  SpeechRecognition,
   WordSearch
 }
