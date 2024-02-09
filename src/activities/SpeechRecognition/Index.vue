@@ -47,11 +47,11 @@ const answered = (_answer: SpeechRecognitionAnswer) => {
 const check = () => {
   speechRecognition.stop()
 
-  const percentage = similarity(props.text, answer.value)
+  const right = compare(replace(props.text), replace(answer.value))
 
   return activity.value?.store({
-    percentage,
-    result: percentage
+    percentage: right ? 100 : 0,
+    result: right
   })
 }
 </script>
