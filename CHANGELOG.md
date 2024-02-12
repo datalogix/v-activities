@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v0.7.0
+
+[compare changes](https://undefined/undefined/compare/v0.6.0...v0.7.0)
+
+
+### 🚀 Enhancements
+
+  - Add speech recognition activity (b2c6752)
+
+### 🩹 Fixes
+
+  - Must be right or wrong (ab1ef13)
+
+### ❤️  Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.6.0
 
 [compare changes](https://undefined/undefined/compare/v0.5.1...v0.6.0)

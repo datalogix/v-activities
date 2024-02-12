@@ -1,6 +1,6 @@
 {
   "name": "v-activities",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Activities for Vue 3",
   "repository": "datalogix/v-activities",
   "license": "MIT",
@@ -38,7 +38,7 @@
     "cy:ci": "cypress run-ct --quiet --reporter spec",
     "typecheck": "vue-tsc --noEmit",
     "coverage": "vitest run --coverage",
-    "release": "pnpm test && pnpm build && changelogen --release && git push --follow-tags && npm publish"
+    "release": "pnpm test && pnpm build && changelogen --release --push && npm publish"
   },
   "dependencies": {
     "@vueuse/core": "^10.1.2",
