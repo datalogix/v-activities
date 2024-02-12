@@ -97,6 +97,7 @@ declare global {
   const shuffle: typeof import('../utils/misc')['shuffle']
   const shuffleString: typeof import('../utils/string')['shuffleString']
   const shuffleStringUnique: typeof import('../utils/string')['shuffleStringUnique']
+  const similarity: typeof import('../utils/string')['similarity']
   const syncRef: typeof import('@vueuse/core')['syncRef']
   const syncRefs: typeof import('@vueuse/core')['syncRefs']
   const templateRef: typeof import('@vueuse/core')['templateRef']

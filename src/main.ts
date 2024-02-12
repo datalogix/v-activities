@@ -1,5 +1,14 @@
 import '@unocss/reset/tailwind.css'
-import { Crossword } from './'
+import { SpeechRecognition } from './'
+
+createApp(SpeechRecognition, {
+  statement: 'dfs<p>fds</p>dafadsfdsafds',
+  mode: 'preview',
+  text: 'Edumais é uma ferramente muito legal!',
+  lang: 'pt-BR',
+  answer: 'foo'
+}).mount('#app')
+
 /*
 createApp(ConnectTheDots, {
   statement: 'dfs<p>fds</p>dafadsfdsafds',
@@ -135,6 +144,7 @@ createApp(Paint, {
   }
 }).mount('#app')
 */
+/*
 createApp(Crossword, {
   statement: 'dfs<p>fds</p>dafadsfdsafds',
   mode: 'run',
@@ -175,3 +185,4 @@ createApp(Crossword, {
     values: [['a', '', '', '', '', '', '', '', ''], ['', null, null, null, null, null, '', null, null], ['', null, null, null, null, null, '', null, null], ['', null, null, null, null, null, '', null, null], ['', null, null, null, null, null, '', null, null], ['', null, null, null, null, null, '', null, null], ['', null, null, null, null, null, null, null, null], ['', null, null, null, null, null, null, null, null], ['c', '', '', '', null, null, null, null, null]]
   }
 }).mount('#app')
+*/

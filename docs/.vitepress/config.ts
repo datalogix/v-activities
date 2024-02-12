@@ -46,6 +46,7 @@ export default defineConfig({
             { text: 'Montar palavra', link: '/guide/activities/assemble-word' },
             { text: 'Palavra Cruzada', link: '/guide/activities/crossword' },
             { text: 'Dissertativa', link: '/guide/activities/essay' },
+            { text: 'Reconhecimento de fala', link: '/guide/activities/speech-recognition' },
           ],
         },
       ],
