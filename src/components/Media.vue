@@ -21,6 +21,8 @@ const player = computed(() => {
   if (video.value) {
     return video.value
   }
+
+  return null
 })
 
 const file = computed(() => {
@@ -107,5 +109,12 @@ defineExpose({
   <slot
     v-else
     :content="content"
-  />
+  >
+    <div
+      text-lg
+      font-semibold
+      overflow-hidden
+      v-html="content"
+    />
+  </slot>
 </template>

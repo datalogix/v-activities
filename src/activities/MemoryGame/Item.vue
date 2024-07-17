@@ -166,15 +166,7 @@ defineExpose({
           :content="item.value"
           :audio-attrs="{ onLoadeddata: loadedMetadata }"
           :video-attrs="{ onLoadeddata: loadedMetadata }"
-        >
-          <div
-            class="activity-memory-game-item-html"
-            text-lg
-            font-semibold
-            overflow-hidden
-            v-html="item.value"
-          />
-        </Media>
+        />
       </div>
     </div>
   </div>

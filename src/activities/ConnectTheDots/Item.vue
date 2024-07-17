@@ -92,15 +92,7 @@ defineExpose({
       h-full
       p-2
     >
-      <Media :content="item.value">
-        <div
-          class="activity-connect-the-dots-item-text"
-          text-lg
-          font-semibold
-          overflow-hidden
-          v-html="item.value"
-        />
-      </Media>
+      <Media :content="item.value" />
     </div>
   </div>
 </template>
