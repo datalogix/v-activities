@@ -1,6 +1,37 @@
 # Changelog
 
 
+## v0.8.0
+
+[compare changes](https://github.com/datalogix/v-activities/compare/v0.7.1...v0.8.0)
+
+### 🚀 Enhancements
+
+- Add default slot content ([e6d97a1](https://github.com/datalogix/v-activities/commit/e6d97a1))
+- Render html and add class when selected ([4c296f3](https://github.com/datalogix/v-activities/commit/4c296f3))
+- Display media in place of word ([eb25915](https://github.com/datalogix/v-activities/commit/eb25915))
+
+### 🩹 Fixes
+
+- Add background white ([23350aa](https://github.com/datalogix/v-activities/commit/23350aa))
+- Imports path ([f856b93](https://github.com/datalogix/v-activities/commit/f856b93))
+- Render html ([8df745e](https://github.com/datalogix/v-activities/commit/8df745e))
+- Append lines in container ([57985a0](https://github.com/datalogix/v-activities/commit/57985a0))
+- Use any ([1b605de](https://github.com/datalogix/v-activities/commit/1b605de))
+- Styles ([66fe4f3](https://github.com/datalogix/v-activities/commit/66fe4f3))
+
+### 🏡 Chore
+
+- Update deps ([9c9047d](https://github.com/datalogix/v-activities/commit/9c9047d))
+
+### 🎨 Styles
+
+- Formatting ([1147316](https://github.com/datalogix/v-activities/commit/1147316))
+
+### ❤️ Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.7.1
 
 [compare changes](https://undefined/undefined/compare/v0.7.0...v0.7.1)
