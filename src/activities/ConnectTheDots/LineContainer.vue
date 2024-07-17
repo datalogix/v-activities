@@ -11,6 +11,7 @@ export type ConnectTheDotsLine = {
   preview: boolean
 }
 
+const lineContainer = ref<HTMLDivElement>()
 const lines = ref<ConnectTheDotsLine[]>([])
 const linesPreview = ref<ConnectTheDotsLine[]>([])
 
@@ -53,7 +54,7 @@ const create = (left: ConnectTheDotsLineItem, right: ConnectTheDotsLineItem, pre
     preview
   }
 
-  document.body.appendChild(line.element.node)
+  lineContainer.value!.appendChild(line.element.node)
 
   if (preview) {
     linesPreview.value.push(line)
@@ -93,7 +94,10 @@ defineExpose({
 </script>
 
 <template>
-  <div class="activity-connect-the-dots-line-container">
+  <div
+    ref="lineContainer"
+    class="activity-connect-the-dots-line-container"
+  >
     <slot />
   </div>
 </template>
