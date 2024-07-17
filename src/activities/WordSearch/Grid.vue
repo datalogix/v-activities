@@ -8,12 +8,12 @@ export type WordSearchGridPosition = {
 
 export type WordSearchGridProps = {
   size: number
-  items: WordSearchItem[]
+  items: (WordSearchItem | string)[]
   shuffle?: boolean
 }
 
 export type WordSearchGridEmits = {
-  (e: 'right', word: string): void
+  (e: 'right', item: WordSearchItem): void
   (e: 'wrong', word: string, invertedWord: string): void
   (e: 'complete'): void
 }
@@ -26,14 +26,13 @@ const props = withDefaults(defineProps<WordSearchGridProps>(), {
 const activity = useActivity()
 const emits = defineEmits<WordSearchGridEmits>()
 
-const _items = props.items.map(item => ({
-  ...item,
-  word: replace(item.word, '', { space: false }).toLocaleUpperCase()
-}))
+const _items = props.items
+  .map(item => typeof item === 'string' ? { word: item } : item)
+  .map(item => ({ ...item, word: replace(item.word, '', { space: false }).toLocaleUpperCase() }))
 
 const _size = Math.max(props.size, ..._items.map(item => item.word.length), _items.length)
-const usedWords = ref<string[]>([])
-const foundWords = ref<string[]>([])
+const usedItems = ref<WordSearchItem[]>([])
+const foundItems = ref<WordSearchItem[]>([])
 const letterGrid = ref<string[][]>([])
 const gridWord = ref<string[][]>([])
 const foundTiles = ref<WordSearchGridPosition[]>([])
@@ -105,14 +104,14 @@ const wordSelectUpdate = (event: Event, { x, y }: WordSearchGridPosition) => {
     selectedRange.value = { start: null, end: null }
   }
 
-  const right = (word:string) => {
-    foundWords.value.push(word)
+  const right = (item: WordSearchItem) => {
+    foundItems.value.push(item)
     foundTiles.value.push(...guess.value)
 
     resetSelectedRange()
-    emits('right', word)
+    emits('right', item)
 
-    if (usedWords.value.length === foundWords.value.length) {
+    if (usedItems.value.length === foundItems.value.length) {
       emits('complete')
     }
   }
@@ -163,23 +162,16 @@ const wordSelectUpdate = (event: Event, { x, y }: WordSearchGridPosition) => {
         }
       }
 
-      const corretWord = gridWord.value[guess.value[0].y][guess.value[0].x]
-
-      if (foundWords.value.indexOf(guessedWord.value) === -1 &&
-        usedWords.value.indexOf(guessedWord.value) !== -1 &&
-        guessedWord.value === corretWord
-      ) {
-        return right(corretWord)
-      }
-
+      const correctWord = gridWord.value[guess.value[0].y][guess.value[0].x]
       const invertWord = guessedWord.value.split('').reverse().join('')
+      const correctItem = usedItems.value.find(item => item.word === guessedWord.value || item.word === invertWord)
 
-      if (
-        foundWords.value.indexOf(invertWord) === -1 &&
-        usedWords.value.indexOf(invertWord) !== -1 &&
-        invertWord === corretWord
+      if (correctItem &&
+        (guessedWord.value === correctWord || invertWord === correctWord) &&
+        !foundItems.value.includes(correctItem) &&
+        usedItems.value.includes(correctItem)
       ) {
-        return right(invertWord)
+        return right(correctItem)
       }
 
       emits('wrong', guessedWord.value, invertWord)
@@ -195,13 +187,13 @@ const wordSelectUpdate = (event: Event, { x, y }: WordSearchGridPosition) => {
 const build = () => {
   letterGrid.value = [...Array(_size)].map(() => Array(_size))
   gridWord.value = [...Array(_size)].map(() => Array(_size))
-  usedWords.value = []
-  foundWords.value = []
+  usedItems.value = []
+  foundItems.value = []
   foundTiles.value = []
   guess.value = []
 
-  Array.from(props.shuffle ? shuffle(_items) : _items).forEach(({ word, invert, diagonal }) => {
-    if (word.length > _size) {
+  Array.from(props.shuffle ? shuffle(_items) : _items).forEach((item) => {
+    if (item.word.length > _size) {
       return
     }
 
@@ -210,12 +202,12 @@ const build = () => {
     let y = 0
     let dx = 0
     let dy = 0
-    let itterationCount = 0
+    let iterationCount = 0
 
     do {
-      itterationCount += 1
+      iterationCount += 1
 
-      if (itterationCount > 100) {
+      if (iterationCount > 100) {
         return
       }
 
@@ -240,12 +232,12 @@ const build = () => {
       }
 
       // Disable invert word
-      if (!invert) {
+      if (!item.invert) {
         dx = Math.abs(dx)
         dy = Math.abs(dy)
       }
 
-      if (!diagonal) {
+      if (!item.diagonal) {
         if (dx === 1) {
           dy = 0
         }
@@ -256,24 +248,24 @@ const build = () => {
       }
 
       try {
-        const endX = x + (dx * word.length)
+        const endX = x + (dx * item.word.length)
 
         if (endX < 0 || endX > _size) {
           throw new Error('Word exceeds width')
         }
 
-        const endY = y + (dy * word.length)
+        const endY = y + (dy * item.word.length)
 
         if (endY < 0 || endY > _size) {
           throw new Error('Word exceeds height')
         }
 
-        for (let cIndex = 0; cIndex < word.length; cIndex += 1) {
+        for (let cIndex = 0; cIndex < item.word.length; cIndex += 1) {
           const xCord = x + (cIndex * dx)
           const yCord = y + (cIndex * dy)
 
           if (letterGrid.value[yCord][xCord] !== undefined) {
-            if (letterGrid.value[yCord][xCord] !== word[cIndex]) {
+            if (letterGrid.value[yCord][xCord] !== item.word[cIndex]) {
               throw new Error('Letter Overlap')
             }
           }
@@ -285,14 +277,14 @@ const build = () => {
       }
     } while (!isValid)
 
-    usedWords.value.push(word)
+    usedItems.value.push(item)
 
-    for (let cIndex = 0; cIndex < word.length; cIndex += 1) {
+    for (let cIndex = 0; cIndex < item.word.length; cIndex += 1) {
       const xCord = x + (cIndex * dx)
       const yCord = y + (cIndex * dy)
 
-      letterGrid.value[yCord][xCord] = word[cIndex]
-      gridWord.value[yCord][xCord] = word
+      letterGrid.value[yCord][xCord] = item.word[cIndex]
+      gridWord.value[yCord][xCord] = item.word
     }
   })
 
@@ -306,14 +298,14 @@ const build = () => {
     }
   }
 
-  if (usedWords.value.length !== _items.length) {
+  if (usedItems.value.length !== _items.length) {
     build()
   }
 }
 
 const answered = (answer: WordSearchAnswer) => {
-  usedWords.value = answer.usedWords
-  foundWords.value = answer.foundWords
+  usedItems.value = answer.usedItems ?? answer.usedWords?.map(word => ({ word }))
+  foundItems.value = answer.foundItems ?? answer.foundWords?.map(word => ({ word }))
   letterGrid.value = answer.letterGrid
   gridWord.value = answer.gridWord
   foundTiles.value = answer.foundTiles
@@ -322,8 +314,8 @@ const answered = (answer: WordSearchAnswer) => {
 build()
 
 defineExpose({
-  usedWords,
-  foundWords,
+  usedItems,
+  foundItems,
   letterGrid,
   gridWord,
   foundTiles,

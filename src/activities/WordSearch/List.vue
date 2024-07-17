@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import type { WordSearchItem } from './Index.vue'
+
 export type WordSearchListProps = {
-  items: string[]
-  selected: string[]
+  items: WordSearchItem[]
+  selected: WordSearchItem[]
 }
 
 defineProps<WordSearchListProps>()
@@ -21,7 +23,7 @@ defineProps<WordSearchListProps>()
   >
     <li
       v-for="item in items"
-      :key="item"
+      :key="item.word"
       class="activity-word-search-list-item"
       :class="{ 'bg-green-300 activity-word-search-list-item-selected': selected.indexOf(item) !== -1 }"
       uppercase
@@ -33,7 +35,13 @@ defineProps<WordSearchListProps>()
       border-solid
       border-gray-300
       transition-all
-      v-text="item"
-    />
+    >
+      <Media
+        :content="item.media ?? item.word"
+        :img-attrs="{ class: '!w-60 !h-40' }"
+        :audio-attrs="{ class: '!w-60' }"
+        :video-attrs="{ class: '!w-60' }"
+      />
+    </li>
   </transition-group>
 </template>

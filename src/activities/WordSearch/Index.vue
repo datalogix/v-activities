@@ -7,11 +7,17 @@ export type WordSearchItem = {
   word: string
   diagonal?: boolean
   invert?: boolean
+  media?: string
 }
 
 export type WordSearchAnswer = {
-  usedWords: string[]
-  foundWords: string[]
+  /** @deprecated */
+  usedWords?: string[]
+  /** @deprecated */
+  foundWords?: string[]
+
+  usedItems: WordSearchItem[]
+  foundItems: WordSearchItem[]
   letterGrid: string[][]
   gridWord: string[][]
   foundTiles: WordSearchGridPosition[]
@@ -20,7 +26,7 @@ export type WordSearchAnswer = {
 export type WordSearchProps = {
   items: (WordSearchItem | string)[]
   size?: number
-  position?: 'top' | 'bottom' | 'both'
+  position?: 'top' | 'bottom' | 'both' | 'none'
   shuffle?: boolean
 }
 
@@ -33,24 +39,13 @@ const props = withDefaults(defineProps<WordSearchProps>(), {
 const activity = ref<InstanceType<typeof Activity>>()
 const answer = ref<WordSearchAnswer>()
 const grid = ref<InstanceType<typeof Grid>>()
-const _items = props.items.map((item) => {
-  if (typeof item === 'string') {
-    return {
-      word: item,
-      diagonal: false,
-      invert: false
-    } as WordSearchItem
-  }
-
-  return item
-})
 
 const start = () => {
   grid.value?.build()
 
   answer.value = {
-    usedWords: grid.value!.usedWords,
-    foundWords: grid.value!.foundWords,
+    usedItems: grid.value!.usedItems,
+    foundItems: grid.value!.foundItems,
     letterGrid: grid.value!.letterGrid,
     gridWord: grid.value!.gridWord,
     foundTiles: grid.value!.foundTiles
@@ -62,13 +57,13 @@ const answered = (_answer: WordSearchAnswer) => {
 }
 
 const check = () => {
-  const percentage = grid.value!.foundWords.length
-    ? (grid.value!.foundWords.length * 100 / grid.value!.usedWords.length)
+  const percentage = grid.value!.foundItems.length
+    ? (grid.value!.foundItems.length * 100 / grid.value!.usedItems.length)
     : 0
 
   const result = {
-    right: grid.value!.foundWords.length,
-    total: grid.value!.usedWords.length
+    right: grid.value!.foundItems.length,
+    total: grid.value!.usedItems.length
   }
 
   return activity.value?.store({
@@ -100,15 +95,15 @@ const check = () => {
 
     <List
       v-if="position === 'top' || position === 'both'"
-      :items="grid?.usedWords || []"
-      :selected="grid?.foundWords || []"
+      :items="grid?.usedItems || []"
+      :selected="grid?.foundItems || []"
       mb-4
     />
 
     <Grid
       ref="grid"
       :size="size"
-      :items="_items"
+      :items="items"
       :shuffle="shuffle"
       @right="activity?.filled()"
       @wrong="activity?.filled()"
@@ -117,8 +112,8 @@ const check = () => {
 
     <List
       v-if="position === 'bottom' || position === 'both'"
-      :items="grid?.usedWords || []"
-      :selected="grid?.foundWords || []"
+      :items="grid?.usedItems || []"
+      :selected="grid?.foundItems || []"
       mt-4
     />
   </Activity>
