@@ -86,7 +86,8 @@ export type ActivityEmits = {
   // modes
   (e: 'run'): void | Promise<void>
   (e: 'preview'): void | Promise<void>
-  (e: 'answered', answer: unknown): void | Promise<void>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (e: 'answered', answer: any): void | Promise<void>
 
   // actions
   (e: 'dead'): void | Promise<void>
