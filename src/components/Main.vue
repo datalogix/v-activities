@@ -7,8 +7,6 @@ const { props } = useActivity()
     class="activity-main"
     flex-1
     bg-white
-    rounded-xl
-    shadow-xl
     container
     max-w-5xl
     w-full
@@ -16,6 +14,7 @@ const { props } = useActivity()
     overflow-y-auto
     flex
     flex-col
+    shadow-inner
     xl:p-10
     lg:p-8
     md:p-6

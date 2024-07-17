@@ -56,8 +56,7 @@ defineExpose({
     items-center
     rounded-t-xl
     shadow-inner
-    px-4
-    py-3
+    p-4
   >
     <div>
       <slot />

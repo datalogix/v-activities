@@ -15,9 +15,11 @@ const { props, status, result, restart, check } = useActivity()
     flex
     items-center
     justify-center
+    rounded-b-xl
+    shadow-inner
     gap-2
     md:gap-4
-    pt-4
+    p-4
   >
     <slot />
 
