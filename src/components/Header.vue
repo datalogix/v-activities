@@ -44,6 +44,7 @@ defineExpose({
 <template>
   <header
     class="activity-header"
+    bg-white
     relative
     container
     max-w-5xl
