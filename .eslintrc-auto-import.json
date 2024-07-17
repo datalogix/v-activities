@@ -295,6 +295,13 @@
     "watchWithFilter": true,
     "whenever": true,
     "ascii": true,
-    "similarity": true
+    "similarity": true,
+    "ExtractDefaultPropTypes": true,
+    "ExtractPropTypes": true,
+    "ExtractPublicPropTypes": true,
+    "WritableComputedRef": true,
+    "injectLocal": true,
+    "provideLocal": true,
+    "useClipboardItems": true
   }
 }

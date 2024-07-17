@@ -1,13 +1,13 @@
 {
   "extends": "@vue/tsconfig/tsconfig.json",
   "compilerOptions": {
+    "noEmit": false,
     "types": [
       "node",
       "vite/client"
     ],
     "declaration": true,
-    "declarationDir": "dist",
-    "ignoreDeprecations": "5.0"
+    "declarationDir": "dist"
   },
   "include": [
     "src",
