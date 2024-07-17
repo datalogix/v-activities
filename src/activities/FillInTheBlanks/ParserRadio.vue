@@ -18,8 +18,11 @@ const update = (e: Event) => emits('update:modelValue', (e.target as HTMLInputEl
   <label
     v-for="option in options"
     :key="option"
-    class="mx-2 space-x-2"
-    :class="{ '!cursor-not-allowed': activity.props.mode === 'answered' }"
+    class="mx-2 space-x-2 flex-inline items-center px-4 py-3 rounded"
+    :class="{
+      '!cursor-not-allowed': activity.props.mode === 'answered',
+      'bg-gray-50 activity-fill-in-the-blanks-radio-selected': modelValue === option
+    }"
   >
     <input
       class="activity-fill-in-the-blanks-radio"
@@ -31,6 +34,6 @@ const update = (e: Event) => emits('update:modelValue', (e.target as HTMLInputEl
       v-bind="$attrs"
       @input="update"
     >
-    <span>{{ option }}</span>
+    <div v-html="option" />
   </label>
 </template>
