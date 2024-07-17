@@ -37,7 +37,7 @@ const update = (e: Event) => emits('update:modelValue', (e.target as HTMLSelectE
       v-for="option in options"
       :key="option"
       :value="option"
-      v-text="option"
+      v-html="option"
     />
   </select>
 </template>
