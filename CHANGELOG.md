@@ -1,6 +1,20 @@
 # Changelog
 
 
+## v0.8.1
+
+[compare changes](https://github.com/datalogix/v-activities/compare/v0.8.0...v0.8.1)
+
+### 🩹 Fixes
+
+- Shadow ([6676383](https://github.com/datalogix/v-activities/commit/6676383))
+- Radio index ([4d8ec1c](https://github.com/datalogix/v-activities/commit/4d8ec1c))
+- Line element ([cc0fb7b](https://github.com/datalogix/v-activities/commit/cc0fb7b))
+
+### ❤️ Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.8.0
 
 [compare changes](https://github.com/datalogix/v-activities/compare/v0.7.1...v0.8.0)
