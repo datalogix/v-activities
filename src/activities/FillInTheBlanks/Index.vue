@@ -136,6 +136,7 @@ const check = () => {
       >
         <Parser
           ref="parsers"
+          :index="index"
           :content="content"
           @field="(field: FillInTheBlanksField) => fields.push(field)"
         />

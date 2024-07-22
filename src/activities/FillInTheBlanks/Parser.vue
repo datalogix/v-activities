@@ -15,6 +15,7 @@ export type FillInTheBlanksField = FillInTheBlanksParser & {
 }
 
 export type FillInTheBlanksParserProps = {
+  index: number
   content: string
 }
 
@@ -92,7 +93,7 @@ const parser = (content: string) => {
         value: '',
         content: `<ParserRadio
           v-model="items[${_items.length}].value"
-          name="radio${i}"
+          name="radio${props.index}"
           :options="items[${_items.length}].options"
         />${activity.props.mode === 'preview' ? `(${options[0]})` : ''}`,
         correct: options[0],
