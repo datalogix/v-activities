@@ -14,7 +14,7 @@ const { props } = useActivity()
     overflow-y-auto
     flex
     flex-col
-    shadow-inner
+    shadow
     xl:p-10
     lg:p-8
     md:p-6

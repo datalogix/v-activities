@@ -16,7 +16,7 @@ const { props, status, result, restart, check } = useActivity()
     items-center
     justify-center
     rounded-b-xl
-    shadow-inner
+    shadow
     gap-2
     md:gap-4
     p-4
