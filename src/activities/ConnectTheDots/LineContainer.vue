@@ -41,12 +41,12 @@ const create = (left: ConnectTheDotsLineItem, right: ConnectTheDotsLineItem, pre
       updateDelay: 0,
       className: preview ? 'arrow-preview' : 'arrow',
       from: {
-        node: left.$el,
-        translation: [0.5, 0, 0.5]
+        node: left.$el.firstElementChild,
+        translation: [0, 0, 0]
       },
       to: {
-        node: right.$el,
-        translation: [-0.5, 0, -0.5]
+        node: right.$el.firstElementChild,
+        translation: [0, 0, 0]
       }
     }),
     left,
