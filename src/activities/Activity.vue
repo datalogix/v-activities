@@ -403,34 +403,50 @@ defineExpose(provideAndExpose)
 
 <template>
   <Section :class="[`activity-${type}`, `activity-${type}-${mode}`]">
-    <slot name="activity-header">
-      <Header ref="header">
-        <slot name="activity-logo">
-          <h1
-            font-semibold
-            text-lg
-          >
-            {{ title }}
-          </h1>
-        </slot>
-      </Header>
-    </slot>
+    <div
+      bg-white
+      flex
+      flex-col
+      container
+      max-w-5xl
+      mx-auto
+      w-full
+      h-full
+      relative
+      rounded-xl
+      overflow-hidden
+      border
+      shadow-xl
+    >
+      <slot name="activity-header">
+        <Header ref="header">
+          <slot name="activity-logo">
+            <h1
+              font-semibold
+              text-lg
+            >
+              {{ title }}
+            </h1>
+          </slot>
+        </Header>
+      </slot>
 
-    <slot name="activity-main">
-      <Main>
-        <template #statement>
-          <slot name="activity-statement" />
-        </template>
+      <slot name="activity-main">
+        <Main>
+          <template #statement>
+            <slot name="activity-statement" />
+          </template>
 
-        <slot />
-      </Main>
-    </slot>
+          <slot />
+        </Main>
+      </slot>
 
-    <slot name="activity-footer">
-      <Footer ref="footer">
-        <slot name="activity-actions" />
-      </Footer>
-    </slot>
+      <slot name="activity-footer">
+        <Footer ref="footer">
+          <slot name="activity-actions" />
+        </Footer>
+      </slot>
+    </div>
 
     <slot
       v-if="status === 'loading'"

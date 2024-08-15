@@ -6,15 +6,10 @@ const { props } = useActivity()
   <main
     class="activity-main"
     flex-1
-    bg-white
-    container
-    max-w-5xl
     w-full
-    mx-auto
     overflow-y-auto
     flex
     flex-col
-    shadow
     xl:p-10
     lg:p-8
     md:p-6

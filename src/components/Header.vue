@@ -44,18 +44,12 @@ defineExpose({
 <template>
   <header
     class="activity-header"
-    bg-white
     relative
-    container
-    max-w-5xl
     w-full
     z-10
-    mx-auto
     grid
     grid-cols-3
     items-center
-    rounded-t-xl
-    shadow-inner
     p-4
   >
     <div>

@@ -20,9 +20,6 @@ loader.on('loaded', (item, content) => {
     bg-cover
     w-full
     h-screen
-    relative
-    flex
-    flex-col
     p-2
     :style="{
       'background-color': props.color,
