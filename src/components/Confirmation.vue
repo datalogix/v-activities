@@ -66,7 +66,7 @@ defineExpose({
       <div
         class="activity-confirmation-content"
         my-10
-        v-html="options.message"
+        v-html="options.message ?? ''"
       />
     </slot>
 
