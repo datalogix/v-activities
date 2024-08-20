@@ -66,7 +66,7 @@ defineExpose({
 </script>
 
 <template>
-  <transition-group
+  <TransitionGroup
     tag="div"
     class="activity-connect-the-dots-items"
     flex
@@ -74,6 +74,7 @@ defineExpose({
     justify-center
     items-center
     gap-2
+    w="1/3"
   >
     <Item
       v-for="item in _items"
@@ -81,7 +82,12 @@ defineExpose({
       :key="getKey(item)"
       :item="item"
       :type="type"
+      :class="{
+        'h-26': _items.length <= 4,
+        'lg:h-40': _items.length <= 4,
+        'lg:h-26': _items.length > 4
+      }"
       @select="select(item)"
     />
-  </transition-group>
+  </TransitionGroup>
 </template>

@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import ParserInput from './ParserInput.vue'
+import ParserInputGroup from './ParserInputGroup.vue'
 import ParserRadio from './ParserRadio.vue'
 import ParserSelect from './ParserSelect.vue'
 
 export type FillInTheBlanksParser = {
-  type: 'content' | 'input' | 'radio' | 'select'
+  type: 'content' | 'input' | 'input-group' | 'radio' | 'select'
   content: string
 }
 
 export type FillInTheBlanksField = FillInTheBlanksParser & {
-  value?: string
-  correct?: string
-  options?: string[]
+  value: string
+  correct: string
+  options?: string|string[]
+  ref?: InstanceType<typeof ParserInput | typeof ParserInputGroup | typeof ParserRadio | typeof ParserSelect>
 }
 
 export type FillInTheBlanksParserProps = {
@@ -25,7 +27,6 @@ export type FillInTheBlanksParserEmits = {
 
 const props = defineProps<FillInTheBlanksParserProps>()
 const emits = defineEmits<FillInTheBlanksParserEmits>()
-const activity = useActivity()
 const items = ref<FillInTheBlanksParser[]>([])
 
 const template = defineComponent(computed(() => ({
@@ -33,6 +34,7 @@ const template = defineComponent(computed(() => ({
 
   components: {
     ParserInput,
+    ParserInputGroup,
     ParserRadio,
     ParserSelect
   },
@@ -51,7 +53,7 @@ const parser = (content: string) => {
 
   let i = 0
   for (const match of matches) {
-    if (match.index) {
+    if (match.index && content.substring(i, match.index)) {
       _items.push({
         type: 'content',
         content: content.substring(i, match.index)
@@ -74,9 +76,12 @@ const parser = (content: string) => {
         type: 'select',
         value: '',
         content: `<ParserSelect
+            :ref="(el) => items[${_items.length}].ref = el"
             v-model="items[${_items.length}].value"
+            :index="${_items.length}"
+            :correct="items[${_items.length}].correct"
             :options="items[${_items.length}].options"
-          />${activity.props.mode === 'preview' ? `(${options[0]})` : ''}`,
+          />`,
         correct: options[0],
         options: shuffle(options)
       }
@@ -92,12 +97,34 @@ const parser = (content: string) => {
         type: 'radio',
         value: '',
         content: `<ParserRadio
+          :ref="(el) => items[${_items.length}].ref = el"
           v-model="items[${_items.length}].value"
-          name="radio${props.index}"
+          :index="${_items.length}"
+          :correct="items[${_items.length}].correct"
           :options="items[${_items.length}].options"
-        />${activity.props.mode === 'preview' ? `(${options[0]})` : ''}`,
+          name="radio${props.index}"
+        />`,
         correct: options[0],
         options: shuffle(options)
+      }
+    } else if (match[0].startsWith('[(') && match[0].endsWith(')]')) {
+      const option = match[0]
+        .replace('[(', '')
+        .replace(')]', '')
+        .trim()
+
+      field = {
+        type: 'input-group',
+        value: '',
+        content: `<ParserInputGroup
+            :ref="(el) => items[${_items.length}].ref = el"
+            v-model="items[${_items.length}].value"
+            :index="${_items.length}"
+            :correct="items[${_items.length}].correct"
+            :options="items[${_items.length}].options"
+          />`,
+        correct: option,
+        options: option.split('')
       }
     } else {
       const option = match[0]
@@ -109,9 +136,10 @@ const parser = (content: string) => {
         type: 'input',
         value: '',
         content: `<ParserInput
+            :ref="(el) => items[${_items.length}].ref = el"
             v-model="items[${_items.length}].value"
-            style="width: ${option.length + 2}rem;max-width: 24rem;"
-            placeholder="${activity.props.mode === 'preview' ? option : ''}"
+            :index="${_items.length}"
+            :correct="items[${_items.length}].correct"
           />`,
         correct: option
       }
@@ -122,7 +150,7 @@ const parser = (content: string) => {
     _items.push(field)
   }
 
-  if (content.length > i) {
+  if (content.length > i && content.substring(i, content.length)) {
     _items.push({
       type: 'content',
       content: content.substring(i, content.length)

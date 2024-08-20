@@ -10,7 +10,7 @@ defineProps<WordSearchListProps>()
 </script>
 
 <template>
-  <transition-group
+  <TransitionGroup
     tag="ul"
     class="activity-word-search-list"
     flex
@@ -25,16 +25,16 @@ defineProps<WordSearchListProps>()
       v-for="item in items"
       :key="item.word"
       class="activity-word-search-list-item"
-      :class="{ 'bg-green-300 activity-word-search-list-item-selected': selected.indexOf(item) !== -1 }"
+      :class="{ 'activity-word-search-list-item-selected bg-green-300 border-solid border-green': selected.indexOf(item) !== -1 }"
       uppercase
       p-2
       lg:p-4
       m-2
       rounded
       border-2
-      border-solid
       border-gray-300
-      transition-all
+      border-dashed
+      transition
     >
       <Media
         :content="item.media ?? item.word"
@@ -43,5 +43,5 @@ defineProps<WordSearchListProps>()
         :video-attrs="{ class: '!w-60' }"
       />
     </li>
-  </transition-group>
+  </TransitionGroup>
 </template>

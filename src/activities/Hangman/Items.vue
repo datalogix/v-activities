@@ -90,7 +90,7 @@ defineExpose({
 </script>
 
 <template>
-  <transition-group
+  <TransitionGroup
     class="activity-hangman-items"
     tag="div"
     max-w-2xl
@@ -112,6 +112,7 @@ defineExpose({
         'hover:bg-blue-300': activity.props.mode !== 'answered'
       }"
       type="button"
+      bg-white
       cursor-pointer
       outline-none
       rounded
@@ -128,7 +129,11 @@ defineExpose({
       md:h-12
       lg:w-14
       lg:h-14
-      transition-all
+      transition
+      duration-300
+      scale-90
+      hover:scale-110
+      disabled:scale-90
       disabled:bg-gray-300
       disabled:hover:bg-gray-300
       disabled:cursor-not-allowed
@@ -136,5 +141,5 @@ defineExpose({
     >
       {{ item }}
     </button>
-  </transition-group>
+  </TransitionGroup>
 </template>

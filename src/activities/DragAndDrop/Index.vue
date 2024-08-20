@@ -15,13 +15,13 @@ export type DragAndDropAnswer = {
 
 export type DragAndDropProps = {
   items: DragAndDropItem[]
-  position?: 'top' | 'bottom' | 'both'
+  position?: 'fixed' | 'top' | 'bottom' | 'all'
   shuffle?: boolean
   markerType?: MarkerType
 }
 
 const props = withDefaults(defineProps<DragAndDropProps>(), {
-  position: 'both',
+  position: 'fixed',
   shuffle: true,
   markerType: 'none'
 })
@@ -114,21 +114,52 @@ const check = () => {
       />
     </template>
 
+    <template
+      v-if="(position === 'fixed' || position === 'all') && availableOptions.length"
+      #activity-fixed
+    >
+      <div
+        shadow-inner
+        bg-gray-50
+      >
+        <p
+          font-semibold
+          p-6
+          pb-0
+          text-center
+          md:text-left
+        >
+          Arrastes os elementos baixo para sua determinada posição:
+        </p>
+
+        <Options
+          :options="availableOptions"
+          class="!flex-nowrap !justify-start"
+          overflow-x-auto
+          p-4
+          md:p-6
+        />
+      </div>
+    </template>
+
     <Options
-      v-if="availableOptions.length && (position === 'top' || position === 'both')"
+      v-if="availableOptions.length && (position === 'top' || position === 'all')"
       :options="availableOptions"
+      mb-4
     />
 
-    <div
+    <TransitionGroup
+      tag="div"
       class="activity-drag-and-drop-items"
       w-full
       mx-auto
-      my-6
+      space-y-6
+      :class="{ 'lg:space-y-10': markerType !== 'none' }"
     >
       <Item
         v-for="(item, index) in _items"
-        v-slot="{ content }"
         :key="index"
+        v-slot="{ content }"
         :item="item"
         :marker-type="markerType"
         :position="index"
@@ -140,11 +171,12 @@ const check = () => {
           @option="(option: DragAndDropOption) => options.push(option)"
         />
       </Item>
-    </div>
+    </TransitionGroup>
 
     <Options
-      v-if="availableOptions.length && (position === 'bottom' || position === 'both')"
+      v-if="availableOptions.length && (position === 'bottom' || position === 'all')"
       :options="availableOptions"
+      mt-4
     />
   </Activity>
 </template>

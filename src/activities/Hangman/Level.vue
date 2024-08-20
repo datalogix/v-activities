@@ -40,7 +40,7 @@ defineExpose({
       :src="levels[current]"
       mx-auto
       max-h-40
-      md:max-h-full
+      md:max-h-60
     >
   </div>
 </template>

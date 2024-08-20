@@ -7,21 +7,23 @@ const { props } = useActivity()
     class="activity-main"
     flex-1
     w-full
+    border-y
     overflow-y-auto
     flex
     flex-col
-    xl:p-10
-    lg:p-8
+    lg:px-10
     md:p-6
     p-4
   >
     <div
+      v-if="props.statement"
       class="activity-statement"
-      mb-4
+      mb-6
+      lg:mb-10
+      space-y-4
     >
-      <slot name="statement">
-        <div v-html="props.statement" />
-      </slot>
+      <div v-html="props.statement" />
+      <slot name="statement" />
     </div>
 
     <div

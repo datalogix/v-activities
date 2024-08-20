@@ -10,14 +10,14 @@ defineProps<DragAndDropOptionsProps>()
 </script>
 
 <template>
-  <transition-group
+  <div
     tag="div"
     class="activity-drag-and-drop-options"
     flex
     flex-wrap
     items-center
     justify-center
-    max-w-2xl
+    gap-2
     mx-auto
   >
     <Draggable
@@ -25,5 +25,5 @@ defineProps<DragAndDropOptionsProps>()
       :key="option.id"
       :option="option"
     />
-  </transition-group>
+  </div>
 </template>

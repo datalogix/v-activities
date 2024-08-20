@@ -34,4 +34,20 @@
       }
     }
   }
+
+  &.activity-fill-in-the-blanks {
+    .activity-fill-in-the-blanks-item-content {
+      img {
+        max-width: 6rem;
+        max-height: 6rem;
+      }
+
+      @media (min-width: 990px) {
+        img {
+          max-width: 12rem;
+          max-height: 12rem;
+        }
+      }
+    }
+  }
 }

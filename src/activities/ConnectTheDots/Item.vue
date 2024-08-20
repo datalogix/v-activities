@@ -19,20 +19,28 @@ const props = defineProps<ConnectTheDotsItemProps>()
 const emits = defineEmits<ConnectTheDotsItemEmits>()
 const activity = useActivity()
 const selected = ref<boolean>(false)
+const connected = ref<boolean>(false)
 
 const clear = () => {
   selected.value = false
+  connected.value = false
 }
 
 const select = () => {
+  connected.value = false
   selected.value = true
+}
+
+const connect = () => {
+  connected.value = true
 }
 
 defineExpose({
   item: props.item,
   clear,
   select,
-  selected
+  selected,
+  connect
 })
 </script>
 
@@ -41,25 +49,26 @@ defineExpose({
     class="activity-connect-the-dots-item"
     :class="{
       'border-gray-300': !selected,
-      'border-black activity-connect-the-dots-item-selected': selected,
+      'border-blue-500 !scale-100 activity-connect-the-dots-item-selected': selected,
+      'border-solid activity-connect-the-dots-item-connected': connected,
       '!cursor-not-allowed': activity.props.mode === 'answered',
+
     }"
+    scale-95
+    transition
+    duration-300
+    hover:scale-100
     bg-white
     relative
-    border
-    border-solid
+    w-full
+    h-20
+    border-2
+    border-dashed
     cursor-pointer
     rounded
-    w-20
-    h-20
-    md:w-32
-    md:h-32
-    lg:w-40
-    lg:h-40
     flex
     justify-center
     items-center
-    transition-all
     z-1
     @click="emits('select', item)"
   >
@@ -69,13 +78,12 @@ defineExpose({
       :class="{
         'left-0 activity-connect-the-dots-selector-right': type === 'right',
         'right-0 activity-connect-the-dots-selector-left': type === 'left',
-        'border-gray-300 bg-white': !selected,
-        'border-black bg-black activity-connect-the-dots-selector-selected': selected
+        'border-gray-500 bg-white': !selected,
+        'border-blue-500 bg-blue-500 activity-connect-the-dots-selector-selected': selected,
       }"
       :ml="type === 'right' ? -3 : 0"
       :mr="type === 'left' ? -3 : 0"
       border
-      border-solid
       w-4
       h-4
       rounded-full
@@ -91,6 +99,7 @@ defineExpose({
       w-full
       h-full
       p-2
+      overflow-auto
     >
       <Media :content="item.value" />
     </div>

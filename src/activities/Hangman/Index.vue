@@ -28,7 +28,7 @@ const right = (_answer: HangmanAnswer) => {
   answer.value = _answer
 
   if (answer.value.right.length === answer.value.unique.length) {
-    setTimeout(() => activity.value?.store({ percentage: 100, result: true }), 1000)
+    activity.value?.store({ percentage: 100, result: true })
   }
 }
 
@@ -37,7 +37,7 @@ const wrong = (_answer: HangmanAnswer) => {
   answer.value = _answer
 
   if (level.value && answer.value.wrong.length >= level.value.max) {
-    setTimeout(() => activity.value?.store({ percentage: 0, result: false }), 1000)
+    activity.value?.store({ percentage: 0, result: false })
   }
 }
 

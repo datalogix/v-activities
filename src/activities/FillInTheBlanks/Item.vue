@@ -8,16 +8,34 @@ export type FillInTheBlanksItemProps = {
   position: number
 }
 
-defineProps<FillInTheBlanksItemProps>()
+const props = defineProps<FillInTheBlanksItemProps>()
+const center = computed(() => props.item.content.includes('\\<img'))
 </script>
 
 <template>
   <div
     class="activity-fill-in-the-blanks-item"
-    py-4
+    px-8
+    py-6
+    lg:px-14
+    lg:py-8
+    w-full
     flex
     items-center
-    space-x-4
+    gap-4
+    flex-col
+    md:flex-row
+    border
+    border-gray-300
+    rounded
+    scale-95
+    transition
+    duration-300
+    hover:scale-100
+    shadow-lg
+    relative
+    bg-white
+    :class="{ '!flex-col': center }"
   >
     <Marker
       class="activity-fill-in-the-blanks-item-position"
@@ -33,6 +51,11 @@ defineProps<FillInTheBlanksItemProps>()
     <div
       class="activity-fill-in-the-blanks-item-content"
       flex-1
+      flex
+      items-center
+      flex-wrap
+      gap-2
+      :class="{ 'justify-center': center }"
     >
       <slot :content="item.content" />
     </div>

@@ -5,6 +5,7 @@ const { props, status, result, restart, check } = useActivity()
 <template>
   <footer
     class="activity-footer"
+    border-t
     relative
     w-full
     z-30

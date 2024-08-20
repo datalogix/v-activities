@@ -1,19 +1,65 @@
 import '@unocss/reset/tailwind.css'
 import * as All from './'
+
+createApp(All.DragAndDrop, {
+  markerType: 'letter_uppercase',
+  statement: 'dfs',
+  // position: 'bottom',
+  mode: 'run',
+  items: [
+    {
+      content: '1Arrastes [esse1] texto e essa imagem [1uhuuuu]'
+    },
+    {
+      content: '2Arrastes [esse2] texto e essa imagem [2uhuuuu]'
+    },
+    {
+      content: '3Arrastes [esse3] texto e essa imagem [3uhuuuu]'
+    },
+    {
+      content: '4Arrastes [esse4] [texto] e essa imagem [4uhuuuu]'
+    },
+    {
+      content: '1Arrastes [esse] texto e essa [imagem] [<img src="https://edumais.s3.sa-east-1.amazonaws.com/editor/EZTmUcnqD9AYuD7W5APKdoAxbCHmu59wneakAAqM.jpg" alt="" width="200" height="200">]'
+    }
+    /*
+    {
+      content: '2Arrastes [esse] texto e essa imagem [<img src="https://edumais.s3.sa-east-1.amazonaws.com/editor/EZTmUcnqD9AYuD7W5APKdoAxbCHmu59wneakAAqM.jpg" alt="" width="200" height="200">]'
+    },
+    {
+      content: '3Arrastes [esse] texto e essa imagem [<img src="https://edumais.s3.sa-east-1.amazonaws.com/editor/EZTmUcnqD9AYuD7W5APKdoAxbCHmu59wneakAAqM.jpg" alt="" width="200" height="200">]'
+    },
+    {
+      content: '4Arrastes [esse] texto e essa imagem [<img src="https://edumais.s3.sa-east-1.amazonaws.com/editor/EZTmUcnqD9AYuD7W5APKdoAxbCHmu59wneakAAqM.jpg" alt="" width="200" height="200">]'
+    }
+      */
+  ]
+}).mount('#app')
+
+/*
+createApp(All.SpeechRecognition, {
+  statement: 'dfs<p>fds</p>dafadsfdsafds',
+  mode: 'run',
+  text: 'O mundo é muito legal!',
+  lang: 'pt-BR',
+  answer: 'foo'
+}).mount('#app')
+*/
 /*
 createApp(All.ConnectTheDots, {
-  statement: 'dfs<p>fds</p>dafadsfdsafds',
+  statement: 'dfs',
+  mode: 'run',
   items: [
-    { value: 'a', related: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-    { value: 'b', related: 'https://www.w3schools.com/html/horse.mp3' },
-    { value: 'c1', related: '31' },
-    { value: 'c2', related: '32' },
-    { value: 'c3', related: '33' },
-    { value: 'c4', related: '34' },
-    { value: 'c5', related: '35' },
-    { value: 'c6', related: '36' },
-    { value: 'c7', related: '37' },
-    { value: 'c8', related: '38' }
+    // { value: 'a', related: 'https://www.w3schools.com/html/mov_bbb.mp4' },
+    // { value: 'b', related: 'https://www.w3schools.com/html/horse.mp3' },
+    { value: 'https://placehold.co/100x100.jpg', related: 'https://placehold.co/100x100.jpg' },
+    { value: 'https://placehold.co/200x200.jpg', related: 'https://placehold.co/200x200.jpg' },
+    { value: 'https://placehold.co/300x300.jpg', related: 'https://placehold.co/300x300.jpg' },
+    { value: 'https://placehold.co/400x400.jpg', related: 'https://placehold.co/400x400.jpg' },
+    { value: 'https://placehold.co/500x500.jpg', related: 'https://placehold.co/500x500.jpg' },
+    { value: 'https://placehold.co/600x600.jpg', related: 'https://placehold.co/600x600.jpg' }
+    // { value: 'c7', related: '37' },
+    // { value: 'c8', related: 'https://edumais.com.br/imgs/logo-inline.png' }
   ],
   answer: {
     left: [
@@ -24,7 +70,7 @@ createApp(All.ConnectTheDots, {
     right: [
       { related: 'b', value: 'https://www.w3schools.com/html/horse.mp3' },
       { related: 'a', value: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-      { related: 'c', value: '3' }
+      { related: 'c', value: 'b' }
     ],
     selecteds: [
       {
@@ -38,7 +84,7 @@ createApp(All.ConnectTheDots, {
 /*
 createApp(All.Crossword, {
   statement: 'dfs<p>fds</p>dafadsfdsafds',
-  mode: 'run',
+  mode: 'preview',
   items: [
     {
       x: 0,
@@ -77,28 +123,49 @@ createApp(All.Crossword, {
   }
 }).mount('#app')
 */
-
 /*
 createApp(All.Essay, {
   statement: 'dfs<p>fds</p>dafadsfdsafds',
   mode: 'preview',
-  text: 'Edumais é uma ferramente muito legal!'
+  text: 'Edumais é uma ferramente muito legal!',
 }).mount('#app')
 */
-
+/*
 createApp(All.FillInTheBlanks, {
-  statement: 'dfs<p>fds</p>dafadsfdsafds',
+  markerType: 'letter_uppercase',
+  mode: 'run',
   items: [
     {
-      content: 'Edumais é uma [<img width="200" src="https://edumais.s3.sa-east-1.amazonaws.com/questions/paint/xhS2tfG2VeIdRaFG4pB6WkpElJpahhznme1o9NCu.svg">\\teste] <br ><br >muito legal!  <br><br> [teste|tes`te2|can&rsquo;t] <br><br >'
+      file: 'https://edumais.s3.sa-east-1.amazonaws.com/questions/fill-in-the-blanks/n2bUX7ugJ5akgkFZrn02fwvKvaMFQQPleBaChw7e.mp3',
+      content: '[<img src="https://edumais.s3.sa-east-1.amazonaws.com/editor/EZTmUcnqD9AYuD7W5APKdoAxbCHmu59wneakAAqM.jpg" alt="" width="200" height="200">\\<img src="https://edumais.s3.sa-east-1.amazonaws.com/editor/ubwSnJbYkxP735fIXAqMpJOFfyFIJhbbjH3aqqcC.jpg" alt="" width="200" height="200">\\<img src="https://edumais.s3.sa-east-1.amazonaws.com/editor/EZTmUcnqD9AYuD7W5APKdoAxbCHmu59wneakAAqM.jpg" alt="" width="200" height="200">]'
+    },
+    {
+      file: 'https://edumais.s3.sa-east-1.amazonaws.com/questions/fill-in-the-blanks/n2bUX7ugJ5akgkFZrn02fwvKvaMFQQPleBaChw7e.mp3',
+      content: '[<img src="https://edumais.s3.sa-east-1.amazonaws.com/editor/EZTmUcnqD9AYuD7W5APKdoAxbCHmu59wneakAAqM.jpg" alt="" width="200" height="200">\\<img src="https://edumais.s3.sa-east-1.amazonaws.com/editor/ubwSnJbYkxP735fIXAqMpJOFfyFIJhbbjH3aqqcC.jpg" alt="" width="200" height="200">\\<img src="https://edumais.s3.sa-east-1.amazonaws.com/editor/EZTmUcnqD9AYuD7W5APKdoAxbCHmu59wneakAAqM.jpg" alt="" width="200" height="200">]'
+    },
+    {
+      content: 'AA [Canada][(xpto)] person [xpto] is from Canada.'
+    },
+    {
+      content: 'A [C][a][n][a][d][i][a][n] person is from Canada.'
+    },
+    {
+      content: 'A [S][p][a][n][i][s][h] person is [from|to] Spain.'
+    },
+    {
+      content: 'A [teste a\\teste b\\teste c] person is from Spain.'
+    },
+
+    {
+      content: null
     }
   ]
 }).mount('#app')
-
+*/
 /*
 createApp(All.Hangman, {
   statement: 'dfs<p>fds</p>dafadsfdsafds',
-  mode: 'answered',
+  mode: 'preview',
   word: 'datalogix',
   answer: {
     items: ['L', 'X', 'T', 'F', 'M', 'G', 'I', 'W', 'S', 'E', 'O', 'H', 'U', 'D', 'N', 'P', 'A', 'R', 'K', 'Y'],
@@ -109,14 +176,13 @@ createApp(All.Hangman, {
   }
 }).mount('#app')
 */
-
 /*
 createApp(All.MemoryGame, {
   statement: 'dfs<p>fds</p>dafadsfdsafds',
   mode: 'run',
   items: [
     { value: 'a', related: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-    { value: 'b', related: 'https://www.w3schools.com/html/horse.mp3' }
+    { value: 'b', related: 'as nkjashd  dasdas sa ds ad sadjkd dff sdjf dsj adshfjk hgfasdg hfsad ghj d fhds hfdsgh h fds fdsh asdhjfgshjfgh fgdsh jfdsg hfdasg jhjdsa jdsajf dsakfk dsakfdsa jkfdah jkfdashj fdsahj ajd ' }
   ],
   answer: {
     items: [
@@ -131,11 +197,11 @@ createApp(All.MemoryGame, {
   }
 }).mount('#app')
 */
-
 /*
 createApp(All.MultipleChoice, {
   statement: 'dfs<p>fds</p>dafadsfdsafds',
-  mode: 'answered',
+  mode: 'preview',
+  cols: 1,
   answer: {
     selecteds: [2],
     options: [
@@ -151,7 +217,6 @@ createApp(All.MultipleChoice, {
   ]
 }).mount('#app')
 */
-
 /*
 createApp(All.Paint, {
   statement: 'dfs<p>fds</p>dafadsfdsafds',
@@ -162,17 +227,6 @@ createApp(All.Paint, {
   }
 }).mount('#app')
 */
-
-/*
-createApp(All.SpeechRecognition, {
-  statement: 'dfs<p>fds</p>dafadsfdsafds',
-  mode: 'preview',
-  text: 'Edumais é uma ferramente muito legal!',
-  lang: 'pt-BR',
-  answer: 'foo'
-}).mount('#app')
-*/
-
 /*
 createApp(All.WordSearch, {
   statement: 'dfs<p>fds</p>dafadsfdsafds',
@@ -188,7 +242,7 @@ createApp(All.WordSearch, {
     },
     'teste teste'
   ],
-  // mode: 'answered',
+  mode: 'preview',
   answer: {
     foundWords: ['DATALOGIX'],
     usedWords: ['DATALOGIX', 'TESTETESTE'],

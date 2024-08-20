@@ -26,13 +26,13 @@ export type WordSearchAnswer = {
 export type WordSearchProps = {
   items: (WordSearchItem | string)[]
   size?: number
-  position?: 'top' | 'bottom' | 'both' | 'none'
+  position?: 'statement' | 'top' | 'bottom' | 'all' | 'none'
   shuffle?: boolean
 }
 
 const props = withDefaults(defineProps<WordSearchProps>(), {
   size: 8,
-  position: 'top',
+  position: 'statement',
   shuffle: true
 })
 
@@ -93,8 +93,18 @@ const check = () => {
       />
     </template>
 
+    <template
+      v-if="position === 'statement' || position === 'all'"
+      #activity-statement
+    >
+      <List
+        :items="grid?.usedItems || []"
+        :selected="grid?.foundItems || []"
+      />
+    </template>
+
     <List
-      v-if="position === 'top' || position === 'both'"
+      v-if="position === 'top' || position === 'all'"
       :items="grid?.usedItems || []"
       :selected="grid?.foundItems || []"
       mb-4
@@ -111,7 +121,7 @@ const check = () => {
     />
 
     <List
-      v-if="position === 'bottom' || position === 'both'"
+      v-if="position === 'bottom' || position === 'all'"
       :items="grid?.usedItems || []"
       :selected="grid?.foundItems || []"
       mt-4

@@ -20,7 +20,7 @@ defineProps<ButtonProps>()
     md:flex-row
     items-center
     justify-center
-    transition-all
+    transition
     gap-2
     disabled:cursor-not-allowed
     disabled:bg-gray-300
@@ -35,6 +35,8 @@ defineProps<ButtonProps>()
     <slot>
       <i
         v-if="icon"
+        hidden
+        md:block
         class="activity-button-icon"
         :class="icon"
         w-6

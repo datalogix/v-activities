@@ -73,11 +73,9 @@ const wrong = () => {
     item1.value?.close()
     item2.value?.close()
 
-    emits(
-      'wrong',
-      item1.value!.item,
-      item2.value!.item
-    )
+    if (item1.value && item2.value) {
+      emits('wrong', item1.value!.item, item2.value!.item)
+    }
 
     item1.value = undefined
     item2.value = undefined
@@ -113,7 +111,7 @@ defineExpose({
 
 <template>
   <div flex>
-    <transition-group
+    <TransitionGroup
       tag="div"
       class="activity-memory-game-items"
       :class="{
@@ -135,6 +133,6 @@ defineExpose({
         :duration="duration"
         @select="select(item)"
       />
-    </transition-group>
+    </TransitionGroup>
   </div>
 </template>

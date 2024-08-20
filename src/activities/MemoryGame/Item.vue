@@ -84,7 +84,8 @@ defineExpose({
   <div
     class="activity-memory-game-item"
     :class="{
-      'rotate-y-180 activity-memory-game-item-opened': opened,
+      'rotate-y-180': activity.props.mode === 'preview' || opened,
+      'activity-memory-game-item-opened': opened,
       'transition-duration-250ms': duration === 'faster',
       'transition-duration-500ms': duration === 'fast',
       'transition-duration-1s': duration === 'slow',
@@ -93,7 +94,7 @@ defineExpose({
     mx-auto
     relative
     preserve-3d
-    transition-all
+    transition
     perspective="1000px"
     w-40
     h-40
@@ -132,11 +133,12 @@ defineExpose({
     <div
       class="activity-memory-game-item-back"
       :class="{
-        'bg-blue-50 border-blue-300 activity-memory-game-item-opened': opened,
-        'bg-green-50 border-green-300 activity-memory-game-item-right': locked,
+        '!bg-blue-50 !border-blue-500 activity-memory-game-item-opened': opened,
+        '!bg-green-50 !border-green-500 activity-memory-game-item-right': locked,
       }"
       border-2
-      border-solid
+      border-gray-300
+      bg-white
       rounded
       backface-hidden
       absolute
@@ -154,12 +156,14 @@ defineExpose({
       rotate-y-180
     >
       <div
+        class="activity-memory-game-item-content"
         flex
         items-center
         justify-center
         w-full
         h-full
         p-2
+        overflow-auto
       >
         <Media
           ref="media"

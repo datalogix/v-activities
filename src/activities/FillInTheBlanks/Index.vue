@@ -33,9 +33,10 @@ const props = withDefaults(defineProps<FillInTheBlanksProps>(), {
   specialCharacters: false
 })
 
+const itemsFiltered = computed(() => props.items.filter(item => item.content))
 const activity = ref<InstanceType<typeof Activity>>()
 const answer = ref<FillInTheBlanksAnswer>({ items: [], fields: [] })
-const _items = ref<FillInTheBlanksItem[]>(props.shuffle ? shuffle(props.items) : props.items)
+const _items = ref<FillInTheBlanksItem[]>(props.shuffle ? shuffle(itemsFiltered.value) : itemsFiltered.value)
 const parsers = ref<InstanceType<typeof Parser>[]>([])
 const fields = ref<FillInTheBlanksField[]>([])
 
@@ -59,7 +60,7 @@ watch(fields, () => {
 }, { deep: true })
 
 const start = () => {
-  _items.value = props.shuffle ? shuffle(props.items) : props.items
+  _items.value = props.shuffle ? shuffle(itemsFiltered.value) : itemsFiltered.value
   fields.value = []
 
   answer.value = {
@@ -121,15 +122,18 @@ const check = () => {
       />
     </template>
 
-    <div
+    <TransitionGroup
+      tag="div"
       class="activity-fill-in-the-blanks-items"
       w-full
       mx-auto
+      space-y-6
+      :class="{ 'lg:space-y-10': markerType !== 'none' }"
     >
       <Item
         v-for="(item, index) in _items"
-        v-slot="{ content }"
         :key="index"
+        v-slot="{ content }"
         :item="item"
         :marker-type="markerType"
         :position="index"
@@ -141,6 +145,6 @@ const check = () => {
           @field="(field: FillInTheBlanksField) => fields.push(field)"
         />
       </Item>
-    </div>
+    </TransitionGroup>
   </Activity>
 </template>

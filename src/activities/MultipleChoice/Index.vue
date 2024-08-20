@@ -109,7 +109,8 @@ const check = () => {
       />
     </template>
 
-    <div
+    <TransitionGroup
+      tag="div"
       class="activity-multiple-choice-options"
       :class="{
         'md:grid-cols-1': cols === 1,
@@ -125,9 +126,6 @@ const check = () => {
         'md:grid-cols-11': cols === 11,
         'md:grid-cols-12': cols === 12
       }"
-      m-0
-      p-0
-      list-none
       grid
       grid-cols-1
       gap-4
@@ -141,6 +139,6 @@ const check = () => {
         :type="type"
         :option="option"
       />
-    </div>
+    </TransitionGroup>
   </Activity>
 </template>

@@ -441,6 +441,8 @@ defineExpose(provideAndExpose)
         </Main>
       </slot>
 
+      <slot name="activity-fixed" />
+
       <slot name="activity-footer">
         <Footer ref="footer">
           <slot name="activity-actions" />

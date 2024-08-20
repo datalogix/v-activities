@@ -14,7 +14,7 @@ export type CrosswordItem = {
 }
 
 export type CrosswordProps = {
-  position?: 'top' | 'bottom' | 'both'
+  position?: 'statement' | 'top' | 'bottom' | 'all' | 'none'
   specialCharacters?: boolean
   items: CrosswordItem[]
 }
@@ -24,7 +24,7 @@ export type CrosswordAnswer = {
 }
 
 const props = withDefaults(defineProps<CrosswordProps>(), {
-  position: 'top',
+  position: 'statement',
   specialCharacters: false
 })
 
@@ -99,8 +99,18 @@ const check = () => {
       />
     </template>
 
+    <template
+      v-if="position === 'statement' || position === 'all'"
+      #activity-statement
+    >
+      <Tips
+        :items="items"
+        @select="select"
+      />
+    </template>
+
     <Tips
-      v-if="position === 'top' || position === 'both'"
+      v-if="position === 'top' || position === 'all'"
       :items="items"
       @select="select"
     />
@@ -113,7 +123,7 @@ const check = () => {
     />
 
     <Tips
-      v-if="position === 'bottom' || position === 'both'"
+      v-if="position === 'bottom' || position === 'all'"
       :items="items"
       @select="select"
     />

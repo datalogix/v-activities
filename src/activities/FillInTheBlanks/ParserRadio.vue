@@ -1,6 +1,8 @@
 <script setup lang="ts">
 export type FillInTheBlanksParserRadioProps = {
   modelValue: string
+  index: number
+  correct: string
   options: string[]
 }
 
@@ -18,10 +20,22 @@ const update = (e: Event) => emits('update:modelValue', (e.target as HTMLInputEl
   <label
     v-for="option in options"
     :key="option"
-    class="mx-2 space-x-2 flex-inline items-center px-4 py-3 rounded"
+    gap-2
+    flex-inline
+    items-center
+    px-4
+    py-3
+    rounded
+    border-2
+    border-gray-300
+    border-dashed
+    bg-white
     :class="{
+      'cursor-pointer': activity.props.mode !== 'answered',
       '!cursor-not-allowed': activity.props.mode === 'answered',
-      'bg-gray-50 activity-fill-in-the-blanks-radio-selected': modelValue === option
+      'activity-fill-in-the-blanks-radio-selected !border-blue-500': modelValue === option,
+      'border-green-500 !border-solid': activity.props.mode === 'preview' && option === correct && modelValue !== option,
+      'flex-col-reverse': option.includes('<img')
     }"
   >
     <input
@@ -32,6 +46,7 @@ const update = (e: Event) => emits('update:modelValue', (e.target as HTMLInputEl
       :value="option"
       :checked="modelValue === option"
       v-bind="$attrs"
+      scale-140
       @input="update"
     >
     <div v-html="option" />

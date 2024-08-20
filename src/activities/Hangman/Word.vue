@@ -24,7 +24,7 @@ const letters = replace(props.word).toLocaleUpperCase().split('')
         'activity-hangman-word-space': letter.trim() === '',
         'border-b-2 activity-hangman-word-letter': letter.trim() !== '',
         'opacity-30': activity.props.mode === 'preview',
-        '!opacity-100': rights.includes(letter)
+        '!opacity-100 text-green-500 border-green-500 ': rights.includes(letter)
       }"
       border-solid
       border-gray-300

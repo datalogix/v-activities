@@ -82,6 +82,7 @@ const check = () => {
         disabled:cursor-not-allowed
         :disabled="activity?.props.mode === 'answered'"
         :rows="props.rows"
+        placeholder="Digite aqui a sua resposta..."
       />
       <i
         v-if="max"

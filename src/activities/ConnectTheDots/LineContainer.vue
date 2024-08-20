@@ -36,6 +36,9 @@ const create = (left: ConnectTheDotsLineItem, right: ConnectTheDotsLineItem, pre
     right.select()
   }
 
+  left.connect()
+  right.connect()
+
   const line = {
     element: arrowCreate({
       updateDelay: 0,
@@ -109,7 +112,7 @@ defineExpose({
 
 .arrow__path,
 .arrow-preview__path {
-  stroke: #000000;
+  stroke: rgb(59, 130, 246);
   fill: transparent;
   stroke-width: 4;
 }

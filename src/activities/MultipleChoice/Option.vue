@@ -59,17 +59,29 @@ const checked = computed(() => {
 </script>
 
 <template>
-  <div
-    class="activity-multiple-choice-option"
-    flex
-    items-center
-    gap-2
+  <label
+    class="activity-multiple-choice-option has-[:checked]:border-blue-500"
+    :class="{ '!cursor-not-allowed': activity.props.mode === 'answered' }"
+    cursor-pointer
     mx-auto
     w-full
+    rounded
+    p-4
+    flex
+    items-center
+    gap-4
+    scale-95
+    transition
+    duration-300
+    hover:scale-100
+    border-2
+    border-gray-300
+    border-dashed
+    shadow-lg
+    bg-white
   >
     <Marker
       class="activity-multiple-choice-option-position"
-      :for="`awnser${position}`"
       :type="markerType"
       :position="position"
     />
@@ -77,17 +89,17 @@ const checked = computed(() => {
       :id="`awnser${position}`"
       class="activity-multiple-choice-option-input"
       :class="{ '!cursor-not-allowed': activity.props.mode === 'answered' }"
+      cursor-pointer
       w-16
-      scale-120
+      scale-140
       :type="type"
       :checked="checked"
       :value="position"
       :disabled="activity.props.mode === 'answered'"
       @input="update"
     >
-    <label
+    <span
       class="activity-multiple-choice-option-label"
-      :class="{ '!cursor-not-allowed': activity.props.mode === 'answered' }"
       flex-1
       :for="`awnser${position}`"
       v-html="option.label"
@@ -103,5 +115,5 @@ const checked = computed(() => {
       <span text-xs>Valor</span>
       <b text-sm>{{ option.value }}</b>
     </span>
-  </div>
+  </label>
 </template>

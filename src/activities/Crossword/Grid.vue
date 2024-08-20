@@ -300,12 +300,9 @@ defineExpose({
               v-model="getByPoint(x, y)!.value"
               :disabled="getByPoint(x, y)!.fixed || activity.props.mode === 'answered'"
               class="activity-crossword-input"
-              :class="{
-                'bg-blue-50 border-blue-300': isActive(x, y),
-                '!disabled:bg-white': !getByPoint(x, y)!.fixed && activity.props.mode === 'answered',
-                '!cursor-not-allowed': activity.props.mode === 'answered',
-              }"
-              disabled:bg-gray-100
+              :class="{'bg-blue-50 border-blue-500': isActive(x, y)}"
+              disabled:bg-gray-50
+              disabled:cursor-not-allowed
               w-full
               h-full
               text-base
@@ -313,8 +310,10 @@ defineExpose({
               lg:text-xl
               uppercase
               text-center
+              rounded
               border
               border-solid
+              border-gray-300
               maxlength="1"
               :placeholder="placeholder(x, y)"
               @focus="select(x, y)"

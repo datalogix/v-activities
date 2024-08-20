@@ -1,6 +1,8 @@
 <script setup lang="ts">
 export type FillInTheBlanksParserSelectProps = {
   modelValue: string
+  index: number
+  correct: string
   options: string[]
 }
 
@@ -19,19 +21,18 @@ const update = (e: Event) => emits('update:modelValue', (e.target as HTMLSelectE
   <select
     class="activity-fill-in-the-blanks-select"
     p-2
-    m-1
-    border
-    border-solid
+    border-2
     border-gray-300
-    disabled:cursor-not-allowed
+    border-dashed
     rounded
+    disabled:cursor-not-allowed
     :disabled="activity.props.mode === 'answered'"
     :value="modelValue"
     @input="update"
   >
     <option
       value=""
-      v-text="'---'"
+      v-text="activity.props.mode === 'preview' ? `${correct}&nbsp;&#10003;` : '---'"
     />
     <option
       v-for="option in options"

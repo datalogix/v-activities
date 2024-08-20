@@ -5,6 +5,7 @@ export type MediaType = File | URL | string
 
 export type MediaProps = {
   content?: MediaType
+  textAttrs?: HTMLAttributes
   imgAttrs?: HTMLAttributes
   audioAttrs?: HTMLAttributes
   videoAttrs?: HTMLAttributes
@@ -111,9 +112,14 @@ defineExpose({
     :content="content"
   >
     <div
-      text-lg
+      v-if="content"
+      v-bind="textAttrs"
+      text-sm
+      :class="{
+        'md:text-base': String(content).length > 100 && String(content).length < 120,
+        'md:text-lg': String(content).length <= 100,
+      }"
       font-semibold
-      overflow-hidden
       v-html="content"
     />
   </slot>
