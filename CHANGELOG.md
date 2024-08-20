@@ -1,6 +1,29 @@
 # Changelog
 
 
+## v0.9.0
+
+[compare changes](https://github.com/datalogix/v-activities/compare/v0.8.1...v0.9.0)
+
+### 🚀 Enhancements
+
+- Better display of activities ([1878f1e](https://github.com/datalogix/v-activities/commit/1878f1e))
+
+### 🩹 Fixes
+
+- Empty message ([30965ab](https://github.com/datalogix/v-activities/commit/30965ab))
+- Activity area ([5f548a7](https://github.com/datalogix/v-activities/commit/5f548a7))
+- Height ([e2909d8](https://github.com/datalogix/v-activities/commit/e2909d8))
+- Ref type ([8f55302](https://github.com/datalogix/v-activities/commit/8f55302))
+
+### 🏡 Chore
+
+- Update deps ([8017b40](https://github.com/datalogix/v-activities/commit/8017b40))
+
+### ❤️ Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.8.1
 
 [compare changes](https://github.com/datalogix/v-activities/compare/v0.8.0...v0.8.1)
