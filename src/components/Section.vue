@@ -19,7 +19,7 @@ loader.on('loaded', (item, content) => {
     bg-no-repeat
     bg-cover
     w-full
-    h-screen
+    h-svh
     p-2
     :style="{
       'background-color': props.color,
