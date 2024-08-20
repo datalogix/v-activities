@@ -9,11 +9,13 @@ export type FillInTheBlanksParser = {
   content: string
 }
 
+export type FillInTheBlanksFieldRef = InstanceType<typeof ParserInput | typeof ParserInputGroup | typeof ParserRadio | typeof ParserSelect>
+
 export type FillInTheBlanksField = FillInTheBlanksParser & {
   value: string
   correct: string
   options?: string|string[]
-  ref?: InstanceType<typeof ParserInput | typeof ParserInputGroup | typeof ParserRadio | typeof ParserSelect>
+  ref?: FillInTheBlanksFieldRef
 }
 
 export type FillInTheBlanksParserProps = {

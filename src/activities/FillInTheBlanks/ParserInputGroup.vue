@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ParserInput from './ParserInput.vue'
-import { type FillInTheBlanksField } from './Parser.vue'
+import { type FillInTheBlanksField, type FillInTheBlanksFieldRef } from './Parser.vue'
 
 export type FillInTheBlanksParserInputGroupProps = {
   modelValue: string
@@ -26,7 +26,7 @@ defineExpose({
 <template>
   <ParserInput
     v-for="(option, i) in options"
-    :ref="(el) => items[i].ref = el"
+    :ref="(el) => items[i].ref = el as FillInTheBlanksFieldRef"
     :key="i"
     v-model="items[i].value!"
     :index="i"
