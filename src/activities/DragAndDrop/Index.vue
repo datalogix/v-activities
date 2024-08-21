@@ -119,6 +119,7 @@ const check = () => {
       #activity-fixed
     >
       <div
+        border-t
         shadow-inner
         bg-gray-50
       >

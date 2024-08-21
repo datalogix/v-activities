@@ -82,6 +82,7 @@ const content = computed(() => {
     border-gray-300
     border-dashed
     rounded
+    m-1
     p-2
     md:py-3
     max-w-40

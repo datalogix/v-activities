@@ -4,6 +4,7 @@ import * as All from './'
 createApp(All.DragAndDrop, {
   markerType: 'letter_uppercase',
   statement: 'dfs',
+  // title: '1',
   // position: 'bottom',
   mode: 'run',
   items: [
@@ -22,17 +23,6 @@ createApp(All.DragAndDrop, {
     {
       content: '1Arrastes [esse] texto e essa [imagem] [<img src="https://edumais.s3.sa-east-1.amazonaws.com/editor/EZTmUcnqD9AYuD7W5APKdoAxbCHmu59wneakAAqM.jpg" alt="" width="200" height="200">]'
     }
-    /*
-    {
-      content: '2Arrastes [esse] texto e essa imagem [<img src="https://edumais.s3.sa-east-1.amazonaws.com/editor/EZTmUcnqD9AYuD7W5APKdoAxbCHmu59wneakAAqM.jpg" alt="" width="200" height="200">]'
-    },
-    {
-      content: '3Arrastes [esse] texto e essa imagem [<img src="https://edumais.s3.sa-east-1.amazonaws.com/editor/EZTmUcnqD9AYuD7W5APKdoAxbCHmu59wneakAAqM.jpg" alt="" width="200" height="200">]'
-    },
-    {
-      content: '4Arrastes [esse] texto e essa imagem [<img src="https://edumais.s3.sa-east-1.amazonaws.com/editor/EZTmUcnqD9AYuD7W5APKdoAxbCHmu59wneakAAqM.jpg" alt="" width="200" height="200">]'
-    }
-      */
   ]
 }).mount('#app')
 
@@ -127,7 +117,7 @@ createApp(All.Crossword, {
 createApp(All.Essay, {
   statement: 'dfs<p>fds</p>dafadsfdsafds',
   mode: 'preview',
-  text: 'Edumais é uma ferramente muito legal!',
+  text: 'Edumais é uma ferramente muito legal!'
 }).mount('#app')
 */
 /*
@@ -144,7 +134,7 @@ createApp(All.FillInTheBlanks, {
       content: '[<img src="https://edumais.s3.sa-east-1.amazonaws.com/editor/EZTmUcnqD9AYuD7W5APKdoAxbCHmu59wneakAAqM.jpg" alt="" width="200" height="200">\\<img src="https://edumais.s3.sa-east-1.amazonaws.com/editor/ubwSnJbYkxP735fIXAqMpJOFfyFIJhbbjH3aqqcC.jpg" alt="" width="200" height="200">\\<img src="https://edumais.s3.sa-east-1.amazonaws.com/editor/EZTmUcnqD9AYuD7W5APKdoAxbCHmu59wneakAAqM.jpg" alt="" width="200" height="200">]'
     },
     {
-      content: 'AA [Canada][(xpto)] person [xpto] is from Canada.'
+      content: '<p>AA [Canada][(xpto)] person [xpto] is from Canada.</p>'
     },
     {
       content: 'A [C][a][n][a][d][i][a][n] person is from Canada.'
@@ -155,7 +145,6 @@ createApp(All.FillInTheBlanks, {
     {
       content: 'A [teste a\\teste b\\teste c] person is from Spain.'
     },
-
     {
       content: null
     }
@@ -201,6 +190,7 @@ createApp(All.MemoryGame, {
 createApp(All.MultipleChoice, {
   statement: 'dfs<p>fds</p>dafadsfdsafds',
   mode: 'preview',
+  markerType: 'letter_uppercase',
   cols: 1,
   answer: {
     selecteds: [2],

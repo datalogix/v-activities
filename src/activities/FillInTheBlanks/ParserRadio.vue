@@ -20,6 +20,7 @@ const update = (e: Event) => emits('update:modelValue', (e.target as HTMLInputEl
   <label
     v-for="option in options"
     :key="option"
+    m-1
     gap-2
     flex-inline
     items-center

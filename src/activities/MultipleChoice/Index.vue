@@ -124,11 +124,12 @@ const check = () => {
         'md:grid-cols-9': cols === 9,
         'md:grid-cols-10': cols === 10,
         'md:grid-cols-11': cols === 11,
-        'md:grid-cols-12': cols === 12
+        'md:grid-cols-12': cols === 12,
+        'lg:gap-10': markerType !== 'none'
       }"
       grid
       grid-cols-1
-      gap-4
+      gap-6
     >
       <Option
         v-for="(option, index) in _options"

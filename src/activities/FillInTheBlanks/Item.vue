@@ -9,7 +9,7 @@ export type FillInTheBlanksItemProps = {
 }
 
 const props = defineProps<FillInTheBlanksItemProps>()
-const center = computed(() => props.item.content.includes('\\<img'))
+const center = computed(() => props.item.content.trim().includes('\\<img'))
 </script>
 
 <template>
@@ -54,7 +54,6 @@ const center = computed(() => props.item.content.includes('\\<img'))
       flex
       items-center
       flex-wrap
-      gap-2
       :class="{ 'justify-center': center }"
     >
       <slot :content="item.content" />

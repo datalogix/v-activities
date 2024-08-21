@@ -20,6 +20,7 @@ const update = (e: Event) => emits('update:modelValue', (e.target as HTMLSelectE
 <template>
   <select
     class="activity-fill-in-the-blanks-select"
+    m-1
     p-2
     border-2
     border-gray-300

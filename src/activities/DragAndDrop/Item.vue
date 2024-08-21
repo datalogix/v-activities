@@ -54,7 +54,6 @@ defineProps<DragAndDropItemProps>()
       flex
       items-center
       flex-wrap
-      gap-2
     >
       <slot :content="item.content" />
     </div>

@@ -69,6 +69,7 @@ const keyup = (event: KeyboardEvent) => {
   <input
     class="activity-fill-in-the-blanks-input"
     type="text"
+    m-1
     p-2
     border-2
     border-gray-300
