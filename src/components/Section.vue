@@ -15,6 +15,7 @@ loader.on('loaded', (item, content) => {
 <template>
   <section
     class="activity"
+    relative
     bg-center-center
     bg-no-repeat
     bg-cover
