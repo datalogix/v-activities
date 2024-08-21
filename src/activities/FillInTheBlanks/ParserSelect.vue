@@ -33,7 +33,7 @@ const update = (e: Event) => emits('update:modelValue', (e.target as HTMLSelectE
   >
     <option
       value=""
-      v-text="activity.props.mode === 'preview' ? `${correct}&nbsp;&#10003;` : '---'"
+      v-html="activity.props.mode === 'preview' ? `${correct}&nbsp;&#10003;` : '---'"
     />
     <option
       v-for="option in options"
