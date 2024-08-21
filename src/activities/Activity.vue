@@ -420,7 +420,10 @@ defineExpose(provideAndExpose)
     >
       <slot name="activity-header">
         <Header ref="header">
-          <slot name="activity-logo">
+          <slot
+            v-if="title"
+            name="activity-logo"
+          >
             <h1
               font-semibold
               text-lg

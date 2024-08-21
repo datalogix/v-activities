@@ -302,6 +302,9 @@
     "WritableComputedRef": true,
     "injectLocal": true,
     "provideLocal": true,
-    "useClipboardItems": true
+    "useClipboardItems": true,
+    "hasSlotContent": true,
+    "isVNodeEmpty": true,
+    "xx": true
   }
 }

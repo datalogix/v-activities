@@ -7,7 +7,7 @@ const { props } = useActivity()
     class="activity-main"
     flex-1
     w-full
-    border-y
+    border-b
     overflow-y-auto
     flex
     flex-col

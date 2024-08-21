@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 const { props, status, result, restart, check } = useActivity()
+const slots = useSlots()
+const hasDefaultSlotContent = computed(() => hasSlotContent(slots.default))
 </script>
 
 <template>
   <footer
+    v-if="hasDefaultSlotContent || (props.canRestart && (status === 'playing' || result)) || (props.canCheck && status === 'playing')"
     class="activity-footer"
     border-t
     relative

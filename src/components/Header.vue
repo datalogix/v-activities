@@ -34,6 +34,9 @@ const resetsEnd = async (params: ResetsParams) => {
   await instance.emit('resets-end', params)
 }
 
+const slots = useSlots()
+const hasDefaultSlotContent = computed(() => hasSlotContent(slots.default))
+
 defineExpose({
   globalTimer,
   timer,
@@ -43,7 +46,9 @@ defineExpose({
 
 <template>
   <header
+    v-show="hasDefaultSlotContent || props.globalShowTimer || props.showTimer || props.showResets || props.instructions || (props.canFinish && status !== 'loading' && props.mode === 'run')"
     class="activity-header"
+    border-b
     relative
     w-full
     z-10
