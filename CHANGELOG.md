@@ -1,6 +1,21 @@
 # Changelog
 
 
+## v0.9.1
+
+[compare changes](https://github.com/datalogix/v-activities/compare/v0.9.0...v0.9.1)
+
+### 🩹 Fixes
+
+- Display header and footer only if there is content ([a038c1e](https://github.com/datalogix/v-activities/commit/a038c1e))
+- Spacing ([8646fe8](https://github.com/datalogix/v-activities/commit/8646fe8))
+- Relative position ([5fd52d7](https://github.com/datalogix/v-activities/commit/5fd52d7))
+- Use v-html ([cb13870](https://github.com/datalogix/v-activities/commit/cb13870))
+
+### ❤️ Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.9.0
 
 [compare changes](https://github.com/datalogix/v-activities/compare/v0.8.1...v0.9.0)
