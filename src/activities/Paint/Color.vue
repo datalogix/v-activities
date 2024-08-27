@@ -7,7 +7,7 @@ export type PaintColorProps = {
 export type PaintColorEmits = {
   (e: 'open'): void
   (e: 'close'): void
-  (e: 'toggle', openned: boolean): void
+  (e: 'toggle', opened: boolean): void
   (e: 'select', selected: string): void
 }
 
@@ -32,21 +32,21 @@ withDefaults(defineProps<PaintColorProps>(), {
 const emits = defineEmits<PaintColorEmits>()
 
 const selected = ref<string>('#000000')
-const openned = ref<boolean>(false)
+const opened = ref<boolean>(false)
 
 const open = () => {
-  openned.value = true
+  opened.value = true
   emits('open')
 }
 
 const close = () => {
-  openned.value = false
+  opened.value = false
   emits('close')
 }
 
 const toggle = () => {
-  openned.value = !openned.value
-  emits('toggle', openned.value)
+  opened.value = !opened.value
+  emits('toggle', opened.value)
 }
 
 const select = (color: string) => {
@@ -61,7 +61,7 @@ const start = () => {
 
 defineExpose({
   selected,
-  openned,
+  opened,
   open,
   close,
   toggle,
@@ -103,7 +103,7 @@ defineExpose({
       />
     </button>
     <div
-      v-show="openned"
+      v-show="opened"
       class="activity-paint-color-container"
       right--2
       mt-2

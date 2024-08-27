@@ -6,17 +6,17 @@ export type ConfirmationOptions = {
   cancel?: () => void | Promise<void>
 }
 
-const openned = ref<boolean>(false)
+const opened = ref<boolean>(false)
 const options = reactive<ConfirmationOptions>({})
 
 const open = async (opts: ConfirmationOptions = {}) => {
   Object.assign(options, opts)
 
-  openned.value = true
+  opened.value = true
 }
 
 const close = async () => {
-  openned.value = false
+  opened.value = false
 }
 
 const ok = async () => {
@@ -36,7 +36,7 @@ const cancel = async () => {
 }
 
 defineExpose({
-  openned,
+  opened,
   open,
   close
 })
@@ -44,7 +44,7 @@ defineExpose({
 
 <template>
   <Modal
-    v-if="openned"
+    v-if="opened"
     class="activity-confirmation"
     z-40
   >

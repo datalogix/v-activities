@@ -6,7 +6,7 @@ export type PaintEraserProps = {
 export type PaintEraserEmits = {
   (e: 'open'): void
   (e: 'close'): void
-  (e: 'toggle', openned: boolean): void
+  (e: 'toggle', opened: boolean): void
   (e: 'select', selected: number): void
   (e: 'enable'): void
   (e: 'disable'): void
@@ -25,22 +25,22 @@ withDefaults(defineProps<PaintEraserProps>(), {
 const emits = defineEmits<PaintEraserEmits>()
 
 const selected = ref<number>(8)
-const openned = ref<boolean>(false)
+const opened = ref<boolean>(false)
 const active = ref<boolean>(false)
 
 const open = () => {
-  openned.value = true
+  opened.value = true
   emits('open')
 }
 
 const close = () => {
-  openned.value = false
+  opened.value = false
   emits('close')
 }
 
 const toggle = () => {
-  openned.value = !openned.value
-  emits('toggle', openned.value)
+  opened.value = !opened.value
+  emits('toggle', opened.value)
 }
 
 const select = (eraser: number) => {
@@ -66,7 +66,7 @@ const start = () => {
 
 defineExpose({
   selected,
-  openned,
+  opened,
   active,
   open,
   close,
@@ -110,7 +110,7 @@ defineExpose({
       />
     </button>
     <div
-      v-show="openned"
+      v-show="opened"
       class="activity-paint-eraser-container"
       right--2
       mt-2

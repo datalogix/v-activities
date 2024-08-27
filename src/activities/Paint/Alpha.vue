@@ -7,7 +7,7 @@ export type PaintAlphaProps = {
 export type PaintAlphaEmits = {
   (e: 'open'): void
   (e: 'close'): void
-  (e: 'toggle', openned: boolean): void
+  (e: 'toggle', opened: boolean): void
   (e: 'select', selected: number): void
 }
 
@@ -25,21 +25,21 @@ withDefaults(defineProps<PaintAlphaProps>(), {
 const emits = defineEmits<PaintAlphaEmits>()
 
 const selected = ref<number>(1)
-const openned = ref<boolean>(false)
+const opened = ref<boolean>(false)
 
 const open = () => {
-  openned.value = true
+  opened.value = true
   emits('open')
 }
 
 const close = () => {
-  openned.value = false
+  opened.value = false
   emits('close')
 }
 
 const toggle = () => {
-  openned.value = !openned.value
-  emits('toggle', openned.value)
+  opened.value = !opened.value
+  emits('toggle', opened.value)
 }
 
 const select = (alpha: number) => {
@@ -54,7 +54,7 @@ const start = () => {
 
 defineExpose({
   selected,
-  openned,
+  opened,
   open,
   close,
   toggle,
@@ -95,7 +95,7 @@ defineExpose({
       />
     </button>
     <div
-      v-show="openned"
+      v-show="opened"
       class="activity-paint-alpha-container"
       right--2
       mt-2

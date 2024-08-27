@@ -8,7 +8,7 @@ export type PaintLineWidthProps = {
 export type PaintLineWidthEmits = {
   (e: 'open'): void
   (e: 'close'): void
-  (e: 'toggle', openned: boolean): void
+  (e: 'toggle', opened: boolean): void
   (e: 'select', selected: number): void
 }
 
@@ -28,21 +28,21 @@ withDefaults(defineProps<PaintLineWidthProps>(), {
 const emits = defineEmits<PaintLineWidthEmits>()
 
 const selected = ref<number>(4)
-const openned = ref<boolean>(false)
+const opened = ref<boolean>(false)
 
 const open = () => {
-  openned.value = true
+  opened.value = true
   emits('open')
 }
 
 const close = () => {
-  openned.value = false
+  opened.value = false
   emits('close')
 }
 
 const toggle = () => {
-  openned.value = !openned.value
-  emits('toggle', openned.value)
+  opened.value = !opened.value
+  emits('toggle', opened.value)
 }
 
 const select = (lineWidth: number) => {
@@ -57,7 +57,7 @@ const start = () => {
 
 defineExpose({
   selected,
-  openned,
+  opened,
   open,
   close,
   toggle,
@@ -99,7 +99,7 @@ defineExpose({
       />
     </button>
     <div
-      v-show="openned"
+      v-show="opened"
       class="activity-paint-line-width-container"
       right--2
       mt-2
