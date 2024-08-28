@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v0.9.3
+
+[compare changes](https://github.com/datalogix/v-activities/compare/v0.9.2...v0.9.3)
+
+### 🩹 Fixes
+
+- Use prevent ([d5c3ae8](https://github.com/datalogix/v-activities/commit/d5c3ae8))
+- When using touch ([5f814d9](https://github.com/datalogix/v-activities/commit/5f814d9))
+
+### ❤️ Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.9.2
 
 [compare changes](https://github.com/datalogix/v-activities/compare/v0.9.1...v0.9.2)
