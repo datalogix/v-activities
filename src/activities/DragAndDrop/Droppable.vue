@@ -186,10 +186,10 @@ defineExpose({
     @dragstart="onDragStart"
     @dragleave.prevent="onDragLeave"
     @dragover.prevent="onDragOver"
-    @drop="onDrop"
-    @touchstart="onTouchStart"
-    @touchmove="onTouchMove"
-    @touchend="onTouchEnd"
+    @drop.prevent="onDrop"
+    @touchstart.prevent="onTouchStart"
+    @touchmove.passive="onTouchMove"
+    @touchend.prevent="onTouchEnd"
   >
     <div
       :class="{ '!opacity-30': activity.props.mode === 'preview' && !enabled, }"

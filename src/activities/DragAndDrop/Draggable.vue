@@ -95,10 +95,10 @@ const onTouchEnd = () => {
     :draggable="activity.props.mode !== 'answered'"
     @contextmenu.prevent
     @dragstart="onDragStart"
-    @dragend="onDragEnd"
-    @touchstart="onTouchStart"
-    @touchmove="onTouchMove"
-    @touchend="onTouchEnd"
+    @dragend.prevent="onDragEnd"
+    @touchstart.prevent="onTouchStart"
+    @touchmove.passive="onTouchMove"
+    @touchend.prevent="onTouchEnd"
     v-html="option.value"
   />
 </template>
