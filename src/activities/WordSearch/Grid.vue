@@ -86,18 +86,30 @@ const gridVal = ({ x, y }: WordSearchGridPosition) => {
   return ''
 }
 
-const wordSelectStart = ({ x, y }: WordSearchGridPosition) => {
+const wordSelectStart = (event: MouseEvent|TouchEvent) => {
   if (activity.props.mode === 'answered') {
     return
   }
 
-  selectedRange.value.start = { x, y }
+  const touch: Touch|MouseEvent = event instanceof TouchEvent ? event.changedTouches.item(0)! : event as MouseEvent
+  const element = document.elementFromPoint(touch.clientX, touch.clientY) as HTMLDivElement
+
+  selectedRange.value.start = {
+    x: parseInt(element.dataset.x!),
+    y: parseInt(element.dataset.y!)
+  }
 }
 
-const wordSelectUpdate = (event: Event, { x, y }: WordSearchGridPosition) => {
+const wordSelectUpdate = (event: MouseEvent|TouchEvent) => {
   if (selectedRange.value.start === null || activity.props.mode === 'answered') {
     return
   }
+
+  const touch: Touch|MouseEvent = event instanceof TouchEvent ? event.changedTouches.item(0)! : event as MouseEvent
+  const element = document.elementFromPoint(touch.clientX, touch.clientY) as HTMLDivElement
+
+  const x = parseInt(element.dataset.x!)
+  const y = parseInt(element.dataset.y!)
 
   const resetSelectedRange = () => {
     guess.value = []
@@ -364,12 +376,14 @@ defineExpose({
         border-solid
         border-gray-300
         cursor-pointer
-        @mousedown.prevent="wordSelectStart({ x, y })"
-        @mouseup="(e: MouseEvent) => wordSelectUpdate(e, { x, y })"
-        @mousemove="(e: MouseEvent) => wordSelectUpdate(e, { x, y })"
-        @touchstart.prevent.passive="wordSelectStart({ x, y })"
-        @touchend.passive="(e: TouchEvent) => wordSelectUpdate(e, { x, y })"
-        @touchmove.passive="(e: TouchEvent) => wordSelectUpdate(e, { x, y })"
+        :data-x="x"
+        :data-y="y"
+        @mousedown.prevent="wordSelectStart"
+        @mouseup.prevent="wordSelectUpdate"
+        @mousemove.prevent="wordSelectUpdate"
+        @touchstart.prevent="wordSelectStart"
+        @touchend.prevent="wordSelectUpdate"
+        @touchmove.passive="wordSelectUpdate"
         v-text="gridVal({ x, y })"
       />
     </div>
