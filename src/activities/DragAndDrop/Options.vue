@@ -3,6 +3,7 @@ import Draggable from './Draggable.vue'
 import type { DragAndDropOption } from './Parser.vue'
 
 export type DragAndDropOptionsProps = {
+  availableOptions: DragAndDropOption[]
   options: DragAndDropOption[]
 }
 
@@ -21,9 +22,10 @@ defineProps<DragAndDropOptionsProps>()
     mx-auto
   >
     <Draggable
-      v-for="option in options"
+      v-for="option in availableOptions"
       :key="option.id"
       :option="option"
+      :options="options"
     />
   </div>
 </template>

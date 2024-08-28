@@ -134,7 +134,8 @@ const check = () => {
         </p>
 
         <Options
-          :options="availableOptions"
+          :available-options="availableOptions"
+          :options="options"
           class="!flex-nowrap !justify-start"
           overflow-x-auto
           p-4
@@ -145,7 +146,8 @@ const check = () => {
 
     <Options
       v-if="availableOptions.length && (position === 'top' || position === 'all')"
-      :options="availableOptions"
+      :available-options="availableOptions"
+      :options="options"
       mb-4
     />
 
@@ -176,7 +178,8 @@ const check = () => {
 
     <Options
       v-if="availableOptions.length && (position === 'bottom' || position === 'all')"
-      :options="availableOptions"
+      :available-options="availableOptions"
+      :options="options"
       mt-4
     />
   </Activity>

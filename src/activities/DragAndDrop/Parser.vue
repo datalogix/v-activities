@@ -12,6 +12,7 @@ export type DragAndDropOption = DragAndDropParser & {
   answer?: string
   selected?: DragAndDropOption
   related?: DragAndDropOption
+  ref?: InstanceType<typeof Droppable>
 }
 
 export type DragAndDropParserProps = {
@@ -38,30 +39,10 @@ const template = defineComponent(computed(() => ({
     items: {
       required: true,
       type: Object
-    }
-  },
-
-  methods: {
-    drop (id: string, option: DragAndDropOption) {
-      const optionRelated = props.options.find(o => o.id === id)
-
-      if (!optionRelated) {
-        return
-      }
-
-      props.options.forEach(i => {
-        if (i.selected === optionRelated) {
-          i.selected.related = undefined
-          i.selected = undefined
-        }
-      })
-
-      if (option.selected) {
-        option.selected.related = undefined
-      }
-
-      option.selected = optionRelated
-      optionRelated.related = option
+    },
+    options: {
+      required: true,
+      type: Object
     }
   }
 })))
@@ -87,8 +68,9 @@ const parser = (content: string) => {
       value: match[0].replace('[', '').replace(']', '').trim(),
       content: `
         <Droppable
+          :ref="(el) => items[${_items.length}].ref = el"
           :option="items[${_items.length}]"
-          @drop="drop"
+          :options="options"
         />
       `
     }
@@ -124,5 +106,6 @@ defineExpose({
     :is="template"
     v-if="items.length"
     :items="items"
+    :options="options"
   />
 </template>
