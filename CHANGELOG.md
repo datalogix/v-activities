@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.9.2
+
+[compare changes](https://github.com/datalogix/v-activities/compare/v0.9.1...v0.9.2)
+
+### 🩹 Fixes
+
+- Drag and drop not using touch events ([60b391e](https://github.com/datalogix/v-activities/commit/60b391e))
+
+### 🏡 Chore
+
+- Typo ([8f02ffe](https://github.com/datalogix/v-activities/commit/8f02ffe))
+
+### ❤️ Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.9.1
 
 [compare changes](https://github.com/datalogix/v-activities/compare/v0.9.0...v0.9.1)
