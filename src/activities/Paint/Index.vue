@@ -96,7 +96,7 @@ const check = async () => {
 
   const compareContent = activity.value?.loader.get(props.imageToCompare)
 
-  if (compareContent === null || compareContent === undefined) {
+  if (!(compareContent instanceof HTMLImageElement)) {
     return null
   }
 
@@ -105,14 +105,11 @@ const check = async () => {
       image: String(painter.value.generateImage())
     }
 
-    // @ts-ignore
-    await import('jimp/browser/lib/jimp')
+    const { Jimp, compareHashes } = await import('jimp')
 
-    // @ts-ignore
-    const jimp = window.Jimp
-    const image1 = await jimp.read(compareContent instanceof HTMLImageElement ? compareContent.src : compareContent)
-    const image2 = await jimp.read(answer.value.image)
-    const diff = jimp.compareHashes(image1.pHash(), image2.pHash())
+    const image1 = await Jimp.read(compareContent.src)
+    const image2 = await Jimp.read(answer.value.image)
+    const diff = compareHashes(image1.pHash(), image2.pHash())
 
     return activity.value?.store({
       percentage: diff > 0.02 ? 0 : 100,
