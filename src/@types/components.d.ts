@@ -18,6 +18,7 @@ declare module 'vue' {
     Media: typeof import('./../components/Media.vue')['default']
     Message: typeof import('./../components/Message.vue')['default']
     Modal: typeof import('./../components/Modal.vue')['default']
+    Orientation: typeof import('./../components/Orientation.vue')['default']
     Resets: typeof import('./../components/Resets.vue')['default']
     Result: typeof import('./../components/Result.vue')['default']
     Section: typeof import('./../components/Section.vue')['default']

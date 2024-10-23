@@ -1,3 +1,10 @@
+body{
+  &.activity-mode-run {
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+}
+
 .activity {
   .activity-main {
     img {

@@ -35,14 +35,16 @@ const { closeMessage } = useActivity()
     </slot>
 
     <template #footer>
-      <Button
-        class="activity-message-ok"
-        text-white
-        bg-green-500
-        icon="i-mdi-check"
-        text="Ok"
-        @click="closeMessage()"
-      />
+      <slot name="footer">
+        <Button
+          class="activity-message-ok"
+          text-white
+          bg-green-500
+          icon="i-mdi-check"
+          text="Ok"
+          @click="closeMessage()"
+        />
+      </slot>
     </template>
   </Modal>
 </template>

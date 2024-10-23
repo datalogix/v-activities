@@ -173,6 +173,10 @@ const _message = ref<ActivityMessage>()
 const result = ref<ActivityResult>()
 const isEmpty = ref<boolean>(true)
 
+document.body.classList.add(`activity-mode-${props.mode}`)
+document.oncontextmenu = e => e.preventDefault()
+window.onbeforeunload = (event) => event.preventDefault()
+
 onMounted(async () => {
   await emits('preload')
   await loader.start()
@@ -469,6 +473,10 @@ defineExpose(provideAndExpose)
 
     <slot name="activity-confirmation">
       <Confirmation ref="confirmation" />
+    </slot>
+
+    <slot name="activity-orientation">
+      <Orientation />
     </slot>
 
     <slot
