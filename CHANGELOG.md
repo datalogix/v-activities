@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v0.10.0
+
+[compare changes](https://github.com/datalogix/v-activities/compare/v0.9.3...v0.10.0)
+
+### 🚀 Enhancements
+
+- Prevent the user from turning or reloading ([d4b2af0](https://github.com/datalogix/v-activities/commit/d4b2af0))
+
+### 🏡 Chore
+
+- Update deps ([eedf2dd](https://github.com/datalogix/v-activities/commit/eedf2dd))
+- Use `useEventListener` ([00f9fd8](https://github.com/datalogix/v-activities/commit/00f9fd8))
+
+### ❤️ Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.9.3
 
 [compare changes](https://github.com/datalogix/v-activities/compare/v0.9.2...v0.9.3)
