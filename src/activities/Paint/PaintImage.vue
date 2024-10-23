@@ -164,8 +164,7 @@ const init = (content: HTMLImageElement) => {
     clearDraw()
   }
 
-  window.addEventListener('resize', resizeCanvas, false)
-  window.addEventListener('orientationchange', resizeCanvas, false)
+  useEventListener(window, ['resize', 'orientationchange'], resizeCanvas, false)
   resizeCanvas()
 }
 
