@@ -173,11 +173,20 @@ const _message = ref<ActivityMessage>()
 const result = ref<ActivityResult>()
 const isEmpty = ref<boolean>(true)
 
-document.body.classList.add(`activity-mode-${props.mode}`)
-document.oncontextmenu = e => e.preventDefault()
-window.onbeforeunload = (event) => event.preventDefault()
+const oncontextmenu = (e: Event) => e.preventDefault()
+const onbeforeunload = (e: Event) => e.preventDefault()
+
+onUnmounted(() => {
+  document.body.classList.remove(`activity-mode-${props.mode}`)
+  document.removeEventListener('contextmenu', oncontextmenu)
+  window.removeEventListener('beforeunload', onbeforeunload)
+})
 
 onMounted(async () => {
+  document.body.classList.add(`activity-mode-${props.mode}`)
+  document.addEventListener('contextmenu', oncontextmenu)
+  window.addEventListener('beforeunload', onbeforeunload)
+
   await emits('preload')
   await loader.start()
   await media.load()
