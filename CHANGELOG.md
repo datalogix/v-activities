@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.10.1
+
+[compare changes](https://github.com/datalogix/v-activities/compare/v0.10.0...v0.10.1)
+
+### 🩹 Fixes
+
+- Remove events ([17f09a4](https://github.com/datalogix/v-activities/commit/17f09a4))
+
+### 🏡 Chore
+
+- Update index.html ([69e3c69](https://github.com/datalogix/v-activities/commit/69e3c69))
+
+### ❤️ Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.10.0
 
 [compare changes](https://github.com/datalogix/v-activities/compare/v0.9.3...v0.10.0)
