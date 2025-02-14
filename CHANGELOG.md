@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.10.2
+
+[compare changes](https://github.com/datalogix/v-activities/compare/v0.10.1...v0.10.2)
+
+### 🩹 Fixes
+
+- Display orientation only run mode ([b60bab3](https://github.com/datalogix/v-activities/commit/b60bab3))
+
+### ❤️ Contributors
+
+- Ricardo Gobbo De Souza ([@ricardogobbosouza](http://github.com/ricardogobbosouza))
+
 ## v0.10.1
 
 [compare changes](https://github.com/datalogix/v-activities/compare/v0.10.0...v0.10.1)
