@@ -485,7 +485,7 @@ defineExpose(provideAndExpose)
     </slot>
 
     <slot name="activity-orientation">
-      <Orientation />
+      <Orientation v-if="mode === 'run'" />
     </slot>
 
     <slot

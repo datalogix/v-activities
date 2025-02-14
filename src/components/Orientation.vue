@@ -4,7 +4,7 @@ const closed = ref(false)
 
 <template>
   <Message
-    class="activity-orientation bg-opacity-90! z-100! portrait:hidden xl:hidden!"
+    class="activity-orientation bg-opacity-90! z-100! portrait:hidden md:hidden!"
     :class="{'hidden!': closed }"
     type="warning"
     content="Por favor, vire o dispositivo para uma melhor experiência."
